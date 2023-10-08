@@ -17,8 +17,27 @@ namespace Lab1_Bai2
         public Fraction() { }
         public Fraction(int tu, int mau)
         {
+            try
+            {
+                float res = tu / mau;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             this.tu = tu;
             this.mau = mau;
+        }
+        public static Fraction operator +(Fraction a, Fraction b)
+            => new Fraction(a.Tu* b.Mau + b.Tu* a.Mau, a.Mau* b.Mau);
+        public static Fraction operator -(Fraction a, Fraction b)
+            => new Fraction(a.Tu * b.Mau - b.Tu * a.Mau, a.Mau * b.Mau);
+        public static Fraction operator *(Fraction a, Fraction b)
+            => new Fraction(a.Tu * b.Tu, a.Mau * b.Mau);
+        public static Fraction operator /(Fraction a, Fraction b)
+            => new Fraction(a.Tu * b.Mau, a.Mau * b.Tu);
+        public static bool operator ==(Fraction a, Fraction b)
+        {
         }
     }
 }
