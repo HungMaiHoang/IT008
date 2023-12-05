@@ -48,5 +48,10 @@ namespace Music_Player
             MenuTabCollapsed.Visibility = Visibility.Collapsed;
             MenuTab.Visibility = Visibility.Visible;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+        
+        }
     }
 }
