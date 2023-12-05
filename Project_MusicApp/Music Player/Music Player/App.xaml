@@ -1,0 +1,60 @@
+﻿<Application x:Class="Music_Player.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:view="clr-namespace:Music_Player.Views"
+             xmlns:viewmodel="clr-namespace:Music_Player.ViewModels"
+             xmlns:local="clr-namespace:Music_Player"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />                
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <!--primary color-->
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="#4f5b62"/>
+                    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#263238"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="#000a12"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="#FFFFFF"/>
+                </ResourceDictionary>
+
+                <!--secondary color-->
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="SecondaryHueLightBrush" Color="#ffffb3"/>
+                    <SolidColorBrush x:Key="SecondaryHueLightForegroundBrush" Color="Black"/>
+                    <SolidColorBrush x:Key="SecondaryHueMidBrush" Color="#ffe082"/>
+                    <SolidColorBrush x:Key="SecondaryHueMidForegroundBrush" Color="Black"/>
+                    <SolidColorBrush x:Key="SecondaryHueDarkBrush" Color="#caae53"/>
+                    <SolidColorBrush x:Key="SecondaryHueDarkForegroundBrush" Color="Black"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="MaterialDesignChipBackground" Color="#656c72"/>
+                </ResourceDictionary>
+
+                <ResourceDictionary>
+                    <DataTemplate DataType="{x:Type viewmodel:HomeVM}">
+                        <view:Home/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodel:PlaylistVM}">
+                        <view:Playlist/>
+                    </DataTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}" x:Key="ActionButtons">
+                <Setter Property="Background" Value="#FFD369" />
+                <Setter Property="Foreground" Value="#393E46" />
+                <Setter Property="BorderBrush" Value="#a37b24" />
+                <Setter Property="Width" Value="30" />
+                <Setter Property="Height" Value="30" />
+            </Style>
+            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}">
+                
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
