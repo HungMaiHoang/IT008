@@ -32,7 +32,7 @@
                     Minimum="0" 
                     Foreground="#FFD369" 
                     IsMoveToPointEnabled="True" 
-                    Margin="0 -10 0 0"/>
+                    Margin="0 -10 0 0" ValueChanged="TimeSlider_ValueChanged"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
@@ -69,7 +69,8 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="0 0 10 0" 
-                            ToolTip="Play Song">
+                            ToolTip="Play Song"
+                            Click="Button_Play">
                             <materialDesign:PackIcon 
                                 Kind="Play" 
                                 Width="30" 
@@ -210,7 +211,7 @@
                             Foreground="#FFD369" 
                             IsMoveToPointEnabled="True" 
                             Margin="0 0 0 0" 
-                            Width="60"/>
+                            Width="60" ValueChanged="VolumeSlider_ValueChanged"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

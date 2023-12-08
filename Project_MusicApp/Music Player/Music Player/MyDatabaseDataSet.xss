@@ -8,7 +8,7 @@
   <Shapes>
     <Shape ID="DesignTable:Playlists" ZOrder="5" X="401" Y="70" Height="135" Width="224" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="76" />
     <Shape ID="DesignTable:PlaylistSongs" ZOrder="4" X="70" Y="70" Height="135" Width="261" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="76" />
-    <Shape ID="DesignTable:Songs" ZOrder="3" X="401" Y="275" Height="158" Width="209" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="99" />
+    <Shape ID="DesignTable:Songs" ZOrder="3" X="401" Y="275" Height="158" Width="209" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="28" SplitterPosition="99" />
   </Shapes>
   <Connectors>
     <Connector ID="DesignRelation:FK__PlaylistS__Playl__4BAC3F29" ZOrder="2" LineWidth="11">

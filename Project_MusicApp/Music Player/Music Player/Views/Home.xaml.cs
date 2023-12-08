@@ -21,27 +21,16 @@ namespace Music_Player.Views
     /// </summary>
     public partial class Home : UserControl
     {
-        MediaPlayer media = new MediaPlayer();
-        bool isPlaying;
+        
         public Home()
         {
             InitializeComponent();
-            isPlaying = false;
+            
         }
 
         private void playlist_btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            media.Open(new Uri("C:\\Users\\ADMIN\\Downloads\\random music\\random-thoughts-20586.mp3", UriKind.Absolute));
-            if (isPlaying)
-            {
-                media.Pause();
-                isPlaying = false;
-            }
-            else
-            {
-                media.Play();
-                isPlaying = true;
-            }
+           
         }
     }
 }

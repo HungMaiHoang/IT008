@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Music_Player
 {
@@ -22,9 +23,22 @@ namespace Music_Player
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MediaPlayer media = new MediaPlayer();
+        public bool isPlaying;
         public MainWindow()
         {
             InitializeComponent();
+            isPlaying = false;
+            media.Open(new Uri("C:\\Users\\ACER\\Downloads\\abcd.mp3", UriKind.Absolute));
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(0.25);
+            timer.Tick += ChangeTimeSlider;
+            timer.Start();
+        }
+
+        private void ChangeTimeSlider(object sender, EventArgs e)
+        {
+            TimeSlider.Value = media.Position.TotalSeconds;
         }
 
         /// <summary>
@@ -51,7 +65,35 @@ namespace Music_Player
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-        
+            Application.Current.Shutdown();
+        }
+        private void Button_Play(object sender, RoutedEventArgs e)
+        {
+            TimeSlider.Maximum = media.NaturalDuration.TimeSpan.TotalSeconds;
+            VolumeSlider.Maximum = 1;
+            VolumeSlider.Value = 0.5;
+            if (isPlaying)
+            {
+                media.Pause();
+                isPlaying = false;
+
+            }
+            else
+            {
+                media.Play();
+                isPlaying = true;
+            }
+        }
+
+        private void TimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+                media.Position = TimeSpan.FromSeconds(TimeSlider.Value);
+ 
+        }
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var volumn = sender as Slider;
+            media.Volume = volumn.Value;
         }
     }
 }
