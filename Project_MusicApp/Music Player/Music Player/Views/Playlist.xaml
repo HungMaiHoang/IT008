@@ -32,7 +32,7 @@
                     Height="180"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"    
-                    Source="/Images/BaseAlbumCover.jpg"/>
+                    Source="/Images/BaseAlbumCover.png"/>
                 <Grid 
                     Grid.Column="1">
                     <Grid.RowDefinitions>

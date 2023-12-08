@@ -5,22 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:utilities="clr-namespace:Music_Player.Utilities"
-             xmlns:view="clr-namespace:Music_Player.Views"
-             xmlns:viewmodel="clr-namespace:Music_Player.ViewModels"
              xmlns:local="clr-namespace:Music_Player.Views"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="200"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <DataTemplate DataType="{x:Type viewmodel:HomeVM}">
-                <view:Home/>
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodel:PlaylistVM}">
-                <view:Playlist/>
-            </DataTemplate>
-        </ResourceDictionary>
-    </UserControl.Resources>
     <!--<UserControl.DataContext>
         <vm:NavigationVM/>
     </UserControl.DataContext>-->
@@ -33,8 +21,44 @@
             Width="200"
             Height="60"
             Margin="0"
-            utilities:CornerRadiusSetter.CornerRadius="0"
             Command="{Binding PlaylistCommand}">
+            <StackPanel
+                Orientation="Horizontal"
+                Width="180">
+                <Image 
+                    Source="/Images/BaseAlbumCover.png"
+                    Width="40"
+                    Height="40"
+                    HorizontalAlignment="Left"
+                    Margin="10 0 20 0"/>
+                <StackPanel>
+                    <TextBlock 
+                        Text="Playlist 1"
+                        FontWeight="Bold"
+                        Margin="0 0 0 0"/>
+                    <Grid 
+                        Margin="0 0 0 0">
+                        <TextBlock
+                            Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="5 5 5 5"
+                            FontSize="10"
+                            FontWeight="Light"
+                            Text="1"/>
+                        <TextBlock/>
+                        <TextBlock
+                            Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Margin="15 5 5 5"
+                            FontSize="10"
+                            FontWeight="Light"
+                            Text="songs "/>
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+            
         </RadioButton>
     </materialDesign:Card>
 </UserControl>
