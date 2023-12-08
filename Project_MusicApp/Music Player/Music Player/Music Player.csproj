@@ -79,6 +79,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Playlist.cs" />
+    <Compile Include="Models\PlaylistSong.cs" />
+    <Compile Include="Models\Song.cs" />
     <Compile Include="MyDatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -88,6 +91,7 @@
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NavigationVM.cs" />
     <Compile Include="ViewModels\PlaylistVM.cs" />
     <Compile Include="Views\btnPlaylist.xaml.cs">
@@ -168,9 +172,7 @@
   <ItemGroup>
     <Resource Include="Images\MusicIcon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\BaseAlbumCover.jpg" />
   </ItemGroup>
