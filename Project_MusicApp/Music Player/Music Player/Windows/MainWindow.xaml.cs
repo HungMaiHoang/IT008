@@ -51,7 +51,16 @@ namespace Music_Player
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-        
+            Application.Current.Shutdown();
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

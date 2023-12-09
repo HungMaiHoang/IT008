@@ -115,21 +115,6 @@
                         VerticalAlignment="Center" 
                         HorizontalAlignment="Center"/>
                             </Button>
-
-                            <Button 
-                     Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
-                     Name="playlist_btnAdd"
-                     HorizontalAlignment="Right"
-                     VerticalAlignment="Center"
-                     Margin="0 0 30 0" 
-                     ToolTip="Play Song">
-                                <materialDesign:PackIcon 
-                         Kind="PlusCircle" 
-                         Width="30" 
-                         Height="30" 
-                         VerticalAlignment="Center" 
-                         HorizontalAlignment="Center"/>
-                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -168,9 +153,17 @@
                 Kind="Clock"/>
                     </Grid>
                     <ListView Grid.Row="1">
-                        <ListViewItem>
-                            <TextBlock Text="Testing"/>
-                        </ListViewItem>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="#"  Width="100"/>
+                                <GridViewColumn Header="Title" Width="100"/>
+                                <GridViewColumn>
+                                    <HeaderedContentControl>
+                                        <materialDesign:PackIcon Kind="Clock"/>
+                                    </HeaderedContentControl>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
                     </ListView>
                 </Grid>
             </Grid>

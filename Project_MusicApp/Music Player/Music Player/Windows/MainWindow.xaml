@@ -117,12 +117,11 @@
                     <Grid 
                         Grid.Column="1"
                         Margin="0 0 0 0">
-                        <materialDesign:PackIcon
-                            Kind="Disc"
+                        <Image
+                            Source="/Images/VinylDisc.png"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="0 0 0 0"
-                            Foreground="White"
                             Width="50"
                             Height="50"/>
                         <Grid Margin="50 0 0 0">
@@ -188,6 +187,17 @@
                                 Width="30" 
                                 Height="30"/>
                         </Button>
+                        <Slider 
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Name="VolumeSlider"
+                            FlowDirection="LeftToRight" 
+                            Maximum="1"
+                            Minimum="0" 
+                            Foreground="#FFD369" 
+                            IsMoveToPointEnabled="True" 
+                            Margin="0 0 0 0" 
+                            Width="60" ValueChanged="VolumeSlider_ValueChanged"/>
                         <Button 
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
@@ -200,17 +210,6 @@
                                 Width="20" 
                                 Height="20"/>
                         </Button>
-                        <Slider 
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Right"
-                            Name="VolumeSlider"
-                            FlowDirection="LeftToRight" 
-                            Maximum="1"
-                            Minimum="0" 
-                            Foreground="#FFD369" 
-                            IsMoveToPointEnabled="True" 
-                            Margin="0 0 0 0" 
-                            Width="60"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
@@ -506,7 +505,7 @@
                     Height="25"
                     Width="45"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center" Click="Button_Click_1">
                     <materialDesign:PackIcon 
                         Kind="WindowMaximize"                    
                         Width="35"
