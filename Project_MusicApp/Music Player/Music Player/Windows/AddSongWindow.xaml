@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Music_Player.Windows"
+        xmlns:vm="clr-namespace:Music_Player.ViewModels"
         mc:Ignorable="d"
         Title="AddSongWindow" 
         WindowStyle="None"
@@ -13,6 +14,9 @@
         Height="450" Width="400"
         AllowsTransparency="True"
         Background="{x:Null}">
+    <Window.DataContext>
+        <vm:AddSongVM></vm:AddSongVM>
+    </Window.DataContext>
     <materialDesign:Card
     UniformCornerRadius="6"
     Background="{StaticResource PrimaryHueDarkBrush}">
@@ -24,13 +28,14 @@
                 <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <Button
+                Command="{Binding ExitCommand}"
                 Grid.Row="0"
                 Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                 materialDesign:ButtonAssist.CornerRadius="6"
                 Height="25"
                 Width="45"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Center">
+                VerticalAlignment="Center" Click="Button_Click">
                 <materialDesign:PackIcon 
                     Kind="WindowClose"
                     Width="35"
@@ -49,10 +54,11 @@
             <Grid
                 Grid.Row="2">
                 <TextBox 
+                    Text="{Binding Song.Title}"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource SecondaryHueDarkBrush}"
-                    materialDesign:HintAssist.Hint="Name"
+                    materialDesign:HintAssist.Hint="Tilte"
                     materialDesign:HintAssist.FloatingScale="1"
                     materialDesign:HintAssist.Foreground="{StaticResource SecondaryHueDarkBrush}"
                     IsTabStop="False"
@@ -67,10 +73,11 @@
                     Margin="10 20 10 10">
                 </TextBox>
                 <TextBox 
+                    Text="{Binding Song.Artist}"
                     Style="{StaticResource MaterialDesignOutlinedTextBox}"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource SecondaryHueDarkBrush}"
-                    materialDesign:HintAssist.Hint="Name"
+                    materialDesign:HintAssist.Hint="Artist"
                     materialDesign:HintAssist.FloatingScale="1"
                     materialDesign:HintAssist.Foreground="{StaticResource SecondaryHueDarkBrush}"
                     IsTabStop="False"
@@ -87,6 +94,8 @@
                 <Grid
                     Margin="10 180 10 10">
                     <TextBox 
+                        IsReadOnly="True"
+                        Text="{Binding Song.Path}"
                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         materialDesign:TextFieldAssist.UnderlineBrush="{StaticResource SecondaryHueDarkBrush}"
@@ -105,6 +114,7 @@
                         Margin="0">
                     </TextBox>
                     <Button
+                        Command="{Binding OpenFilePathCommand}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"
                         Foreground="{StaticResource PrimaryHueLightBrush}"
                         Width="30"
@@ -119,6 +129,7 @@
                 </Grid>
             </Grid>
             <Button
+                Command="{Binding AddSongCommand}"
                 Grid.Row="3"
                 Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}"
                 Width="100"

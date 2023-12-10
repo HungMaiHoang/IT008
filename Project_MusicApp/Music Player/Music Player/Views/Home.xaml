@@ -115,6 +115,36 @@
                         VerticalAlignment="Center" 
                         HorizontalAlignment="Center"/>
                             </Button>
+                            <Button 
+                                Command="{Binding ShowAddSongWindowCommand}"
+                                Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                                Name="playlist_btnAdd"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0 0 30 0" 
+                                ToolTip="Play Song">
+                                <materialDesign:PackIcon 
+                                    Kind="AddCircle" 
+                                    Width="30" 
+                                    Height="30" 
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Center"/>
+                            </Button>
+                            <Button 
+                                Command="{Binding DeleteSongCommand}"
+                                Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                                Name="playlist_btnSub"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Margin="0 0 150 0" 
+                                ToolTip="Play Song">
+                                                <materialDesign:PackIcon 
+                                    Kind="Remove" 
+                                    Width="30" 
+                                    Height="30" 
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Center"/>
+                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -152,15 +182,15 @@
                 Foreground="White"
                 Kind="Clock"/>
                     </Grid>
-                    <ListView Grid.Row="1">
+                    <ListView Grid.Row="1" ItemsSource="{Binding SongList}" SelectedItem="{Binding SelectedSong}">
                         <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="#"  Width="100"/>
-                                <GridViewColumn Header="Title" Width="100"/>
-                                <GridViewColumn>
+                            <GridView >
+                                <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Duration}">
                                     <HeaderedContentControl>
                                         <materialDesign:PackIcon Kind="Clock"/>
-                                    </HeaderedContentControl>
+                                    </HeaderedContentControl> 
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>

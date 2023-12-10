@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Music_Player.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,13 @@ namespace Music_Player.Windows
         public AddSongWindow()
         {
             InitializeComponent();
+            AddSongVM addSongVM = new AddSongVM();
+            this.DataContext = addSongVM;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
