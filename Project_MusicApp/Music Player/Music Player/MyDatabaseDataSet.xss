@@ -8,7 +8,7 @@
   <Shapes>
     <Shape ID="DesignTable:Playlists" ZOrder="5" X="401" Y="70" Height="135" Width="224" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="76" />
     <Shape ID="DesignTable:PlaylistSongs" ZOrder="4" X="70" Y="70" Height="135" Width="261" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="76" />
-    <Shape ID="DesignTable:Songs" ZOrder="3" X="401" Y="275" Height="158" Width="209" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="99" />
+    <Shape ID="DesignTable:Songs" ZOrder="3" X="401" Y="275" Height="204" Width="209" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="145" />
   </Shapes>
   <Connectors>
     <Connector ID="DesignRelation:FK__PlaylistS__Playl__4BAC3F29" ZOrder="2" LineWidth="11">
@@ -23,7 +23,7 @@
         </Point>
       </RoutePoints>
     </Connector>
-    <Connector ID="DesignRelation:FK__PlaylistS__SongI__4CA06362" ZOrder="1" LineWidth="11">
+    <Connector ID="DesignRelation:FK__PlaylistS__SongI__5CD6CB2B" ZOrder="1" LineWidth="11">
       <RoutePoints>
         <Point>
           <X>401</X>

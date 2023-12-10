@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Music_Player.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace Music_Player.Views
         public Home()
         {
             InitializeComponent();
+            DataContext = new HomeVM();
             isPlaying = false;
         }
 

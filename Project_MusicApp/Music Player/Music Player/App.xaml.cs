@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Music_Player.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,7 @@ namespace Music_Player
     /// </summary>
     public partial class App : Application
     {
+
+
     }
 }
