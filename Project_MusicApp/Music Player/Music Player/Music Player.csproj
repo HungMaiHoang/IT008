@@ -79,19 +79,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Playlist.cs" />
+    <Compile Include="Models\PlaylistSong.cs" />
+    <Compile Include="Models\Song.cs" />
     <Compile Include="MyDatabaseDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MyDatabaseDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Utilities\CornerRadiusSetter.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NavigationVM.cs" />
     <Compile Include="ViewModels\PlaylistVM.cs" />
+    <Compile Include="ViewModels\VideoPlayVM.cs" />
     <Compile Include="Views\btnPlaylist.xaml.cs">
       <DependentUpon>btnPlaylist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddSongWindow.xaml.cs">
+      <DependentUpon>AddSongWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\CreatePlaylistWindow.xaml.cs">
+      <DependentUpon>CreatePlaylistWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
@@ -99,7 +109,14 @@
     <Compile Include="Views\Playlist.xaml.cs">
       <DependentUpon>Playlist.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Views\VideoPlay.xaml.cs">
+      <DependentUpon>VideoPlay.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Windows\AddSongWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -107,11 +124,15 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\btnPlaylist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CreatePlaylistWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -120,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Playlist.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VideoPlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,15 +191,11 @@
     <Resource Include="Images\Cyberpunk_2077_box_art.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\MusicIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\BaseAlbumCover.jpg" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Images\BaseAlbumCover.png" />
+    <Resource Include="Images\VinylDisc.png" />
     <Content Include="MyDatabase.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

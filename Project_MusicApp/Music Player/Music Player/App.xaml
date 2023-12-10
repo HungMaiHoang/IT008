@@ -5,7 +5,8 @@
              xmlns:view="clr-namespace:Music_Player.Views"
              xmlns:viewmodel="clr-namespace:Music_Player.ViewModels"
              xmlns:local="clr-namespace:Music_Player"
-             StartupUri="MainWindow.xaml">
+             StartupUri="/Windows/MainWindow.xaml">
+            <!--MainWindow.xaml CreatePlaylistWindow.xaml AddSongWindow.xaml-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -41,6 +42,9 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewmodel:PlaylistVM}">
                         <view:Playlist/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type view:VideoPlay}">
+                        <view:VideoPlay/>
                     </DataTemplate>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
