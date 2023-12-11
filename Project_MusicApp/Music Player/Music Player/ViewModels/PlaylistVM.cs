@@ -9,5 +9,6 @@ namespace Music_Player.ViewModels
 {
     internal class PlaylistVM : ViewModelBase
     {
+
     }
 }

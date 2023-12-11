@@ -13,7 +13,7 @@
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
     <UserControl.DataContext>
         <vm:NavigationVM/>
-        </UserControl.DataContext> 
+    </UserControl.DataContext> 
     <materialDesign:Card 
         Background="{DynamicResource PrimaryHueLightBrush}"
         UniformCornerRadius="16">
@@ -35,7 +35,7 @@
                     Margin="10 0 20 0"/>
                 <StackPanel>
                     <TextBlock 
-                        Text="Playlist1"
+                        Text="{Binding playlistTi}"
                         FontWeight="Bold"
                         Margin="0 0 0 0"/>
                     <Grid 
