@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Music_Player.ViewModels
@@ -23,6 +24,8 @@ namespace Music_Player.ViewModels
 
         public ICommand ShowAddSongWindowCommand {  get; set; }
         public ICommand DeleteSongCommand { get; set; }
+
+        public ICommand TestingCommand { get; set; }
 
         private Song _song;
         public Song Song { get => _song; 
@@ -56,6 +59,8 @@ namespace Music_Player.ViewModels
             SongEntities = new MyDatabaseEntities();
             LoadSong();
             DeleteSongCommand = new RelayCommand(DeleteSong, CanDeleteSong);
+
+            TestingCommand = new RelayCommand(Testing);
         }
 
         private bool CanDeleteSong(object arg)
@@ -82,9 +87,13 @@ namespace Music_Player.ViewModels
         private void ShowAddSongWindow(object obj)
         {
             AddSongWindow addSongWindow = new AddSongWindow();
-            addSongWindow.Show();
+            addSongWindow.ShowDialog();
             
         }
         
+        private void Testing(object obj)
+        {
+            MessageBox.Show(selectedSong.Title);
+        }
     }
 }

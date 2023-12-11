@@ -6,7 +6,7 @@
              xmlns:viewmodel="clr-namespace:Music_Player.ViewModels"
              xmlns:local="clr-namespace:Music_Player"
              StartupUri="/Windows/MainWindow.xaml">
-            <!--MainWindow.xaml CreatePlaylistWindow.xaml AddSongWindow.xaml-->
+            <!--MainWindow.xaml CreatePlaylistWindow.xaml AddSongWindow.xaml AddSongToPlaylistWindow.xaml-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

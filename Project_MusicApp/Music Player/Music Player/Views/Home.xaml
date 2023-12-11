@@ -138,7 +138,7 @@
                                 VerticalAlignment="Center"
                                 Margin="0 0 150 0" 
                                 ToolTip="Play Song">
-                                                <materialDesign:PackIcon 
+                                <materialDesign:PackIcon 
                                     Kind="Remove" 
                                     Width="30" 
                                     Height="30" 
@@ -149,48 +149,22 @@
                     </Grid>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="7*"/>
-                    </Grid.RowDefinitions>
-                    <Grid 
-            Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16*"/>
-                            <ColumnDefinition Width="4*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                Grid.Column="0"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Right"
-                Margin="10 0 10 0"
-                Foreground="White"
-                Text="#"/>
-                        <TextBlock
-                Grid.Column="1"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left"
-                Margin="10 0 10 0"
-                Foreground="White"
-                Text="Title"/>
-                        <materialDesign:PackIcon
-                Grid.Column="2"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Right"
-                Margin="10 0 20 0"
-                Foreground="White"
-                Kind="Clock"/>
-                    </Grid>
-                    <ListView Grid.Row="1" ItemsSource="{Binding SongList}" SelectedItem="{Binding SelectedSong}">
+                    <ListView ItemsSource="{Binding SongList}" SelectedItem="{Binding SelectedSong}">
+                        <ListView.ContextMenu>
+                            <ContextMenu Placement="Bottom">
+                                <MenuItem Header="Add to playlist" Command="{Binding TestingCommand}"/>
+                                <MenuItem Header="Delete" Command="{Binding DeleteSongCommand}"/>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
                         <ListView.View>
-                            <GridView >
-                                <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Duration}">
+                            <GridView>
+                                <GridViewColumn Header="#" DisplayMemberBinding="{Binding SongID}" Width="75">
+                                </GridViewColumn>
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="450"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Duration}" Width="100">
                                     <HeaderedContentControl>
                                         <materialDesign:PackIcon Kind="Clock"/>
-                                    </HeaderedContentControl> 
+                                    </HeaderedContentControl>
                                 </GridViewColumn>
                             </GridView>
                         </ListView.View>

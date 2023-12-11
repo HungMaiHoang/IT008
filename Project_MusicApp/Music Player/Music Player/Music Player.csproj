@@ -159,6 +159,9 @@
     <Compile Include="Views\btnPlaylist.xaml.cs">
       <DependentUpon>btnPlaylist.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\AddSongToPlaylistWindow.xaml.cs">
+      <DependentUpon>AddSongToPlaylistWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\AddSongWindow.xaml.cs">
       <DependentUpon>AddSongWindow.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,10 @@
     <Compile Include="Views\VideoPlay.xaml.cs">
       <DependentUpon>VideoPlay.xaml</DependentUpon>
     </Compile>
+    <Page Include="Windows\AddSongToPlaylistWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\AddSongWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

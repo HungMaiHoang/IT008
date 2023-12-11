@@ -1,0 +1,67 @@
+﻿<Window x:Class="Music_Player.Windows.AddSongToPlaylistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:vm="clr-namespace:Music_Player.ViewModels"
+        xmlns:local="clr-namespace:Music_Player.Windows"
+        mc:Ignorable="d"
+        Title="AddSongToPlaylistWindow" 
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Height="450" Width="500"
+        AllowsTransparency="True"
+        Background="{x:Null}">
+    <Window.DataContext>
+        <vm:HomeVM/>
+    </Window.DataContext>
+    <materialDesign:Card
+        UniformCornerRadius="6"
+        Background="{StaticResource PrimaryHueDarkBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button
+                Command="{Binding}"
+                Grid.Row="0"
+                Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                materialDesign:ButtonAssist.CornerRadius="6"
+                Height="25"
+                Width="45"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom" Margin="455,0,0,0" Click="Button_Click">
+                <materialDesign:PackIcon 
+                    Kind="WindowClose"
+                    Width="35"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
+            </Button>
+            <Grid Grid.Row="1">
+                <ListView ItemsSource="{Binding SongList}" SelectedItem="{Binding SelectedSong}">
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
+                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Duration}">
+                                <HeaderedContentControl>
+                                    <materialDesign:PackIcon Kind="Clock"/>
+                                </HeaderedContentControl>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            <Button
+                Grid.Row="3"
+                Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}"
+                Width="100"
+                Margin="10"
+                Content="Add"/>
+        </Grid>
+    </materialDesign:Card>
+</Window>

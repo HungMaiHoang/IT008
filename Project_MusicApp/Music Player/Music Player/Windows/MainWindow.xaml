@@ -365,13 +365,14 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="btn_menutab1_expanded_Home"
+                    <RadioButton x:Name="btn_menutab1_expanded_Home"
                             Grid.Row="0"
                             Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                             Margin="0 0 0 0"
                             Padding="0 0 0 0"
                             Height="60"
                             VerticalAlignment="Center"
+                            GroupName="GroupPlaylist"
                             Command="{Binding HomeCommand}">
                         <StackPanel 
                             Orientation="Horizontal"
@@ -391,7 +392,7 @@
                                 Height="30"                                
                                 Margin="20 0 0 0"/>
                         </StackPanel>
-                    </Button>
+                    </RadioButton>
                     <Button x:Name="btn_menutab1_expanded_Seach"
                             Grid.Row="1"
                             Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
