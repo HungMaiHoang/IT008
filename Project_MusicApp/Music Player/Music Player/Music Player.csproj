@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="ViewModels\AddPlaylistVM.cs" />
     <Compile Include="ViewModels\AddSongVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

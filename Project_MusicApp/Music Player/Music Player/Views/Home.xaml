@@ -182,7 +182,7 @@
                 Foreground="White"
                 Kind="Clock"/>
                     </Grid>
-                    <ListView Grid.Row="1" ItemsSource="{Binding SongList}" SelectedItem="{Binding SelectedSong}">
+                    <ListView x:Name="Listviewsong" Grid.Row="1" ItemsSource="{Binding SongList}" SelectedItem="{Binding SelectedSong}">
                         <ListView.View>
                             <GridView >
                                 <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>

@@ -449,7 +449,7 @@
                                 Foreground="{StaticResource SecondaryHueLightBrush}"
                                 Height="30"                                
                                 Margin="20 0 0 0"/>
-                        <Button
+                        <Button Command="{Binding ShowCreatePlaylistWindowCommand}"
                             Style="{StaticResource MaterialDesignIconForegroundButton}"
                             HorizontalAlignment="Right"
                             Margin="30 0 0 0">
@@ -458,16 +458,28 @@
                                 Foreground="{StaticResource SecondaryHueLightBrush}"/>
                         </Button>
                     </StackPanel>
-                    <ScrollViewer
+                    <ScrollViewer 
                         Grid.Row="1"
                         Style="{StaticResource MaterialDesignScrollViewer}"
                         HorizontalScrollBarVisibility="Auto"
                         VerticalScrollBarVisibility="Auto">
-                        <StackPanel
-                            Width="200"
-                            Orientation="Vertical">
-                            <views:btnPlaylist Height="60" Margin="0 5 0 0"/>
-                        </StackPanel>
+
+                        <ListView ItemsSource="{Binding ListPlaylist}">
+                            <ListView.View >
+                                    <GridView>
+                                        <GridViewColumn >
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel >
+                                                        <views:btnPlaylist  Height="60"></views:btnPlaylist>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        
                     </ScrollViewer>
                 </Grid>
             </materialDesign:Card>

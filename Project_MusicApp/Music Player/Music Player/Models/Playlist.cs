@@ -9,20 +9,24 @@
 
 namespace Music_Player.Models
 {
+    using Music_Player.Utilities;
     using System;
     using System.Collections.Generic;
     
-    public partial class Playlist
+    public partial class Playlist : ViewModelBase
     {
+        private int playlistID;
+        private string name;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Playlist()
         {
             this.Songs = new HashSet<Song>();
         }
-    
-        public int PlaylistID { get; set; }
-        public string Name { get; set; }
-    
+
+        public int PlaylistID { get => playlistID; set { playlistID = value; OnPropertyChanged(nameof(PlaylistID)); } }
+        public string Name { get => name; set { name = value; OnPropertyChanged(nameof(Name)); } }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Song> Songs { get; set; }
     }

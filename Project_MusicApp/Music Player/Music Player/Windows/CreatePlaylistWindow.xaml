@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:vm="clr-namespace:Music_Player.ViewModels"
         xmlns:local="clr-namespace:Music_Player.Views"
         mc:Ignorable="d"
         Title="CreatePlaylistWindow" 
@@ -13,6 +14,9 @@
         Height="450" Width="400"
         AllowsTransparency="True"
         Background="{x:Null}">
+    <Window.DataContext>
+        <vm:AddPlaylistVM></vm:AddPlaylistVM>
+    </Window.DataContext>
     <materialDesign:Card
         UniformCornerRadius="6"
         Background="{StaticResource PrimaryHueDarkBrush}">
@@ -30,7 +34,7 @@
                 Height="250"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"/>
-            <TextBox 
+            <TextBox Text="{Binding Playlistinstance.Name}"
                 Grid.Row="1"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
@@ -55,7 +59,7 @@
             <StackPanel
                 Grid.Row="2"
                 Orientation="Vertical">
-                <Button
+                <Button Command="{Binding AddPlaylistCommand}"
                     Style="{StaticResource MaterialDesignRaisedSecondaryDarkButton}"
                     Width="100"
                     Margin="10"
@@ -64,7 +68,7 @@
                     Style="{StaticResource MaterialDesignFlatSecondaryDarkButton}"
                     Width="100"
                     Margin="10"
-                    Content="Cancel"/>
+                    Content="Cancel" Click="Button_Click"/>
             </StackPanel>
             
         </Grid>
