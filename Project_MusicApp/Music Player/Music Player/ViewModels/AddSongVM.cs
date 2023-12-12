@@ -24,7 +24,6 @@ namespace Music_Player.ViewModels
         public ICommand OpenFilePathCommand { get; set; }
         private Song song = new Song();
 
-//SongEntities songEntities;
         public Song Song { get => song;
             set {
                 song = value; 

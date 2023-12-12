@@ -23,7 +23,7 @@
             Width="200"
             Height="60"
             Margin="0"
-            Command="{Binding PlaylistCommand}">
+            >
             <StackPanel
                 Orientation="Horizontal"
                 Width="180">

@@ -17,7 +17,7 @@ namespace Music_Player.ViewModels
         public ICommand AddPlaylistCommand {  get; set; }
 
         private Playlist playlist = new Playlist();
-        public Playlist Playlistinstance { get => playlist; set { playlist = value; OnPropertyChanged(nameof(Playlistinstance)); } }
+        public Playlist Playlistinstance { get => playlist; set { playlist = value; OnPropertyChanged(); } }
 
 
         
