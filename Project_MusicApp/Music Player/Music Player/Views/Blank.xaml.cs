@@ -1,5 +1,4 @@
-﻿using Music_Player.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace Music_Player.Views
 {
     /// <summary>
-    /// Interaction logic for Playlist.xaml
+    /// Interaction logic for Blank.xaml
     /// </summary>
-    public partial class Playlist : UserControl
+    public partial class Blank : UserControl
     {
-        public Playlist()
+        public Blank()
         {
             InitializeComponent();
         }

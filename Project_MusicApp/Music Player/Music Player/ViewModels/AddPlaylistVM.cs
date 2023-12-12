@@ -16,8 +16,8 @@ namespace Music_Player.ViewModels
     {
         public ICommand AddPlaylistCommand {  get; set; }
 
-        private Playlist playlist = new Playlist();
-        public Playlist Playlistinstance { get => playlist; set { playlist = value; OnPropertyChanged(); } }
+        private Playlist _playlist = new Playlist();
+        public Playlist Playlist { get => _playlist; set { _playlist = value; OnPropertyChanged(nameof(Playlist)); } }
 
 
         
@@ -28,10 +28,13 @@ namespace Music_Player.ViewModels
 
         private void AddPlaylist(object obj)
         {
-            HomeVM.SongEntities.Playlists.Add(Playlistinstance);
-            HomeVM.SongEntities.SaveChanges();
-            NavigationVM.Instance.ListPlaylist.Add(Playlistinstance);
-            Playlistinstance = new Playlist();
+            // Change Database
+            NavigationVM.SongEntities.Playlists.Add(Playlist);
+            NavigationVM.SongEntities.SaveChanges();
+
+            // Change UI
+            NavigationVM.Instance.ListPlaylist.Add(Playlist);
+            Playlist = new Playlist();
         }
     }
 }

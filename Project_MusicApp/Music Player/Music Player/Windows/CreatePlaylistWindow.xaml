@@ -15,7 +15,7 @@
         AllowsTransparency="True"
         Background="{x:Null}">
     <Window.DataContext>
-        <vm:AddPlaylistVM></vm:AddPlaylistVM>
+        <vm:AddPlaylistVM/>
     </Window.DataContext>
     <materialDesign:Card
         UniformCornerRadius="6"
@@ -34,7 +34,7 @@
                 Height="250"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"/>
-            <TextBox Text="{Binding Playlistinstance.Name}"
+            <TextBox Text="{Binding Playlist.Name}"
                 Grid.Row="1"
                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                 materialDesign:TextFieldAssist.HasClearButton="True"
