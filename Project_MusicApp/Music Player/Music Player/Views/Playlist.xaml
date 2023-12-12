@@ -8,9 +8,7 @@
              xmlns:local="clr-namespace:Music_Player.Views"
              mc:Ignorable="d" 
              d:DesignHeight="605" d:DesignWidth="770">
-    <UserControl.DataContext>
-        <vm:PlaylistVM/>
-    </UserControl.DataContext>
+   
     <materialDesign:Card
         UniformCornerRadius="6"
         Margin="0 0 5 5"
@@ -46,31 +44,36 @@
                         Margin="10 0 0 0"
                         FontSize="50"
                         FontWeight="Bold"
-                        Text="Playlist 1"/>
+                        Text="{Binding Playlist.Name}"/>
                     <Grid 
                         Grid.Row="1"
                         Margin="10 0 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="221*"/>
+                            <ColumnDefinition Width="24*"/>
+                            <ColumnDefinition Width="292*"/>
+                        </Grid.ColumnDefinitions>
                         <TextBlock
                             Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Margin="5 5 5 5"
+                            Margin="5,0,0,0"
                             FontSize="20"
                             FontWeight="ExtraLight"
                             Text="1"/>
-                        <TextBlock/>
+                        <TextBlock Grid.ColumnSpan="3"/>
                         <TextBlock
                             Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Margin="25 5 5 5"
+                            Margin="25,0,0,0"
                             FontSize="20"
                             FontWeight="ExtraLight"
                             Text="songs "/>
                         <BulletDecorator 
-                            VerticalAlignment="Center"
+                            VerticalAlignment="Top"
                             HorizontalAlignment="Left"
-                            Margin="85 10 5 5 ">
+                            Margin="85,31,0,0">
                             <BulletDecorator.Bullet>
                                 <Ellipse 
                                     Height="10" 
@@ -80,9 +83,8 @@
                         </BulletDecorator>
                         <TextBlock
                             Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Margin="105 5 5 5"
                             FontSize="20"
                             FontWeight="ExtraLight"
                             Text="2"/>
@@ -90,7 +92,7 @@
                             Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
-                            Margin="125 5 5 5"
+                            Margin="125,0,0,0"
                             FontSize="20"
                             FontWeight="ExtraLight"
                             Text="minutes"/>
@@ -99,6 +101,7 @@
                         Grid.Row="2"
                         Margin="10 0 0 0">
                         <Button 
+                            Command="{Binding DebugLog}"
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Name="playlist_btnPlay"
                             HorizontalAlignment="Left"
@@ -126,6 +129,8 @@
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
                         </Button>
+                        <!--<Button Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                                Command="{Binding DebugLog}"/>-->
                     </Grid>
                 </Grid>
             </Grid>
@@ -163,10 +168,18 @@
                         Foreground="White"
                         Kind="Clock"/>
                 </Grid>
-                <ListView Grid.Row="1">
-                    <ListViewItem>
-                        <TextBlock Text="Testing"/>
-                    </ListViewItem>
+                <ListView Grid.Row="1" ItemsSource="{Binding Playlist.Songs}">
+                    <ListView.View>
+                        <GridView >
+                            <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
+                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Duration}">
+                                <HeaderedContentControl>
+                                    <materialDesign:PackIcon Kind="Clock"/>
+                                </HeaderedContentControl>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
                 </ListView>
             </Grid>
         </Grid>

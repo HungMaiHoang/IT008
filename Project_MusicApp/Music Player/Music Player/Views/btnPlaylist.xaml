@@ -11,9 +11,9 @@
              Name="playlistitem"
              d:DesignHeight="60" d:DesignWidth="200"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <vm:NavigationVM/>
-    </UserControl.DataContext> 
+    </UserControl.DataContext> -->
     <materialDesign:Card 
         Background="{DynamicResource PrimaryHueLightBrush}"
         UniformCornerRadius="16">
