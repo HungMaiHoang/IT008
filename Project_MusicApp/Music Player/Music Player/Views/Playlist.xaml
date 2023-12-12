@@ -8,7 +8,9 @@
              xmlns:local="clr-namespace:Music_Player.Views"
              mc:Ignorable="d" 
              d:DesignHeight="605" d:DesignWidth="770">
-   
+    <UserControl.DataContext>
+        <vm:PlaylistVM/>
+    </UserControl.DataContext>
     <materialDesign:Card
         UniformCornerRadius="6"
         Margin="0 0 5 5"
@@ -44,7 +46,7 @@
                         Margin="10 0 0 0"
                         FontSize="50"
                         FontWeight="Bold"
-                        Text="{Binding Playlist.Name}"/>
+                        Text="{Binding Name}"/>
                     <Grid 
                         Grid.Row="1"
                         Margin="10 0 0 0">
@@ -129,8 +131,6 @@
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
                         </Button>
-                        <!--<Button Style="{StaticResource MaterialDesignFlatAccentBgButton}"
-                                Command="{Binding DebugLog}"/>-->
                     </Grid>
                 </Grid>
             </Grid>
