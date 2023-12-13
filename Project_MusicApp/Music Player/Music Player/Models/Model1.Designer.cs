@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\LENOVO\OneDrive\Desktop\IT008\Project_MusicApp\Music Player\Music Player\Models\Model1.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\IT008\Project_MusicApp\Music Player\Music Player\Models\Model1.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

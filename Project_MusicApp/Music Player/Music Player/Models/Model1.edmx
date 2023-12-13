@@ -25,10 +25,10 @@
             <PropertyRef Name="SongID" />
           </Key>
           <Property Name="SongID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Artist" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Artist" Type="nvarchar" MaxLength="255" />
           <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="Path" Type="nvarchar(max)" />
-          <Property Name="Duration" Type="time" Precision="7" />
+          <Property Name="Path" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Duration" Type="time" Precision="7" Nullable="false" />
         </EntityType>
         <Association Name="FK__PlaylistS__Playl__4BAC3F29">
           <End Role="Playlists" Type="Self.Playlists" Multiplicity="1">
@@ -89,10 +89,10 @@
             <PropertyRef Name="SongID" />
           </Key>
           <Property Name="SongID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Artist" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Artist" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Duration" Type="Time" Precision="7" />
+          <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duration" Type="Time" Nullable="false" Precision="7" />
           <NavigationProperty Name="Playlists" Relationship="Self.PlaylistSongs" FromRole="Songs" ToRole="Playlists" />
         </EntityType>
         <Association Name="PlaylistSongs">

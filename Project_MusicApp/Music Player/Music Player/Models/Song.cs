@@ -13,13 +13,13 @@ namespace Music_Player.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Song : ViewModelBase
+    public partial class Song :ViewModelBase
     {
         private int songID;
         private string artist;
         private string title;
         private string path;
-        private TimeSpan? duration;
+        private TimeSpan duration;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Song()
@@ -27,11 +27,11 @@ namespace Music_Player.Models
             this.Playlists = new HashSet<Playlist>();
         }
 
-        public int SongID { get => songID; set { songID = value; OnPropertyChanged(nameof(SongID)); } }
-        public string Artist { get => artist; set { artist = value; OnPropertyChanged(nameof(Artist)); } }
-        public string Title { get => title; set { title = value; OnPropertyChanged(nameof(Title)); } }
-        public string Path { get => path; set { path = value; OnPropertyChanged(nameof(Path)); } }
-        public Nullable<System.TimeSpan> Duration { get => duration; set { duration = value; OnPropertyChanged(nameof(Duration)); } }
+        public int SongID { get => songID; set { songID = value;OnPropertyChanged(nameof(SongID)); } }
+        public string Artist { get => artist; set { artist = value;OnPropertyChanged(nameof(Artist)); } }
+        public string Title { get => title; set { title = value;OnPropertyChanged(nameof(Title)); } }
+        public string Path { get => path; set { path = value;OnPropertyChanged(nameof(Path)); } }
+        public System.TimeSpan Duration { get => duration; set { duration = value;OnPropertyChanged(nameof(Duration)); } }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Playlist> Playlists { get; set; }

@@ -13,7 +13,7 @@ namespace Music_Player.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Playlist : ViewModelBase
+    public partial class Playlist :ViewModelBase
     {
         private int playlistID;
         private string name;

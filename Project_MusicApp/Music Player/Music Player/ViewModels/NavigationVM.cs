@@ -153,6 +153,49 @@ namespace Music_Player.ViewModels
                 OnPropertyChanged(nameof(PauseVisibility));
             }
         }
+        private TimeSpan _duration;
+        public TimeSpan _Duration
+        {
+            get { return _duration; }
+            set
+            {
+                _duration = value;
+                OnPropertyChanged(nameof(_Duration));
+            }
+        }
+        private string _nameSong;
+        public string NameSong { get { return _nameSong; } set {
+                _nameSong = value;
+                OnPropertyChanged(nameof(NameSong));
+            }
+        }
+        private TimeSpan _currentTime;
+        public TimeSpan CurrentTime
+        {
+            get { return _currentTime; }
+            set
+            {
+                if (_currentTime != value)
+                {
+                    _currentTime = value;
+                    OnPropertyChanged(nameof(CurrentTime));
+                }
+            }
+        }
+
+        private TimeSpan _totalDuration;
+        public TimeSpan TotalDuration
+        {
+            get { return _totalDuration; }
+            set
+            {
+                if (_totalDuration != value)
+                {
+                    _totalDuration = value;
+                    OnPropertyChanged(nameof(TotalDuration));
+                }
+            }
+        }
         private MediaPlayer _MediaPlayer { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand PlaylistCommand { get; set; }
@@ -185,24 +228,24 @@ namespace Music_Player.ViewModels
             LoadAllPlaylist();
             //LoadAllSong();
             Home();
-            playVisibility = Visibility.Visible;
-            pauseVisibility = Visibility.Collapsed;
-        }
 
+        }
+        public bool IsPlaying = false;
         private void PlaySong(object obj)
         {
+            _Duration = SelectedSong.Duration;
+            NameSong = SelectedSong.Title;
+          //  _Duration = SelectedSong.Duration.ToString(@"mm\:ss");
             AudioUri = new Uri(SelectedSong.Path,UriKind.RelativeOrAbsolute);
             _MediaPlayer.Open(AudioUri);
             _MediaPlayer.Play();
-            playVisibility = Visibility.Collapsed;
-            pauseVisibility = Visibility.Visible;
+            IsPlaying = true;
 
         }
         private void PauseSong(object obj)
         {
             _MediaPlayer.Stop();
-            playVisibility = Visibility.Visible;
-            pauseVisibility = Visibility.Collapsed;
+
         }
         private void ShowAddSongToPlaylistWindow(object obj)
         {

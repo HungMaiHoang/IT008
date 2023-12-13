@@ -29,9 +29,12 @@
               Panel.ZIndex="1">
             <StackPanel Orientation="Vertical">
                 <Slider 
-                    Name="TimeSlider" 
-                    Maximum="1" 
+                    Value="{Binding Path=CurrentTime.TotalSeconds, Mode=OneWay}"
+                    Maximum="{Binding Path=SelectedSong.Duration.TotalSeconds, Mode=OneWay}"
+                    Name="TimeSlider"  
                     Minimum="0" 
+                    TickFrequency="1"
+                    IsSnapToTickEnabled="True"
                     Foreground="#FFD369" 
                     IsMoveToPointEnabled="True" 
                     Margin="0 -10 0 0"/>
@@ -63,23 +66,23 @@
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
                         </Button>
-                        <Button Command="{Binding PlayCommand}" Visibility="{Binding PlayVisibility}"
-                            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                        <ToggleButton Command="{Binding PlayCommand}" 
+                                      Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
                             Name="btnPlay" 
                             Width="30"
                             Height="30"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="0 0 10 0" 
-                            ToolTip="Play Song">
+                            ToolTip="Play Song" >
                             <materialDesign:PackIcon 
                                 Kind="Play" 
                                 Width="30" 
                                 Height="30" 
                                 VerticalAlignment="Center" 
-                                HorizontalAlignment="Center"/>
-                        </Button>
-                        <Button Command="{Binding PlayCommand}" Visibility="{Binding PauseVisibility}"
+                                HorizontalAlignment="Center" />
+                            </ToggleButton>
+                        <!--<Button Command="{Binding PlayCommand}" Visibility="{Binding PauseVisibility}"
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Name="btnPause" 
                             Width="30"
@@ -94,7 +97,7 @@
                             Height="30" 
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center"/>      
-                        </Button>
+                        </Button>-->
                         <Button 
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Width="30"
@@ -127,7 +130,7 @@
                             Foreground="#EEEEEE" 
                             VerticalAlignment="Center"/>
                         <TextBlock 
-                            Text="{Binding SelectedSong.Duration, StringFormat='SelectedSong.Duration: {0:mm\\:ss}'}" 
+                            Text="{Binding _Duration, StringFormat='{}{0:mm\\:ss}'}" 
                             Foreground="#EEEEEE" 
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -144,7 +147,7 @@
                             Height="50"/>
                         <Grid Margin="50 0 0 0">
                             <TextBlock 
-                                Text="{Binding SelectedSong.Title}" 
+                                Text="{Binding NameSong}" 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Foreground="White" 
@@ -152,7 +155,7 @@
                                 FontSize="15" 
                                 Margin="10 0 0 0"/>
                             <TextBlock 
-                                Text="RAT BOY, IBDY" 
+                                Text="" 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Foreground="White" 
@@ -845,7 +848,7 @@
                                     <GridView >
                                         <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
                                         <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
-                                        <GridViewColumn DisplayMemberBinding="{Binding Duration}">
+                                        <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}">
                                             <HeaderedContentControl>
                                                 <materialDesign:PackIcon Kind="Clock"/>
                                             </HeaderedContentControl>
