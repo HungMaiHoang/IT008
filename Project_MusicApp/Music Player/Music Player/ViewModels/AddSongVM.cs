@@ -81,6 +81,12 @@ namespace Music_Player.ViewModels
                 MessageBox.Show("Vui lòng nhập đường dẫn");
                 return;
             }
+            if(NavigationVM.SongEntities.Songs.Any(song => song.Path == Song.Path))
+            {
+                MessageBox.Show("Đã có bài hát trong app");
+                Song = new Song();
+                return;
+            }
             try
             {
                 AudioFileReader audioFileReader = new AudioFileReader(Song.Path);

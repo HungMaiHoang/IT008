@@ -18,6 +18,8 @@ namespace Music_Player.ViewModels
 {
     internal class NavigationVM : ViewModelBase
     {
+        private bool isHome;
+        public bool IsHome {  get { return isHome; } set { isHome = value;OnPropertyChanged(nameof(IsHome)); } }
         private static NavigationVM _instance;
         public static NavigationVM Instance
         {
@@ -105,7 +107,7 @@ namespace Music_Player.ViewModels
             set
             {
                 _curSongs= value;
-                OnPropertyChanged(nameof(_curSongs));
+                OnPropertyChanged(nameof(CurSongs));
             }
         }
         private Song selectedSong;
@@ -122,6 +124,7 @@ namespace Music_Player.ViewModels
         public ICommand HomeCommand { get; set; }
         public ICommand PlaylistCommand { get; set; }
         public ICommand ShowCreatePlaylistWindowCommand { get; set; }
+        public ICommand ShowAddSongToPlaylistWindowCommand { get; set; }
         public ICommand ShowAddSongWindowCommand { get; set; }
         public ICommand DeleteSongCommand { get; set; }
         public ICommand DeletePlaylistCommand {  get; set; }
@@ -135,6 +138,7 @@ namespace Music_Player.ViewModels
             HomeCommand = new RelayCommand(Home);
             PlaylistCommand = new RelayCommand(LoadPlaylistToView);
             ShowAddSongWindowCommand = new RelayCommand(ShowAddSongWindow, CanShowWindow);
+            ShowAddSongToPlaylistWindowCommand = new RelayCommand(ShowAddSongToPlaylistWindow);
             DeleteSongCommand = new RelayCommand(DeleteSong, CanDeleteSong);
             DeletePlaylistCommand = new RelayCommand(DeletePlaylist);
             // Set up database
@@ -145,12 +149,20 @@ namespace Music_Player.ViewModels
             //LoadAllSong();
             Home();
         }
+
+        private void ShowAddSongToPlaylistWindow(object obj)
+        {
+            AddSongToPlaylistWindow addSongToPlaylistWindow = new AddSongToPlaylistWindow();
+            addSongToPlaylistWindow.ShowDialog();
+        }
+
         private Models.Playlist selected;
         public Models.Playlist Selected { get => selected; set {  selected = value; OnPropertyChanged(nameof(Selected)); } }
 
         #region Command
         private void Home(object obj = null)
         {
+            IsHome = true;
             ButtonVisibility = Visibility.Visible;
             CurPlaylistName = "All Media";
             LoadAllSong();
@@ -159,6 +171,8 @@ namespace Music_Player.ViewModels
         }
         private void LoadPlaylistToView(object obj) 
         {
+            Selected = obj as Models.Playlist;
+            IsHome = false;
             ButtonVisibility = Visibility.Hidden;
             CurPlaylistName = (obj as Models.Playlist).Name;
             CurPlaylist = obj as Models.Playlist;
@@ -191,13 +205,13 @@ namespace Music_Player.ViewModels
         }
         private void DeleteSong(object obj)
         {
-            if (CurSongs.SequenceEqual(AllSong))
+            if (/*CurSongs.SequenceEqual(AllSong)*/ isHome)
             {
                 SongEntities.Songs.Remove(SelectedSong);
                 SongEntities.SaveChanges();
                 NavigationVM.Instance.AllSong.Remove(SelectedSong);
                 CurSongs = new ObservableCollection<Song>(AllSong.ToList());
-                OnPropertyChanged(nameof(CurSongs));
+               // OnPropertyChanged(nameof(CurSongs));
             }
             else
             {
@@ -207,7 +221,7 @@ namespace Music_Player.ViewModels
                 {
                     PlaylistToRemove.Songs.Remove(SelectedSong);
                     SongEntities.SaveChanges();
-                    OnPropertyChanged(nameof(CurSongs));
+                    CurSongs.Remove(SelectedSong);
                 }
             }
             
@@ -219,7 +233,7 @@ namespace Music_Player.ViewModels
         private void ShowAddSongWindow(object obj)
         {
             AddSongWindow addSongWindow = new AddSongWindow();
-            addSongWindow.Show();
+            addSongWindow.ShowDialog();
 
         }
         #endregion

@@ -151,6 +151,7 @@
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\AddPlaylistVM.cs" />
+    <Compile Include="ViewModels\AddSongToPlaylistVM.cs" />
     <Compile Include="ViewModels\AddSongVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
     <Compile Include="ViewModels\NavigationVM.cs" />
@@ -161,6 +162,9 @@
     </Compile>
     <Compile Include="Views\btnPlaylist.xaml.cs">
       <DependentUpon>btnPlaylist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddSongToPlaylistWindow.xaml.cs">
+      <DependentUpon>AddSongToPlaylistWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\AddSongWindow.xaml.cs">
       <DependentUpon>AddSongWindow.xaml</DependentUpon>
@@ -178,6 +182,10 @@
       <DependentUpon>VideoPlay.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Blank.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddSongToPlaylistWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
