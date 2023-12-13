@@ -50,6 +50,7 @@ namespace Music_Player.ViewModels
         {
             Name = "12345";
             MessageBox.Show(Playlist.Name);
+
         }
 
         public void ChangePlaylist(Models.Playlist curPlaylist)

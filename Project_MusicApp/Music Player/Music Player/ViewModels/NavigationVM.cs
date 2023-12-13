@@ -5,6 +5,7 @@ using Music_Player.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
@@ -30,6 +31,16 @@ namespace Music_Player.ViewModels
             }
         }
 
+        private Visibility _buttonVisibility;
+        public Visibility ButtonVisibility
+        {
+            get { return _buttonVisibility; }
+            set
+            {
+                    _buttonVisibility = value;
+                    OnPropertyChanged(nameof(ButtonVisibility));
+            }
+        }
         private string _curPlaylistName;
 
         private Models.Playlist _curPlaylist;
@@ -39,8 +50,8 @@ namespace Music_Player.ViewModels
         //private Song _song;
         private ObservableCollection<Song> _allSong;
         private ObservableCollection<Song> _curSongs;
-
-        private Song selectedSong;
+        
+        // SongEntities
         public static MyDatabaseEntities SongEntities;
 
         public string CurPlaylistName 
@@ -97,6 +108,7 @@ namespace Music_Player.ViewModels
                 OnPropertyChanged(nameof(_curSongs));
             }
         }
+        private Song selectedSong;
         public Song SelectedSong 
         { 
             get => selectedSong; 
@@ -112,8 +124,8 @@ namespace Music_Player.ViewModels
         public ICommand ShowCreatePlaylistWindowCommand { get; set; }
         public ICommand ShowAddSongWindowCommand { get; set; }
         public ICommand DeleteSongCommand { get; set; }
-
-
+        public ICommand DeletePlaylistCommand {  get; set; }
+        // Constructor
         public NavigationVM()
         {
             _instance = this;
@@ -124,16 +136,14 @@ namespace Music_Player.ViewModels
             PlaylistCommand = new RelayCommand(LoadPlaylistToView);
             ShowAddSongWindowCommand = new RelayCommand(ShowAddSongWindow, CanShowWindow);
             DeleteSongCommand = new RelayCommand(DeleteSong, CanDeleteSong);
-
+            DeletePlaylistCommand = new RelayCommand(DeletePlaylist);
             // Set up database
             SongEntities = new MyDatabaseEntities();
 
             // Startup
-            Home();
             LoadAllPlaylist();
-            LoadAllSong();
-
-            
+            //LoadAllSong();
+            Home();
         }
         private Models.Playlist selected;
         public Models.Playlist Selected { get => selected; set {  selected = value; OnPropertyChanged(nameof(Selected)); } }
@@ -141,13 +151,28 @@ namespace Music_Player.ViewModels
         #region Command
         private void Home(object obj = null)
         {
+            ButtonVisibility = Visibility.Visible;
             CurPlaylistName = "All Media";
-            CurSongs = AllSong;
+            LoadAllSong();
+            CurSongs = new ObservableCollection<Song>(AllSong.ToList());
+            OnPropertyChanged(nameof(CurSongs));
         }
         private void LoadPlaylistToView(object obj) 
         {
+            ButtonVisibility = Visibility.Hidden;
             CurPlaylistName = (obj as Models.Playlist).Name;
             CurPlaylist = obj as Models.Playlist;
+            //CurSongs = new ObservableCollection<Song>(SongEntities.Playlists.Where(c=>c.PlaylistID==CurPlaylist.PlaylistID).SelectMany(c => c.Songs).ToList());
+            if (CurPlaylist != null && CurPlaylist.PlaylistID > 0)
+            {
+                var songsInPlaylist = SongEntities.Playlists
+                    .Where(playlist => playlist.PlaylistID == CurPlaylist.PlaylistID)
+                    .SelectMany(playlist => playlist.Songs)
+                    .ToList();
+                CurSongs = new ObservableCollection<Song>(songsInPlaylist);
+                OnPropertyChanged(nameof(CurSongs));
+            }
+
         }
         public void LoadAllPlaylist()
         {
@@ -166,9 +191,26 @@ namespace Music_Player.ViewModels
         }
         private void DeleteSong(object obj)
         {
-            SongEntities.Songs.Remove(SelectedSong);
-            SongEntities.SaveChanges();
-            SongList.Remove(SelectedSong);
+            if (CurSongs.SequenceEqual(AllSong))
+            {
+                SongEntities.Songs.Remove(SelectedSong);
+                SongEntities.SaveChanges();
+                NavigationVM.Instance.AllSong.Remove(SelectedSong);
+                CurSongs = new ObservableCollection<Song>(AllSong.ToList());
+                OnPropertyChanged(nameof(CurSongs));
+            }
+            else
+            {
+                var PlaylistToRemove = SongEntities.Playlists.Find(Selected.PlaylistID);
+                var SongToRemove = SongEntities.Songs.Find(SelectedSong.SongID);
+                if (PlaylistToRemove != null && SongToRemove != null)
+                {
+                    PlaylistToRemove.Songs.Remove(SelectedSong);
+                    SongEntities.SaveChanges();
+                    OnPropertyChanged(nameof(CurSongs));
+                }
+            }
+            
         }
         private bool CanShowWindow(object obj)
         {
@@ -185,6 +227,12 @@ namespace Music_Player.ViewModels
         private void LoadAllSong() //Read songs
         {
             AllSong = new ObservableCollection<Song>(SongEntities.Songs);
+        }
+        private void DeletePlaylist(object obj)
+        {
+            SongEntities.Playlists.Remove(Selected);
+            SongEntities.SaveChanges();
+            ListPlaylist.Remove(Selected);
         }
     }
 }

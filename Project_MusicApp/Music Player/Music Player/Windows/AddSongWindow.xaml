@@ -120,11 +120,11 @@
                         Width="30"
                         Height="30"
                         HorizontalAlignment="Right"
-                        Margin="0 0 50 0">
+                        Margin="0 0 45 2">
                         <materialDesign:PackIcon 
                             Kind="Folder"
-                            Width="20"
-                            Height="20"/>
+                            Width="25"
+                            Height="25"/>
                     </Button>
                 </Grid>
             </Grid>

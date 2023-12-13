@@ -152,9 +152,7 @@
     <Compile Include="Utilities\ViewModelBase.cs" />
     <Compile Include="ViewModels\AddPlaylistVM.cs" />
     <Compile Include="ViewModels\AddSongVM.cs" />
-    <Compile Include="ViewModels\BlankVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NavigationVM.cs" />
     <Compile Include="ViewModels\PlaylistVM.cs" />
     <Compile Include="ViewModels\VideoPlayVM.cs" />

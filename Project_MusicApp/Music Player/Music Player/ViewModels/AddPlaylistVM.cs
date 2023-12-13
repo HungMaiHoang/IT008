@@ -28,6 +28,15 @@ namespace Music_Player.ViewModels
 
         private void AddPlaylist(object obj)
         {
+            if(NavigationVM.SongEntities.Playlists.Any(entity => entity.Name == Playlist.Name))
+            {
+                MessageBox.Show("Da co playlist ten nay");
+                Playlist = new Playlist();
+                return;
+            }    
+            try
+            {
+
             // Change Database
             NavigationVM.SongEntities.Playlists.Add(Playlist);
             NavigationVM.SongEntities.SaveChanges();
@@ -35,6 +44,8 @@ namespace Music_Player.ViewModels
             // Change UI
             NavigationVM.Instance.ListPlaylist.Add(Playlist);
             Playlist = new Playlist();
+            }
+            catch (Exception) { MessageBox.Show("Vui long nhap ten playlist"); }
         }
     }
 }

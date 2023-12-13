@@ -37,9 +37,7 @@
                 </ResourceDictionary>
 
                 <ResourceDictionary>
-                    <DataTemplate DataType="{x:Type viewmodel:BlankVM}">
-                        <view:Blank/>
-                    </DataTemplate>
+
                     <DataTemplate DataType="{x:Type viewmodel:HomeVM}">
                         <view:Home/>
                     </DataTemplate>

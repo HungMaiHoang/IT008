@@ -17,7 +17,7 @@
     ResizeMode="CanMinimize" 
     Background="{x:Null}" >
     <Window.DataContext>
-        <vm:NavigationVM/>
+        <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
     <DockPanel LastChildFill="True" Background="{StaticResource PrimaryHueDarkBrush}">
         <Grid DockPanel.Dock="Bottom" 
@@ -372,7 +372,8 @@
                             Padding="0 0 0 0"
                             Height="60"
                             VerticalAlignment="Center"
-                            Command="{Binding HomeCommand}">
+                            Command="{Binding HomeCommand}"
+                            >
                         <StackPanel 
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
@@ -464,7 +465,7 @@
                         HorizontalScrollBarVisibility="Auto"
                         VerticalScrollBarVisibility="Auto">
 
-                        <ListBox ItemsSource="{Binding ListPlaylist}">
+                        <ListBox ItemsSource="{Binding ListPlaylist}" SelectedItem="{Binding Selected}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
@@ -520,6 +521,54 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
+                            <ListBox.ContextMenu>
+                                <ContextMenu x:Name="ContextMenuListPlaylist">
+                                    <ContextMenu.Style>
+                                        <Style TargetType="ContextMenu">
+                                            <Setter Property="Height" Value="130"/>
+                                            <Setter Property="Width" Value="230"/>
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ContextMenu">
+                                                        <Border Background="#575757" CornerRadius="4" >
+                                                            <StackPanel>
+                                                                <MenuItem x:Name="AddSongToPlayList" Foreground="White" Margin="5 5 5 0" Height="40" >
+                                                                    <MenuItem.Header>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <materialDesign:PackIcon Kind="Plus" Foreground="White"/>
+                                                                            <TextBlock Text="Add song" FontSize="14" FontWeight="SemiBold" Margin="10 0 0 0"/>
+                                                                        </StackPanel>
+                                                                    </MenuItem.Header>
+                                                                </MenuItem>
+                                                                <MenuItem x:Name="DeletePlaylist" Foreground="White" Margin="5 0 5 0" Height="40"  Command= "{Binding DataContext.DeletePlaylistCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}" 
+                                                                          CommandParameter="{Binding}">
+                                                                    <MenuItem.Header>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <materialDesign:PackIcon Kind="DeleteOutline" Foreground="White"/>
+                                                                            <TextBlock Text="Remove playlist" FontSize="14" FontWeight="SemiBold" Margin="10 0 0 0"/>
+                                                                        </StackPanel>
+                                                                    </MenuItem.Header>
+                                                                </MenuItem>
+                                                                <MenuItem x:Name="btnEditPlaylistName" Foreground="White" Margin="5 0 5 0" Height="40" >
+                                                                    <MenuItem.Header>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <materialDesign:PackIcon Kind="SquareEditOutline" Foreground="White"/>
+                                                                            <TextBlock Text="Edit playlist name" FontSize="14" FontWeight="SemiBold" Margin="10 0 0 0"/>
+                                                                        </StackPanel>
+                                                                    </MenuItem.Header>
+                                                                </MenuItem>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ContextMenu.Style>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                         </ListBox>
 
                     </ScrollViewer>
@@ -705,7 +754,7 @@
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center"/>
                                     </Button>
-                                    <Button 
+                                    <Button Visibility="{Binding ButtonVisibility}"
                                         Command="{Binding ShowAddSongWindowCommand}"
                                         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                                         Name="playlist_btnAdd"
@@ -772,7 +821,7 @@
                     Foreground="White"
                     Kind="Clock"/>
                             </Grid>
-                            <ListView Grid.Row="1" ItemsSource="{Binding CurSongs}">
+                            <ListView Grid.Row="1" ItemsSource="{Binding CurSongs}" SelectedItem="{Binding SelectedSong}">
                                 <ListView.View>
                                     <GridView >
                                         <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
