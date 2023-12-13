@@ -30,7 +30,7 @@ namespace Music_Player.ViewModels
         {
             if(NavigationVM.SongEntities.Playlists.Any(entity => entity.Name == Playlist.Name))
             {
-                MessageBox.Show("Da co playlist ten nay");
+                MessageBox.Show("Đã tồn tại playlist");
                 Playlist = new Playlist();
                 return;
             }    
@@ -45,7 +45,7 @@ namespace Music_Player.ViewModels
             NavigationVM.Instance.ListPlaylist.Add(Playlist);
             Playlist = new Playlist();
             }
-            catch (Exception) { MessageBox.Show("Vui long nhap ten playlist"); }
+            catch (Exception) { MessageBox.Show("Vui lòng nhập tên playlist"); }
         }
     }
 }

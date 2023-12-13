@@ -19,7 +19,9 @@
     <Window.DataContext>
         <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
+    
     <DockPanel LastChildFill="True" Background="{StaticResource PrimaryHueDarkBrush}">
+        <MediaElement Source="{Binding AudioUri}" LoadedBehavior="Manual" />
         <Grid DockPanel.Dock="Bottom" 
               Height="70" 
               Margin="0 0 0 0"
@@ -61,7 +63,7 @@
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
                         </Button>
-                        <Button 
+                        <Button Command="{Binding PlayCommand}" Visibility="{Binding PlayVisibility}"
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Name="btnPlay" 
                             Width="30"
@@ -76,6 +78,22 @@
                                 Height="30" 
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button Command="{Binding PlayCommand}" Visibility="{Binding PauseVisibility}"
+                            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                            Name="btnPause" 
+                            Width="30"
+                            Height="30"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Margin="0 0 10 0" 
+                            ToolTip="Pause Song">
+                            <materialDesign:PackIcon 
+                            Kind="Pause" 
+                            Width="30" 
+                            Height="30" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"/>      
                         </Button>
                         <Button 
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
@@ -109,7 +127,7 @@
                             Foreground="#EEEEEE" 
                             VerticalAlignment="Center"/>
                         <TextBlock 
-                            Text="0:00" 
+                            Text="{Binding SelectedSong.Duration, StringFormat='SelectedSong.Duration: {0:mm\\:ss}'}" 
                             Foreground="#EEEEEE" 
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -126,7 +144,7 @@
                             Height="50"/>
                         <Grid Margin="50 0 0 0">
                             <TextBlock 
-                                Text="Who's Ready for Tommorow" 
+                                Text="{Binding SelectedSong.Title}" 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Foreground="White" 

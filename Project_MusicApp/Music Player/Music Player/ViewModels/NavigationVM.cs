@@ -2,6 +2,7 @@
 using Music_Player.Utilities;
 using Music_Player.Views;
 using Music_Player.Windows;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Music_Player.ViewModels
 {
@@ -121,6 +123,37 @@ namespace Music_Player.ViewModels
             } 
         }
 
+        private Uri _audioUri;
+        public Uri AudioUri
+        {
+            get { return _audioUri; }
+            set
+            {       
+                _audioUri = value;
+                OnPropertyChanged(nameof(AudioUri));
+            }
+        }
+        private Visibility playVisibility;
+        public Visibility PlayVisibility
+        {
+            get { return playVisibility; }
+            set
+            {
+                playVisibility = value;
+                OnPropertyChanged(nameof(PlayVisibility));
+            }
+        }
+        private Visibility pauseVisibility;
+        public Visibility PauseVisibility
+        {
+            get { return pauseVisibility; }
+            set
+            {
+                pauseVisibility = value;
+                OnPropertyChanged(nameof(PauseVisibility));
+            }
+        }
+        private MediaPlayer _MediaPlayer { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand PlaylistCommand { get; set; }
         public ICommand ShowCreatePlaylistWindowCommand { get; set; }
@@ -128,11 +161,13 @@ namespace Music_Player.ViewModels
         public ICommand ShowAddSongWindowCommand { get; set; }
         public ICommand DeleteSongCommand { get; set; }
         public ICommand DeletePlaylistCommand {  get; set; }
+        public ICommand PlayCommand { get; set; }
+        public ICommand PauseCommand { get; set; }
         // Constructor
         public NavigationVM()
         {
             _instance = this;
-
+            _MediaPlayer = new MediaPlayer();
             // Set up command
             ShowCreatePlaylistWindowCommand = new RelayCommand(ShowCreatePlaylistWindow);
             HomeCommand = new RelayCommand(Home);
@@ -141,6 +176,8 @@ namespace Music_Player.ViewModels
             ShowAddSongToPlaylistWindowCommand = new RelayCommand(ShowAddSongToPlaylistWindow);
             DeleteSongCommand = new RelayCommand(DeleteSong, CanDeleteSong);
             DeletePlaylistCommand = new RelayCommand(DeletePlaylist);
+            PlayCommand = new RelayCommand(PlaySong);
+            PauseCommand = new RelayCommand(PauseSong);
             // Set up database
             SongEntities = new MyDatabaseEntities();
 
@@ -148,8 +185,25 @@ namespace Music_Player.ViewModels
             LoadAllPlaylist();
             //LoadAllSong();
             Home();
+            playVisibility = Visibility.Visible;
+            pauseVisibility = Visibility.Collapsed;
         }
 
+        private void PlaySong(object obj)
+        {
+            AudioUri = new Uri(SelectedSong.Path,UriKind.RelativeOrAbsolute);
+            _MediaPlayer.Open(AudioUri);
+            _MediaPlayer.Play();
+            playVisibility = Visibility.Collapsed;
+            pauseVisibility = Visibility.Visible;
+
+        }
+        private void PauseSong(object obj)
+        {
+            _MediaPlayer.Stop();
+            playVisibility = Visibility.Visible;
+            pauseVisibility = Visibility.Collapsed;
+        }
         private void ShowAddSongToPlaylistWindow(object obj)
         {
             AddSongToPlaylistWindow addSongToPlaylistWindow = new AddSongToPlaylistWindow();
