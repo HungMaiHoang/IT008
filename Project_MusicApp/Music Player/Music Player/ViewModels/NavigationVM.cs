@@ -196,6 +196,12 @@ namespace Music_Player.ViewModels
                 }
             }
         }
+        // So luong bai hat trong playlist
+        private int _totalSong;
+        public int TotalSong { get { return _totalSong; } set { _totalSong = value; OnPropertyChanged(nameof(TotalSong)); }}
+        // tong thoi gian cua 1 playlist
+        private long _totalTime;
+        public long TotalTime { get { return _totalTime; } set { _totalTime = value; OnPropertyChanged(nameof(TotalTime)); } }    
         private MediaPlayer _MediaPlayer { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand PlaylistCommand { get; set; }
@@ -259,6 +265,9 @@ namespace Music_Player.ViewModels
         #region Command
         private void Home(object obj = null)
         {
+            TotalSong = SongEntities.Songs.Count();
+            var time = SongEntities.Songs.ToList();
+            TotalTime = (long)time.Sum(c => c.Duration.TotalMinutes);
             IsHome = true;
             ButtonVisibility = Visibility.Visible;
             CurPlaylistName = "All Media";
@@ -273,6 +282,10 @@ namespace Music_Player.ViewModels
             ButtonVisibility = Visibility.Hidden;
             CurPlaylistName = (obj as Models.Playlist).Name;
             CurPlaylist = obj as Models.Playlist;
+            var time = CurPlaylist.Songs.ToList();
+
+           TotalTime = (long)time.Sum(song => song.Duration.TotalMinutes);
+            TotalSong = CurPlaylist.Songs.Count();
             //CurSongs = new ObservableCollection<Song>(SongEntities.Playlists.Where(c=>c.PlaylistID==CurPlaylist.PlaylistID).SelectMany(c => c.Songs).ToList());
             if (CurPlaylist != null && CurPlaylist.PlaylistID > 0)
             {

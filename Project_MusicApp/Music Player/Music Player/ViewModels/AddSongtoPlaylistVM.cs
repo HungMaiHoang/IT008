@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Music_Player.ViewModels
@@ -36,6 +37,11 @@ namespace Music_Player.ViewModels
 
         private void AddSong(object obj)
         {
+            if(Playlist.Songs.Any(entity => entity.Path == SelectedSong.Path))
+            {
+                MessageBox.Show("Đã tồn tại bài hát trong playlist");
+                return;
+            }    
             Playlist.Songs.Add(SelectedSong);
             NavigationVM.SongEntities.SaveChanges();
             NavigationVM.Instance.CurSongs.Add(SelectedSong);

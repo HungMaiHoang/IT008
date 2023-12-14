@@ -707,7 +707,7 @@
                         Margin="5,0,0,0"
                         FontSize="20"
                         FontWeight="ExtraLight"
-                        Text="1"/>
+                        Text="{Binding TotalSong}"/>
                                     <TextBlock Grid.ColumnSpan="3"/>
                                     <TextBlock
                         Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
@@ -734,7 +734,7 @@
                         VerticalAlignment="Center"
                         FontSize="20"
                         FontWeight="ExtraLight"
-                        Text="2"/>
+                        Text="{Binding TotalTime}"/>
                                     <TextBlock
                         Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
                         HorizontalAlignment="Left"
