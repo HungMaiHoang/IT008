@@ -25,6 +25,7 @@ namespace Music_Player
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new NavigationVM();
         }
 
         /// <summary>

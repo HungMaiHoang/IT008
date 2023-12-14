@@ -17,9 +17,11 @@
     ResizeMode="CanMinimize" 
     Background="{x:Null}" >
     <Window.DataContext>
-        <vm:NavigationVM/>
+        <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
+    
     <DockPanel LastChildFill="True" Background="{StaticResource PrimaryHueDarkBrush}">
+        <MediaElement Source="{Binding AudioUri}" LoadedBehavior="Manual" />
         <Grid DockPanel.Dock="Bottom" 
               Height="70" 
               Margin="0 0 0 0"
@@ -27,9 +29,12 @@
               Panel.ZIndex="1">
             <StackPanel Orientation="Vertical">
                 <Slider 
-                    Name="TimeSlider" 
-                    Maximum="1" 
+                    Value="{Binding Path=CurrentTime.TotalSeconds, Mode=OneWay}"
+                    Maximum="{Binding Path=SelectedSong.Duration.TotalSeconds, Mode=OneWay}"
+                    Name="TimeSlider"  
                     Minimum="0" 
+                    TickFrequency="1"
+                    IsSnapToTickEnabled="True"
                     Foreground="#FFD369" 
                     IsMoveToPointEnabled="True" 
                     Margin="0 -10 0 0"/>
@@ -61,22 +66,38 @@
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
                         </Button>
-                        <Button 
-                            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                        <ToggleButton Command="{Binding PlayCommand}" 
+                                      Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
                             Name="btnPlay" 
                             Width="30"
                             Height="30"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="0 0 10 0" 
-                            ToolTip="Play Song">
+                            ToolTip="Play Song" >
                             <materialDesign:PackIcon 
                                 Kind="Play" 
                                 Width="30" 
                                 Height="30" 
                                 VerticalAlignment="Center" 
-                                HorizontalAlignment="Center"/>
-                        </Button>
+                                HorizontalAlignment="Center" />
+                            </ToggleButton>
+                        <!--<Button Command="{Binding PlayCommand}" Visibility="{Binding PauseVisibility}"
+                            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                            Name="btnPause" 
+                            Width="30"
+                            Height="30"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Margin="0 0 10 0" 
+                            ToolTip="Pause Song">
+                            <materialDesign:PackIcon 
+                            Kind="Pause" 
+                            Width="30" 
+                            Height="30" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"/>      
+                        </Button>-->
                         <Button 
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Width="30"
@@ -109,11 +130,11 @@
                             Foreground="#EEEEEE" 
                             VerticalAlignment="Center"/>
                         <TextBlock 
-                            Text="0:00" 
+                            Text="{Binding _Duration, StringFormat='{}{0:mm\\:ss}'}" 
                             Foreground="#EEEEEE" 
                             VerticalAlignment="Center"/>
                     </StackPanel>
-                                        
+
                     <Grid 
                         Grid.Column="1"
                         Margin="0 0 0 0">
@@ -126,7 +147,7 @@
                             Height="50"/>
                         <Grid Margin="50 0 0 0">
                             <TextBlock 
-                                Text="Who's Ready for Tommorow" 
+                                Text="{Binding NameSong}" 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Foreground="White" 
@@ -134,7 +155,7 @@
                                 FontSize="15" 
                                 Margin="10 0 0 0"/>
                             <TextBlock 
-                                Text="RAT BOY, IBDY" 
+                                Text="" 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Foreground="White" 
@@ -143,7 +164,7 @@
                                 FontSize="10" 
                                 Margin="20 0 0 0"/>
                         </Grid>
-                        
+
                     </Grid>
 
                     <StackPanel 
@@ -372,7 +393,8 @@
                             Padding="0 0 0 0"
                             Height="60"
                             VerticalAlignment="Center"
-                            Command="{Binding HomeCommand}">
+                            Command="{Binding HomeCommand}"
+                            >
                         <StackPanel 
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
@@ -449,7 +471,7 @@
                                 Foreground="{StaticResource SecondaryHueLightBrush}"
                                 Height="30"                                
                                 Margin="20 0 0 0"/>
-                        <Button
+                        <Button Command="{Binding ShowCreatePlaylistWindowCommand}"
                             Style="{StaticResource MaterialDesignIconForegroundButton}"
                             HorizontalAlignment="Right"
                             Margin="30 0 0 0">
@@ -458,16 +480,119 @@
                                 Foreground="{StaticResource SecondaryHueLightBrush}"/>
                         </Button>
                     </StackPanel>
-                    <ScrollViewer
+                    <ScrollViewer 
                         Grid.Row="1"
                         Style="{StaticResource MaterialDesignScrollViewer}"
                         HorizontalScrollBarVisibility="Auto"
                         VerticalScrollBarVisibility="Auto">
-                        <StackPanel
-                            Width="200"
-                            Orientation="Vertical">
-                            <views:btnPlaylist Height="60" Margin="0 5 0 0"/>
-                        </StackPanel>
+
+                        <ListBox ItemsSource="{Binding ListPlaylist}" SelectedItem="{Binding Selected}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <materialDesign:Card 
+                                            Background="{DynamicResource PrimaryHueLightBrush}"
+                                            UniformCornerRadius="16">
+                                            <RadioButton
+                                                 Style="{StaticResource MaterialDesignChoiceChipAccentRadioButton}"
+                                                 GroupName="GroupPlaylist"
+                                                 Width="200"
+                                                 Height="60"
+                                                 Margin="0"
+                                                 Command="{Binding DataContext.PlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                 CommandParameter="{Binding}">
+                                                <StackPanel
+                                                    Orientation="Horizontal"
+                                                    Width="180">
+                                                    <Image 
+                                                         Source="/Images/BaseAlbumCover.png"
+                                                         Width="40"
+                                                         Height="40"
+                                                         HorizontalAlignment="Left"
+                                                         Margin="10 0 20 0"/>
+                                                    <StackPanel>
+                                                        <TextBlock 
+                                                             Text="{Binding Name}"
+                                                             FontWeight="Bold"
+                                                             Margin="0 0 0 0"/>
+                                                        <Grid 
+                                                            Margin="0 0 0 0">
+                                                            <TextBlock
+                                                                   Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Center"
+                                                                   Margin="5 5 5 5"
+                                                                   FontSize="10"
+                                                                   FontWeight="Light"
+                                                                   Text="1"/>
+                                                            <TextBlock/>
+                                                            <TextBlock
+                                                                  Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Center"
+                                                                  Margin="15 5 5 5"
+                                                                  FontSize="10"
+                                                                  FontWeight="Light"
+                                                                  Text="songs "/>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </RadioButton>
+                                        </materialDesign:Card>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ContextMenu>
+                                <ContextMenu x:Name="ContextMenuListPlaylist">
+                                    <ContextMenu.Style>
+                                        <Style TargetType="ContextMenu">
+                                            <Setter Property="Height" Value="130"/>
+                                            <Setter Property="Width" Value="230"/>
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ContextMenu">
+                                                        <Border Background="#575757" CornerRadius="4" >
+                                                            <StackPanel>
+                                                                <MenuItem x:Name="AddSongToPlayList" Foreground="White" Margin="5 5 5 0" Height="40" Command= "{Binding DataContext.ShowAddSongToPlaylistWindowCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}" 
+                                                                          CommandParameter="{Binding}">
+                                                                    <MenuItem.Header>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <materialDesign:PackIcon Kind="Plus" Foreground="White"/>
+                                                                            <TextBlock Text="Add song" FontSize="14" FontWeight="SemiBold" Margin="10 0 0 0"/>
+                                                                        </StackPanel>
+                                                                    </MenuItem.Header>
+                                                                </MenuItem>
+                                                                <MenuItem x:Name="DeletePlaylist" Foreground="White" Margin="5 0 5 0" Height="40"  Command= "{Binding DataContext.DeletePlaylistCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}" 
+                                                                          CommandParameter="{Binding}">
+                                                                    <MenuItem.Header>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <materialDesign:PackIcon Kind="DeleteOutline" Foreground="White"/>
+                                                                            <TextBlock Text="Remove playlist" FontSize="14" FontWeight="SemiBold" Margin="10 0 0 0"/>
+                                                                        </StackPanel>
+                                                                    </MenuItem.Header>
+                                                                </MenuItem>
+                                                                <MenuItem x:Name="btnEditPlaylistName" Foreground="White" Margin="5 0 5 0" Height="40" >
+                                                                    <MenuItem.Header>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <materialDesign:PackIcon Kind="SquareEditOutline" Foreground="White"/>
+                                                                            <TextBlock Text="Edit playlist name" FontSize="14" FontWeight="SemiBold" Margin="10 0 0 0"/>
+                                                                        </StackPanel>
+                                                                    </MenuItem.Header>
+                                                                </MenuItem>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ContextMenu.Style>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+
                     </ScrollViewer>
                 </Grid>
             </materialDesign:Card>
@@ -531,9 +656,209 @@
 
         <Grid x:Name="MainTab">
             <Grid>
-                <ContentControl HorizontalAlignment="Stretch" 
-                                Content="{Binding CurrentView}">
-                </ContentControl>
+                <materialDesign:Card
+    UniformCornerRadius="6"
+    Margin="0 0 5 5"
+    Background="{StaticResource PrimaryHueMidBrush}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="2*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image 
+                Grid.Column="0"
+                Stretch="Uniform"
+                Width="180"
+                Height="180"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"    
+                Source="/Images/BaseAlbumCover.png"/>
+                            <Grid 
+                Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock 
+                    Grid.Row="0"
+                    Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                    Margin="10 0 0 0"
+                    FontSize="50"
+                    FontWeight="Bold"
+                    Text="{Binding CurPlaylistName}"/>
+                                <Grid 
+                    Grid.Row="1"
+                    Margin="10 0 0 0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="221*"/>
+                                        <ColumnDefinition Width="24*"/>
+                                        <ColumnDefinition Width="292*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                        Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="5,0,0,0"
+                        FontSize="20"
+                        FontWeight="ExtraLight"
+                        Text="{Binding TotalSong}"/>
+                                    <TextBlock Grid.ColumnSpan="3"/>
+                                    <TextBlock
+                        Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="25,0,0,0"
+                        FontSize="20"
+                        FontWeight="ExtraLight"
+                        Text="songs "/>
+                                    <BulletDecorator 
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="85,31,0,0">
+                                        <BulletDecorator.Bullet>
+                                            <Ellipse 
+                                Height="10" 
+                                Width="10" 
+                                Fill="White"/>
+                                        </BulletDecorator.Bullet>
+                                    </BulletDecorator>
+                                    <TextBlock
+                        Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="ExtraLight"
+                        Text="{Binding TotalTime}"/>
+                                    <TextBlock
+                        Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="125,0,0,0"
+                        FontSize="20"
+                        FontWeight="ExtraLight"
+                        Text="minutes"/>
+                                </Grid>
+                                <Grid
+                    Grid.Row="2"
+                    Margin="10 0 0 0">
+                                    <Button 
+                        Command="{Binding DebugLog}"
+                        Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                        Name="playlist_btnPlay"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="10 0 0 0" 
+                        ToolTip="Play Song">
+                                        <materialDesign:PackIcon 
+                            Kind="Play" 
+                            Width="30" 
+                            Height="30" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"/>
+                                    </Button>
+                                    <Button 
+                        Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                        Name="playlist_btnMix"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="90 0 0 0" 
+                        ToolTip="Play Song">
+                                        <materialDesign:PackIcon 
+                            Kind="ShuffleVariant" 
+                            Width="30" 
+                            Height="30" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"/>
+                                    </Button>
+                                    <Button Visibility="{Binding ButtonVisibility}"
+                                        Command="{Binding ShowAddSongWindowCommand}"
+                                        Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                                        Name="playlist_btnAdd"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Margin="0 0 30 0" 
+                                        ToolTip="Play Song">
+                                        <materialDesign:PackIcon 
+                                            Kind="AddCircle" 
+                                            Width="30" 
+                                            Height="30" 
+                                            VerticalAlignment="Center" 
+                                            HorizontalAlignment="Center"/>
+                                    </Button>
+                                    <Button 
+                                         Command="{Binding DeleteSongCommand}"
+                                         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                                         Name="playlist_btnSub"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         Margin="0 0 150 0" 
+                                         ToolTip="Play Song">
+                                        <materialDesign:PackIcon 
+                                             Kind="Remove" 
+                                             Width="30" 
+                                             Height="30" 
+                                             VerticalAlignment="Center" 
+                                             HorizontalAlignment="Center"/>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="7*"/>
+                            </Grid.RowDefinitions>
+                            <Grid 
+                Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Margin="10 0 10 0"
+                    Foreground="White"
+                    Text="#"/>
+                                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    Margin="10 0 10 0"
+                    Foreground="White"
+                    Text="Title"/>
+                                <materialDesign:PackIcon
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Margin="10 0 20 0"
+                    Foreground="White"
+                    Kind="Clock"/>
+                        </Grid>
+                            <ListView Grid.Row="1" ItemsSource="{Binding CurSongs}" SelectedItem="{Binding SelectedSong}">
+                                <ListView.View>
+                                    <GridView >
+                                        <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
+                                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}">
+                                            <HeaderedContentControl>
+                                                <materialDesign:PackIcon Kind="Clock"/>
+                                            </HeaderedContentControl>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
+                    </Grid>
+                </materialDesign:Card>
             </Grid>
             <Grid Name="AllMusic"
                   Visibility="Hidden">

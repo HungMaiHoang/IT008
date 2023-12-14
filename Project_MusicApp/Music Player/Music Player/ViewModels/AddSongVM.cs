@@ -24,7 +24,6 @@ namespace Music_Player.ViewModels
         public ICommand OpenFilePathCommand { get; set; }
         private Song song = new Song();
 
-//SongEntities songEntities;
         public Song Song { get => song;
             set {
                 song = value; 
@@ -77,12 +76,28 @@ namespace Music_Player.ViewModels
         
         private void AddSong(object obj)
         {
-            AudioFileReader audioFileReader = new AudioFileReader(Song.Path);
-            Song.Duration = audioFileReader.TotalTime.Duration();
-            HomeVM.SongEntities.Songs.Add(Song);
-            HomeVM.SongEntities.SaveChanges();
-            HomeVM.Instance.SongList.Add(Song);
-            Song = new Song();
+            if(Song.Path is null)
+            {
+                MessageBox.Show("Vui lòng nhập đường dẫn");
+                return;
+            }
+            if(NavigationVM.SongEntities.Songs.Any(song => song.Path == Song.Path))
+            {
+                MessageBox.Show("Đã có bài hát trong app");
+                Song = new Song();
+                return;
+            }
+            try
+            {
+                AudioFileReader audioFileReader = new AudioFileReader(Song.Path);
+                Song.Duration = audioFileReader.TotalTime.Duration();
+                NavigationVM.SongEntities.Songs.Add(Song);
+                NavigationVM.SongEntities.SaveChanges();
+                NavigationVM.Instance.AllSong.Add(Song);
+                NavigationVM.Instance.CurSongs.Add(Song);
+                Song = new Song();
+            } catch (Exception ) { MessageBox.Show("Vui lòng nhập các thông tin cần thiết"); }
+            
         }
     }
 }

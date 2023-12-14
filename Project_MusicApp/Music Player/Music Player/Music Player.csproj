@@ -150,14 +150,21 @@
     </Compile>
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="ViewModels\AddPlaylistVM.cs" />
+    <Compile Include="ViewModels\AddSongToPlaylistVM.cs" />
     <Compile Include="ViewModels\AddSongVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NavigationVM.cs" />
     <Compile Include="ViewModels\PlaylistVM.cs" />
     <Compile Include="ViewModels\VideoPlayVM.cs" />
+    <Compile Include="Views\Blank.xaml.cs">
+      <DependentUpon>Blank.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\btnPlaylist.xaml.cs">
       <DependentUpon>btnPlaylist.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\AddSongToPlaylistWindow.xaml.cs">
+      <DependentUpon>AddSongToPlaylistWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\AddSongWindow.xaml.cs">
       <DependentUpon>AddSongWindow.xaml</DependentUpon>
@@ -174,6 +181,14 @@
     <Compile Include="Views\VideoPlay.xaml.cs">
       <DependentUpon>VideoPlay.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Blank.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AddSongToPlaylistWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\AddSongWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -295,6 +310,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.5.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

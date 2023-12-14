@@ -4,9 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5d86f6e62307462a8a24ded12dde0307" Name="Diagram1">
+      <Diagram DiagramId="e894732e802749a88edec720a6c90729" Name="Diagram1">
         <EntityTypeShape EntityType="MyDatabaseModel.Playlist" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyDatabaseModel.Song" Width="1.5" PointX="4.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyDatabaseModel.Song" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <AssociationConnector Association="MyDatabaseModel.PlaylistSongs" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
