@@ -14,9 +14,9 @@
         Height="450" Width="500"
         AllowsTransparency="True"
         Background="{x:Null}">
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:AddSongToPlaylistVM></vm:AddSongToPlaylistVM>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <materialDesign:Card
         UniformCornerRadius="6"
         Background="{StaticResource PrimaryHueDarkBrush}">

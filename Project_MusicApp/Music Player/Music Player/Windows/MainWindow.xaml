@@ -8,6 +8,8 @@
     xmlns:views="clr-namespace:Music_Player.Views"
     xmlns:vm="clr-namespace:Music_Player.ViewModels"
     xmlns:local="clr-namespace:Music_Player"
+    xmlns:ul="clr-namespace:Music_Player.Utilities"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     mc:Ignorable="d"
     Title="MainWindow" 
     Height="700" 
@@ -19,9 +21,11 @@
     <Window.DataContext>
         <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
-    
+    <Window.Resources>
+        <ul:DoubleToTimeConverter x:Key="DoubleToTimeConverter"></ul:DoubleToTimeConverter>
+    </Window.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource PrimaryHueDarkBrush}">
-        <MediaElement Source="{Binding AudioUri}" LoadedBehavior="Manual" />
+      
         <Grid DockPanel.Dock="Bottom" 
               Height="70" 
               Margin="0 0 0 0"
@@ -29,18 +33,31 @@
               Panel.ZIndex="1">
             <StackPanel Orientation="Vertical">
                 <Slider 
-                    Value="{Binding Path=CurrentTime.TotalSeconds, Mode=OneWay}"
-                    Maximum="{Binding Path=SelectedSong.Duration.TotalSeconds, Mode=OneWay}"
+                    Value="{Binding CurrentTime, Mode=TwoWay}"
+                    Maximum="{Binding TotalDuration, Mode=OneWay}"
+                    
                     Name="TimeSlider"  
                     Minimum="0" 
                     TickFrequency="1"
                     IsSnapToTickEnabled="True"
                     Foreground="#FFD369" 
                     IsMoveToPointEnabled="True" 
-                    Margin="0 -10 0 0"/>
+                    Margin="0 -10 0 0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="ValueChanged">
+                            <i:InvokeCommandAction Command="{Binding ValueChangedCommand}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseDown">
+                            <i:InvokeCommandAction Command="{Binding ControlMouseDownCommand}"></i:InvokeCommandAction>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewMouseUp">
+                            <i:InvokeCommandAction Command="{Binding ControlMouseUpCommand}"></i:InvokeCommandAction>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Slider>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="5*"/>
                         <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
@@ -51,8 +68,10 @@
                         HorizontalAlignment="Left"
                         Margin="20 10 10 10">
                         <Button 
+                            Command="{Binding RewindToStartCommand}"
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Name="btnSkipPrevious" 
+                            
                             Width="30"
                             Height="30"
                             VerticalAlignment="Center"
@@ -66,23 +85,38 @@
                                 VerticalAlignment="Center" 
                                 HorizontalAlignment="Center"/>
                         </Button>
-                        <ToggleButton Command="{Binding PlayCommand}" 
-                                      Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
+                        <ToggleButton  Command="{Binding StartPlayCommand}"
+                                       Style="{StaticResource MaterialDesignActionToggleButton}"
+                                       Background="{DynamicResource SecondaryHueDarkBrush}"
+                                       Foreground="{DynamicResource SecondaryHueDarkForegroundBrush}"
+                                       BorderBrush="{DynamicResource SecondaryHueDarkBrush }"
+                                       Height="30"
+                                       IsChecked="{Binding IsPlaying}"
+                                       Width="30"
+                                       Margin="0 0 10 0"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Pause, Size=30}"
+                                       Content="{materialDesign:PackIcon Kind=Play, Size=30}"
+                                       ></ToggleButton>
+                        <!--<Button Command="{Binding StartPlayCommand}"
+                            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Name="btnPlay" 
                             Width="30"
                             Height="30"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="0 0 10 0" 
-                            ToolTip="Play Song" >
+                            ToolTip="Play Song">
                             <materialDesign:PackIcon 
-                                Kind="Play" 
-                                Width="30" 
-                                Height="30" 
-                                VerticalAlignment="Center" 
-                                HorizontalAlignment="Center" />
-                            </ToggleButton>
-                        <!--<Button Command="{Binding PlayCommand}" Visibility="{Binding PauseVisibility}"
+                            Kind="Play" 
+                            Width="30" 
+                            Height="30" 
+                            VerticalAlignment="Center" 
+                            HorizontalAlignment="Center"/>      
+                        </Button>-->
+
+                        <Button Command="{Binding StopPlayCommand}"
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Name="btnPause" 
                             Width="30"
@@ -92,13 +126,14 @@
                             Margin="0 0 10 0" 
                             ToolTip="Pause Song">
                             <materialDesign:PackIcon 
-                            Kind="Pause" 
+                            Kind="Stop" 
                             Width="30" 
                             Height="30" 
                             VerticalAlignment="Center" 
-                            HorizontalAlignment="Center"/>      
-                        </Button>-->
+                            HorizontalAlignment="Center"/>
+                        </Button>
                         <Button 
+                            Command="{Binding ForwardToEndCommand}"
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                             Width="30"
                             Height="30"
@@ -120,9 +155,9 @@
                         Orientation="Horizontal" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
-                        Margin="150 10 10 10">
+                        Margin="210 10 10 10">
                         <TextBlock 
-                            Text="0:00" 
+                            Text="{Binding CurrentTime, Converter={StaticResource DoubleToTimeConverter }}" 
                             Foreground="#EEEEEE" 
                             VerticalAlignment="Center"/>
                         <TextBlock 
@@ -172,14 +207,15 @@
                         FlowDirection="RightToLeft"
                         Grid.Column="2">
                         <Button 
+                            Command="{Binding VideoVisibilityCommand}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
                             Style="{StaticResource MaterialDesignIconForegroundButton}" 
                             Margin="0 0 0 0"
-                            IsEnabled="False"
+                            IsEnabled="True"
                             Name="btnExpand">
                             <materialDesign:PackIcon 
-                                Kind="ArrowExpand" 
+                                Kind="VideoFilm" 
                                 Foreground="#FFD369" 
                                 Width="30" 
                                 Height="30"/>
@@ -208,17 +244,23 @@
                                 Width="30" 
                                 Height="30"/>
                         </Button>
-                        <Slider 
+                        <Slider Value="{Binding Volume}"
+                                Maximum="1"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
                             Name="VolumeSlider"
                             FlowDirection="LeftToRight" 
-                            Maximum="1"
                             Minimum="0" 
                             Foreground="#FFD369" 
                             IsMoveToPointEnabled="True" 
                             Margin="0 0 0 0" 
-                            Width="60" ValueChanged="VolumeSlider_ValueChanged"/>
+                            Width="60" ValueChanged="VolumeSlider_ValueChanged">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="ValueChanged">
+                                    <i:InvokeCommandAction Command="{Binding VolumeControlValueChangedCommand}"></i:InvokeCommandAction>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Slider>
                         <Button 
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
@@ -764,6 +806,7 @@
                                     </Button>
                                     <Button 
                         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                                        Command="{Binding ShuffleCommand}"
                         Name="playlist_btnMix"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
@@ -844,6 +887,11 @@
                     Kind="Clock"/>
                         </Grid>
                             <ListView Grid.Row="1" ItemsSource="{Binding CurSongs}" SelectedItem="{Binding SelectedSong}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                        <i:InvokeCommandAction Command="{Binding StartPlayCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <ListView.View>
                                     <GridView >
                                         <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
@@ -882,6 +930,21 @@
                 <StackPanel Grid.Row="1">
 
                 </StackPanel>
+            </Grid>
+            <Grid Height="400" VerticalAlignment="Bottom" Visibility="{Binding VideoVisibility}">
+                <Grid.Resources>
+                    <Storyboard x:Key="SlideInAnimation">
+                        <DoubleAnimation Storyboard.TargetProperty="Top" From="400" To="0" Duration="0:0:0.5"/>
+                    </Storyboard>
+                </Grid.Resources>
+                <MediaElement x:Name="mediaElement" 
+                              Source="{Binding Path=SongPlaying.Path}"
+                              LoadedBehavior="Play" 
+                              UnloadedBehavior="Stop"
+                              Stretch="Fill" 
+                              Volume="0" 
+                              Position="{Binding VideoPosition}"
+                              />
             </Grid>
         </Grid>
     </DockPanel>
