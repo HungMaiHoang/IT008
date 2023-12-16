@@ -2,12 +2,14 @@
 using Music_Player.Utilities;
 using Music_Player.Views;
 using Music_Player.Windows;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +17,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-
+using System.Windows.Threading;
+using static Music_Player.Utilities.ObservableCollectionExtensions;
 namespace Music_Player.ViewModels
 {
     internal class NavigationVM : ViewModelBase
     {
         private bool isHome;
-        public bool IsHome {  get { return isHome; } set { isHome = value;OnPropertyChanged(nameof(IsHome)); } }
+        public bool IsHome { get { return isHome; } set { isHome = value; OnPropertyChanged(nameof(IsHome)); } }
         private static NavigationVM _instance;
         public static NavigationVM Instance
         {
@@ -41,8 +44,8 @@ namespace Music_Player.ViewModels
             get { return _buttonVisibility; }
             set
             {
-                    _buttonVisibility = value;
-                    OnPropertyChanged(nameof(ButtonVisibility));
+                _buttonVisibility = value;
+                OnPropertyChanged(nameof(ButtonVisibility));
             }
         }
         private string _curPlaylistName;
@@ -54,12 +57,12 @@ namespace Music_Player.ViewModels
         //private Song _song;
         private ObservableCollection<Song> _allSong;
         private ObservableCollection<Song> _curSongs;
-        
+
         // SongEntities
         public static MyDatabaseEntities SongEntities;
 
-        public string CurPlaylistName 
-        { 
+        public string CurPlaylistName
+        {
             get => _curPlaylistName;
             set
             {
@@ -108,51 +111,31 @@ namespace Music_Player.ViewModels
             get => _curSongs;
             set
             {
-                _curSongs= value;
+                _curSongs = value;
                 OnPropertyChanged(nameof(CurSongs));
             }
         }
         private Song selectedSong;
-        public Song SelectedSong 
-        { 
-            get => selectedSong; 
-            set 
-            { 
-                selectedSong = value; 
-                OnPropertyChanged(nameof(SelectedSong)); 
-            } 
+        public Song SelectedSong
+        {
+            get => selectedSong;
+            set
+            {
+                selectedSong = value;
+                OnPropertyChanged(nameof(SelectedSong));
+            }
         }
 
-        private Uri _audioUri;
-        public Uri AudioUri
-        {
-            get { return _audioUri; }
-            set
-            {       
-                _audioUri = value;
-                OnPropertyChanged(nameof(AudioUri));
-            }
-        }
-        private Visibility playVisibility;
-        public Visibility PlayVisibility
-        {
-            get { return playVisibility; }
-            set
-            {
-                playVisibility = value;
-                OnPropertyChanged(nameof(PlayVisibility));
-            }
-        }
-        private Visibility pauseVisibility;
-        public Visibility PauseVisibility
-        {
-            get { return pauseVisibility; }
-            set
-            {
-                pauseVisibility = value;
-                OnPropertyChanged(nameof(PauseVisibility));
-            }
-        }
+        //private Uri _audioUri;
+        //public Uri AudioUri
+        //{
+        //    get { return _audioUri; }
+        //    set
+        //    {       
+        //        _audioUri = value;
+        //        OnPropertyChanged(nameof(AudioUri));
+        //    }
+        //}
         private TimeSpan _duration;
         public TimeSpan _Duration
         {
@@ -164,13 +147,20 @@ namespace Music_Player.ViewModels
             }
         }
         private string _nameSong;
-        public string NameSong { get { return _nameSong; } set {
+        public string NameSong
+        {
+            get { return _nameSong; }
+            set
+            {
                 _nameSong = value;
                 OnPropertyChanged(nameof(NameSong));
             }
         }
-        private TimeSpan _currentTime;
-        public TimeSpan CurrentTime
+
+        // relate to naudio
+
+        private double _currentTime = 0;
+        public double CurrentTime
         {
             get { return _currentTime; }
             set
@@ -179,12 +169,14 @@ namespace Music_Player.ViewModels
                 {
                     _currentTime = value;
                     OnPropertyChanged(nameof(CurrentTime));
+                    // _MediaPlayer.Position = TimeSpan.FromSeconds(CurrentTime);
+                    //audioFile.CurrentTime = TimeSpan.FromSeconds(CurrentTime);
                 }
             }
         }
 
-        private TimeSpan _totalDuration;
-        public TimeSpan TotalDuration
+        private double _totalDuration;
+        public double TotalDuration
         {
             get { return _totalDuration; }
             set
@@ -196,25 +188,64 @@ namespace Music_Player.ViewModels
                 }
             }
         }
-        // So luong bai hat trong playlist
+        //am thanh
+        private double _volume = 1;
+        public double Volume
+        {
+            get { return _volume; }
+            set
+            {
+                if (_volume != value)
+                {
+                    _volume = value;
+                    OnPropertyChanged(nameof(Volume));
+                    // audioFile.Volume = (float)Volume;
+                }
+            }
+        }
+        private Song songPlaying;
+        public Song SongPlaying
+        {
+            get { return songPlaying; }
+            set { songPlaying = value; OnPropertyChanged(nameof(SongPlaying)); }
+        }
+        private AudioPlayer _audioPlayer;
+        // So luong bai hat trong playlist   UI
         private int _totalSong;
-        public int TotalSong { get { return _totalSong; } set { _totalSong = value; OnPropertyChanged(nameof(TotalSong)); }}
-        // tong thoi gian cua 1 playlist
+        public int TotalSong { get { return _totalSong; } set { _totalSong = value; OnPropertyChanged(nameof(TotalSong)); } }
+        // tong thoi gian cua 1 playlist    UI
         private long _totalTime;
-        public long TotalTime { get { return _totalTime; } set { _totalTime = value; OnPropertyChanged(nameof(TotalTime)); } }    
+        public long TotalTime { get { return _totalTime; } set { _totalTime = value; OnPropertyChanged(nameof(TotalTime)); } }
+        private enum PlaybackState
+        {
+            Playing, Stopped, Paused
+        }
+        private PlaybackState _playbackState;
+        private DispatcherTimer _timer;
         private MediaPlayer _MediaPlayer { get; set; }
+        //   private WaveOutEvent waveOut;
+        //    private AudioFileReader audioFile;
         public ICommand HomeCommand { get; set; }
         public ICommand PlaylistCommand { get; set; }
         public ICommand ShowCreatePlaylistWindowCommand { get; set; }
         public ICommand ShowAddSongToPlaylistWindowCommand { get; set; }
         public ICommand ShowAddSongWindowCommand { get; set; }
         public ICommand DeleteSongCommand { get; set; }
-        public ICommand DeletePlaylistCommand {  get; set; }
-        public ICommand PlayCommand { get; set; }
+        public ICommand DeletePlaylistCommand { get; set; }
+        public ICommand StartPlayCommand { get; set; }
         public ICommand PauseCommand { get; set; }
+        public ICommand ValueChangedCommand { get; set; }
+        public ICommand RewindToStartCommand { get; set; }
+        public ICommand ControlMouseDownCommand { get; set; }
+        public ICommand ControlMouseUpCommand { get; set; }
+        public ICommand VolumeControlValueChangedCommand { get; set; }
+        public ICommand ForwardToEndCommand { get; set; }
+        public ICommand ShuffleCommand { get; set; }
+        public ICommand StopPlayCommand { get; set; }
         // Constructor
         public NavigationVM()
         {
+            _playbackState = PlaybackState.Stopped;
             _instance = this;
             _MediaPlayer = new MediaPlayer();
             // Set up command
@@ -225,28 +256,247 @@ namespace Music_Player.ViewModels
             ShowAddSongToPlaylistWindowCommand = new RelayCommand(ShowAddSongToPlaylistWindow);
             DeleteSongCommand = new RelayCommand(DeleteSong, CanDeleteSong);
             DeletePlaylistCommand = new RelayCommand(DeletePlaylist);
-            PlayCommand = new RelayCommand(PlaySong);
+            StartPlayCommand = new RelayCommand(StartPlaySong, CanStartPlaySong);
             PauseCommand = new RelayCommand(PauseSong);
+            ValueChangedCommand = new RelayCommand(ValueChange);
+            RewindToStartCommand = new RelayCommand(RewindToStart, CanRewindToStart);
+            ControlMouseDownCommand = new RelayCommand(ControlMouseDown, CanControlMouseDown);
+            ControlMouseUpCommand = new RelayCommand(ControlMouseUp, CanControlMouseUp);
+            VolumeControlValueChangedCommand = new RelayCommand(VolumeControlValueChanged, CanVolumeControlValueChanged);
+            ForwardToEndCommand = new RelayCommand(ForwardToEnd, CanForwardToEnd);
+            ShuffleCommand = new RelayCommand(Shuffle, CanShuffle);
+            StopPlayCommand = new RelayCommand(StopPlayback, CanStopPlayback);
             // Set up database
             SongEntities = new MyDatabaseEntities();
+            //timer
 
             // Startup
             LoadAllPlaylist();
             //LoadAllSong();
             Home();
+            CurrentTime = 0;
+            _timer = new DispatcherTimer();
+            _timer.Interval=TimeSpan.FromMilliseconds(90);
+            _timer.Tick += Timer_Tick;
+        }
+        // function Naudio
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if(_playbackState == PlaybackState.Playing && _audioPlayer !=null)
+            {
+                CurrentTime = _audioPlayer.GetPositionInSeconds();
+            }
+        }
+        private void VolumeControlValueChanged(object p)
+        {
+            if (_audioPlayer != null)
+            {
+                _audioPlayer.SetVolume((float)Volume); // set value of the slider to current volume
+            }
+        }
+
+        private bool CanVolumeControlValueChanged(object p)
+        {
+            return true;
+        }
+        private void ControlMouseDown(object p)
+        {
+            if (_audioPlayer != null)
+            {
+                _audioPlayer.Pause();
+            }
+        }
+
+        private void ControlMouseUp(object p)
+        {
+            if (_audioPlayer != null)
+            {
+                _audioPlayer.SetPosition(CurrentTime);
+                _audioPlayer.Play(NAudio.Wave.PlaybackState.Paused, Volume);
+            }
+        }
+
+        private bool CanControlMouseDown(object p)
+        {
+            if (_playbackState == PlaybackState.Playing)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CanControlMouseUp(object p)
+        {
+            if (_playbackState == PlaybackState.Paused)
+            {
+                return true;
+            }
+            return false;
+        }
+        private void RewindToStart(object p)
+        {
+            _audioPlayer.SetPosition(0); // set position to zero
+        }
+        private bool CanRewindToStart(object p)
+        {
+            if (_playbackState == PlaybackState.Playing)
+            {
+                return true;
+            }
+            return false;
+        }
+        private void ValueChange(object obj)
+        {
+            //_MediaPlayer.Position = TimeSpan.FromSeconds(CurrentTime);
+        }
+
+        private bool isPlaying;
+        public bool IsPlaying { get { return isPlaying; } 
+            set { isPlaying = value;
+                OnPropertyChanged(nameof(IsPlaying));
+                if (isPlaying)
+                {
+                    _timer.Start();
+                }
+                else
+                {
+                    _timer.Stop();
+                }
+            } }
+        private void StartPlaySong(object obj)
+        {
+            // _MediaPlayer.MediaOpened += (sender, e) => TotalDuration = _MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+            //if (IsPlaying==false)
+            //{
+            //    waveOut.Pause();
+            //    return;
+            //}
+                NameSong = SelectedSong.Title;
+             //  _Duration = SelectedSong.Duration;
+            //    AudioUri = new Uri(SelectedSong.Path, UriKind.RelativeOrAbsolute);
+            //    waveOut = new WaveOutEvent();
+            //    audioFile = new AudioFileReader(AudioUri.ToString());
+            //    waveOut.Init(audioFile);
+
+            //    //  _Duration = SelectedSong.Duration.ToString(@"mm\:ss");
+            //    //    _MediaPlayer.Open(AudioUri);
+            //    //    _MediaPlayer.Play();
+            //    waveOut.Play();
+            //    TotalDuration = audioFile.TotalTime.TotalSeconds;
+            //    DispatcherTimer timer = new DispatcherTimer();
+            //    timer.Interval = TimeSpan.FromMilliseconds(50);
+            //    timer.Tick += (sender, e) =>
+            //    {
+            //        if (audioFile != null)
+            //        {
+            //            CurrentTime = audioFile.CurrentTime.TotalSeconds;
+            //        }
+            //        // Cập nhật CurrentTime dựa trên giá trị thời gian hiện tại của MediaPlayer
+            //        //if (_MediaPlayer.Source != null && _MediaPlayer.NaturalDuration.HasTimeSpan)
+            //        //{
+            //        //    CurrentTime = _MediaPlayer.Position.TotalSeconds;
+            //        //}
+            //    };
+            //    timer.Start();
+           
+            
+
+                if (_playbackState == PlaybackState.Stopped)
+                {
+                    _audioPlayer = new AudioPlayer(SelectedSong.Path, (float)Volume);
+                    _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
+                    _audioPlayer.PlaybackPaused += _audioPlayer_PlaybackPaused;
+                    _audioPlayer.PlaybackResumed += _audioPlayer_PlaybackResumed;
+                    _audioPlayer.PlaybackStopped += _audioPlayer_PlaybackStopped;
+                    _Duration = TimeSpan.FromSeconds(_audioPlayer.GetLenghtInSeconds());
+                    TotalDuration = _audioPlayer.GetLenghtInSeconds();
+                    SongPlaying = SelectedSong;
+                }
+                if (SelectedSong == SongPlaying)
+                {
+                    _audioPlayer.TogglePlayPause(Volume);
+                }
+                _timer.Start();
+            
 
         }
-        public bool IsPlaying = false;
-        private void PlaySong(object obj)
+        private bool CanStartPlaySong(object obj)
         {
-            _Duration = SelectedSong.Duration;
-            NameSong = SelectedSong.Title;
-          //  _Duration = SelectedSong.Duration.ToString(@"mm\:ss");
-            AudioUri = new Uri(SelectedSong.Path,UriKind.RelativeOrAbsolute);
-            _MediaPlayer.Open(AudioUri);
-            _MediaPlayer.Play();
-            IsPlaying = true;
+            if (SelectedSong != null)
+            {
+                return true;
+            }
+            else return false;
+        }
+        private void _audioPlayer_PlaybackStopped()
+        {
+            _playbackState = PlaybackState.Stopped;
+            CommandManager.InvalidateRequerySuggested();
+            CurrentTime = 0;
 
+            if (_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile)
+            {
+                SelectedSong = CurSongs.NextItem(SongPlaying);
+                StartPlaySong(null);
+            }
+        }
+        private void _audioPlayer_PlaybackResumed()
+        {
+            _playbackState = PlaybackState.Playing;
+        }
+
+        private void _audioPlayer_PlaybackPaused()
+        {
+            _playbackState = PlaybackState.Paused;
+        }
+        private void StopPlayback(object p)
+        {
+            if (_audioPlayer != null)
+            {
+                _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedByUser;
+                _audioPlayer.Stop();
+                _timer.Stop();
+            }
+        }
+        private bool CanStopPlayback(object p)
+        {
+            if (_playbackState == PlaybackState.Playing || _playbackState == PlaybackState.Paused)
+            {
+                return true;
+            }
+            return false;
+        }
+        private void ForwardToEnd(object p)
+        {
+            if (_audioPlayer != null)
+            {
+                _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
+                _audioPlayer.SetPosition(_audioPlayer.GetLenghtInSeconds());
+            }
+        }
+        private bool CanForwardToEnd(object p)
+        {
+            if (_playbackState == PlaybackState.Playing)
+            {
+                return true;
+            }
+            return false;
+        }
+        private void Shuffle(object p)
+        {
+            CurSongs = CurSongs.Shuffle();
+        }
+        private bool CanShuffle(object p)
+        {
+            if (_playbackState == PlaybackState.Stopped)
+            {
+                return true;
+            }
+            return false;
+        }
+        private void AudioFile_PositionChanged(object sender, EventArgs e)
+        {
+            //       CurrentTime = audioFile.CurrentTime.TotalSeconds;
         }
         private void PauseSong(object obj)
         {
@@ -260,7 +510,7 @@ namespace Music_Player.ViewModels
         }
 
         private Models.Playlist selected;
-        public Models.Playlist Selected { get => selected; set {  selected = value; OnPropertyChanged(nameof(Selected)); } }
+        public Models.Playlist Selected { get => selected; set { selected = value; OnPropertyChanged(nameof(Selected)); } }
 
         #region Command
         private void Home(object obj = null)
@@ -275,7 +525,7 @@ namespace Music_Player.ViewModels
             CurSongs = new ObservableCollection<Song>(AllSong.ToList());
             OnPropertyChanged(nameof(CurSongs));
         }
-        private void LoadPlaylistToView(object obj) 
+        private void LoadPlaylistToView(object obj)
         {
             Selected = obj as Models.Playlist;
             IsHome = false;
@@ -284,7 +534,7 @@ namespace Music_Player.ViewModels
             CurPlaylist = obj as Models.Playlist;
             var time = CurPlaylist.Songs.ToList();
 
-           TotalTime = (long)time.Sum(song => song.Duration.TotalMinutes);
+            TotalTime = (long)time.Sum(song => song.Duration.TotalMinutes);
             TotalSong = CurPlaylist.Songs.Count();
             //CurSongs = new ObservableCollection<Song>(SongEntities.Playlists.Where(c=>c.PlaylistID==CurPlaylist.PlaylistID).SelectMany(c => c.Songs).ToList());
             if (CurPlaylist != null && CurPlaylist.PlaylistID > 0)
@@ -311,7 +561,11 @@ namespace Music_Player.ViewModels
 
         private bool CanDeleteSong(object arg)
         {
-            return true;
+            if (SelectedSong != null)
+            {
+                return true;
+            }
+            else return false;
         }
         private void DeleteSong(object obj)
         {
@@ -321,7 +575,7 @@ namespace Music_Player.ViewModels
                 SongEntities.SaveChanges();
                 NavigationVM.Instance.AllSong.Remove(SelectedSong);
                 CurSongs = new ObservableCollection<Song>(AllSong.ToList());
-               // OnPropertyChanged(nameof(CurSongs));
+                // OnPropertyChanged(nameof(CurSongs));
             }
             else
             {
@@ -334,7 +588,7 @@ namespace Music_Player.ViewModels
                     CurSongs.Remove(SelectedSong);
                 }
             }
-            
+
         }
         private bool CanShowWindow(object obj)
         {
@@ -358,5 +612,6 @@ namespace Music_Player.ViewModels
             SongEntities.SaveChanges();
             ListPlaylist.Remove(Selected);
         }
+
     }
 }
