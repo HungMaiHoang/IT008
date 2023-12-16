@@ -169,6 +169,7 @@ namespace Music_Player.ViewModels
                 {
                     _currentTime = value;
                     OnPropertyChanged(nameof(CurrentTime));
+                    VideoPosition = value; //TimeSpan.FromSeconds(value);
                     // _MediaPlayer.Position = TimeSpan.FromSeconds(CurrentTime);
                     //audioFile.CurrentTime = TimeSpan.FromSeconds(CurrentTime);
                 }
@@ -223,6 +224,16 @@ namespace Music_Player.ViewModels
         private PlaybackState _playbackState;
         private DispatcherTimer _timer;
         private MediaPlayer _MediaPlayer { get; set; }
+        // visibility video
+        private Visibility _videoVisibility = Visibility.Hidden;
+        public Visibility VideoVisibility { get { return _videoVisibility; } set { _videoVisibility = value; OnPropertyChanged(nameof(VideoVisibility)); } }
+
+        private double _videoPosition;
+        public double VideoPosition
+        {
+            get => _videoPosition;
+            set { _videoPosition = value; OnPropertyChanged(nameof(VideoPosition)); }
+        }
         //   private WaveOutEvent waveOut;
         //    private AudioFileReader audioFile;
         public ICommand HomeCommand { get; set; }
@@ -242,6 +253,7 @@ namespace Music_Player.ViewModels
         public ICommand ForwardToEndCommand { get; set; }
         public ICommand ShuffleCommand { get; set; }
         public ICommand StopPlayCommand { get; set; }
+        public ICommand VideoVisibilityCommand { get; set; }
         // Constructor
         public NavigationVM()
         {
@@ -266,6 +278,7 @@ namespace Music_Player.ViewModels
             ForwardToEndCommand = new RelayCommand(ForwardToEnd, CanForwardToEnd);
             ShuffleCommand = new RelayCommand(Shuffle, CanShuffle);
             StopPlayCommand = new RelayCommand(StopPlayback, CanStopPlayback);
+            VideoVisibilityCommand = new RelayCommand(OnVideoVisibility);
             // Set up database
             SongEntities = new MyDatabaseEntities();
             //timer
@@ -275,16 +288,32 @@ namespace Music_Player.ViewModels
             //LoadAllSong();
             Home();
             CurrentTime = 0;
+            VideoPosition = 0;
             _timer = new DispatcherTimer();
-            _timer.Interval=TimeSpan.FromMilliseconds(90);
+            _timer.Interval = TimeSpan.FromMilliseconds(90);
             _timer.Tick += Timer_Tick;
         }
+        // function video
+        private void OnVideoVisibility(object obj)
+        {
+            if (VideoVisibility == Visibility.Visible)
+            {
+                VideoVisibility = Visibility.Hidden;
+            }
+            else VideoVisibility = Visibility.Visible;
+        }
+        private void OpenVideoWindow(string videoFilePath)
+        {
+
+        }
+
         // function Naudio
         private void Timer_Tick(object sender, EventArgs e)
         {
-            if(_playbackState == PlaybackState.Playing && _audioPlayer !=null)
+            if (_playbackState == PlaybackState.Playing && _audioPlayer != null)
             {
                 CurrentTime = _audioPlayer.GetPositionInSeconds();
+                VideoPosition = _audioPlayer.GetPositionInSeconds();
             }
         }
         private void VolumeControlValueChanged(object p)
@@ -351,18 +380,15 @@ namespace Music_Player.ViewModels
         }
 
         private bool isPlaying;
-        public bool IsPlaying { get { return isPlaying; } 
-            set { isPlaying = value;
+        public bool IsPlaying
+        {
+            get { return isPlaying; }
+            set
+            {
+                isPlaying = value;
                 OnPropertyChanged(nameof(IsPlaying));
-                if (isPlaying)
-                {
-                    _timer.Start();
-                }
-                else
-                {
-                    _timer.Stop();
-                }
-            } }
+            }
+        }
         private void StartPlaySong(object obj)
         {
             // _MediaPlayer.MediaOpened += (sender, e) => TotalDuration = _MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
@@ -371,8 +397,8 @@ namespace Music_Player.ViewModels
             //    waveOut.Pause();
             //    return;
             //}
-                NameSong = SelectedSong.Title;
-             //  _Duration = SelectedSong.Duration;
+            NameSong = SelectedSong.Title;
+            //  _Duration = SelectedSong.Duration;
             //    AudioUri = new Uri(SelectedSong.Path, UriKind.RelativeOrAbsolute);
             //    waveOut = new WaveOutEvent();
             //    audioFile = new AudioFileReader(AudioUri.ToString());
@@ -398,26 +424,32 @@ namespace Music_Player.ViewModels
             //        //}
             //    };
             //    timer.Start();
-           
-            
+            bool flag= false;
 
-                if (_playbackState == PlaybackState.Stopped)
-                {
-                    _audioPlayer = new AudioPlayer(SelectedSong.Path, (float)Volume);
-                    _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
-                    _audioPlayer.PlaybackPaused += _audioPlayer_PlaybackPaused;
-                    _audioPlayer.PlaybackResumed += _audioPlayer_PlaybackResumed;
-                    _audioPlayer.PlaybackStopped += _audioPlayer_PlaybackStopped;
-                    _Duration = TimeSpan.FromSeconds(_audioPlayer.GetLenghtInSeconds());
-                    TotalDuration = _audioPlayer.GetLenghtInSeconds();
-                    SongPlaying = SelectedSong;
-                }
-                if (SelectedSong == SongPlaying)
-                {
-                    _audioPlayer.TogglePlayPause(Volume);
-                }
-                _timer.Start();
-            
+            // OpenVideoWindow(SelectedSong.Path);
+            if (_audioPlayer != null && _playbackState == PlaybackState.Playing && SelectedSong != SongPlaying)
+            {
+                if (StopPlayCommand.CanExecute(null))
+                { StopPlayCommand.Execute(obj); }    
+            }
+            if (_playbackState == PlaybackState.Stopped||flag)
+            {
+                flag = false;
+                _audioPlayer = new AudioPlayer(SelectedSong.Path, (float)Volume);
+                _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
+                _audioPlayer.PlaybackPaused += _audioPlayer_PlaybackPaused;
+                _audioPlayer.PlaybackResumed += _audioPlayer_PlaybackResumed;
+                _audioPlayer.PlaybackStopped += _audioPlayer_PlaybackStopped;
+                _Duration = TimeSpan.FromSeconds(_audioPlayer.GetLenghtInSeconds());
+                TotalDuration = _audioPlayer.GetLenghtInSeconds();
+                SongPlaying = SelectedSong;
+            }
+            if (SelectedSong == SongPlaying)
+            {
+                _audioPlayer.TogglePlayPause(Volume);
+            }
+            _timer.Start();
+
 
         }
         private bool CanStartPlaySong(object obj)
@@ -433,6 +465,7 @@ namespace Music_Player.ViewModels
             _playbackState = PlaybackState.Stopped;
             CommandManager.InvalidateRequerySuggested();
             CurrentTime = 0;
+            IsPlaying = false;
 
             if (_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile)
             {
@@ -443,11 +476,13 @@ namespace Music_Player.ViewModels
         private void _audioPlayer_PlaybackResumed()
         {
             _playbackState = PlaybackState.Playing;
+            IsPlaying = true;
         }
 
         private void _audioPlayer_PlaybackPaused()
         {
             _playbackState = PlaybackState.Paused;
+            isHome = false;
         }
         private void StopPlayback(object p)
         {
@@ -455,6 +490,7 @@ namespace Music_Player.ViewModels
             {
                 _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedByUser;
                 _audioPlayer.Stop();
+                IsPlaying = false;
                 _timer.Stop();
             }
         }
@@ -485,6 +521,7 @@ namespace Music_Player.ViewModels
         private void Shuffle(object p)
         {
             CurSongs = CurSongs.Shuffle();
+
         }
         private bool CanShuffle(object p)
         {
