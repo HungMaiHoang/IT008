@@ -23,6 +23,7 @@ namespace Music_Player.ViewModels
 {
     internal class NavigationVM : ViewModelBase
     {
+
         private bool isHome;
         public bool IsHome { get { return isHome; } set { isHome = value; OnPropertyChanged(nameof(IsHome)); } }
         private static NavigationVM _instance;
@@ -159,6 +160,7 @@ namespace Music_Player.ViewModels
 
         // relate to naudio
 
+
         private double _currentTime = 0;
         public double CurrentTime
         {
@@ -170,8 +172,13 @@ namespace Music_Player.ViewModels
                     _currentTime = value;
                     OnPropertyChanged(nameof(CurrentTime));
                     VideoPosition = value; //TimeSpan.FromSeconds(value);
-                    // _MediaPlayer.Position = TimeSpan.FromSeconds(CurrentTime);
                     //audioFile.CurrentTime = TimeSpan.FromSeconds(CurrentTime);
+                    //var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                    //// Tìm kiếm một thành phần UI bằng tên
+                    //var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                    //myControl.Position = TimeSpan.FromSeconds(value);
+
                 }
             }
         }
@@ -278,7 +285,7 @@ namespace Music_Player.ViewModels
             ForwardToEndCommand = new RelayCommand(ForwardToEnd, CanForwardToEnd);
             ShuffleCommand = new RelayCommand(Shuffle, CanShuffle);
             StopPlayCommand = new RelayCommand(StopPlayback, CanStopPlayback);
-            VideoVisibilityCommand = new RelayCommand(OnVideoVisibility);
+            VideoVisibilityCommand = new RelayCommand(OnVideoVisibility, CanOnVideoVisibility);
             // Set up database
             SongEntities = new MyDatabaseEntities();
             //timer
@@ -290,7 +297,7 @@ namespace Music_Player.ViewModels
             CurrentTime = 0;
             VideoPosition = 0;
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(90);
+            _timer.Interval = TimeSpan.FromMilliseconds(5);
             _timer.Tick += Timer_Tick;
         }
         // function video
@@ -301,6 +308,15 @@ namespace Music_Player.ViewModels
                 VideoVisibility = Visibility.Hidden;
             }
             else VideoVisibility = Visibility.Visible;
+        }
+        private bool CanOnVideoVisibility(object obj)
+        {
+            var format = SongPlaying?.Path.Substring(SongPlaying.Path.Length - 3);
+            if (format == "mp4")
+            {
+                return true;
+            }
+            else return false;
         }
         private void OpenVideoWindow(string videoFilePath)
         {
@@ -333,6 +349,11 @@ namespace Music_Player.ViewModels
             if (_audioPlayer != null)
             {
                 _audioPlayer.Pause();
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                // Tìm kiếm một thành phần UI bằng tên
+                var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                myControl.Pause();
             }
         }
 
@@ -342,6 +363,12 @@ namespace Music_Player.ViewModels
             {
                 _audioPlayer.SetPosition(CurrentTime);
                 _audioPlayer.Play(NAudio.Wave.PlaybackState.Paused, Volume);
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                // Tìm kiếm một thành phần UI bằng tên
+                var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                myControl.Position = TimeSpan.FromSeconds(CurrentTime);
+                myControl.Play();
             }
         }
 
@@ -365,6 +392,11 @@ namespace Music_Player.ViewModels
         private void RewindToStart(object p)
         {
             _audioPlayer.SetPosition(0); // set position to zero
+            var mainWindow = Application.Current.MainWindow as MainWindow;
+
+            // Tìm kiếm một thành phần UI bằng tên
+            var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+            myControl.Position = TimeSpan.FromSeconds(0);
         }
         private bool CanRewindToStart(object p)
         {
@@ -376,7 +408,13 @@ namespace Music_Player.ViewModels
         }
         private void ValueChange(object obj)
         {
-            //_MediaPlayer.Position = TimeSpan.FromSeconds(CurrentTime);
+            ////_MediaPlayer.Position = TimeSpan.FromSeconds(CurrentTime);
+            //var mainWindow = Application.Current.MainWindow as MainWindow;
+
+            //// Tìm kiếm một thành phần UI bằng tên
+            //var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+            //myControl.Position = TimeSpan.FromSeconds(CurrentTime);
+
         }
 
         private bool isPlaying;
@@ -424,15 +462,15 @@ namespace Music_Player.ViewModels
             //        //}
             //    };
             //    timer.Start();
-            bool flag= false;
+            bool flag = false;
 
             // OpenVideoWindow(SelectedSong.Path);
             if (_audioPlayer != null && _playbackState == PlaybackState.Playing && SelectedSong != SongPlaying)
             {
                 if (StopPlayCommand.CanExecute(null))
-                { StopPlayCommand.Execute(obj); }    
+                { StopPlayCommand.Execute(obj); }
             }
-            if (_playbackState == PlaybackState.Stopped||flag)
+            if (_playbackState == PlaybackState.Stopped || flag)
             {
                 flag = false;
                 _audioPlayer = new AudioPlayer(SelectedSong.Path, (float)Volume);
@@ -443,10 +481,20 @@ namespace Music_Player.ViewModels
                 _Duration = TimeSpan.FromSeconds(_audioPlayer.GetLenghtInSeconds());
                 TotalDuration = _audioPlayer.GetLenghtInSeconds();
                 SongPlaying = SelectedSong;
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                // Tìm kiếm một thành phần UI bằng tên
+                var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                myControl.Play();
             }
             if (SelectedSong == SongPlaying)
             {
                 _audioPlayer.TogglePlayPause(Volume);
+                //var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                //// Tìm kiếm một thành phần UI bằng tên
+                //var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                //myControl.Pause();
             }
             _timer.Start();
 
@@ -482,7 +530,8 @@ namespace Music_Player.ViewModels
         private void _audioPlayer_PlaybackPaused()
         {
             _playbackState = PlaybackState.Paused;
-            isHome = false;
+            // isHome = false;
+            IsPlaying = false;
         }
         private void StopPlayback(object p)
         {
@@ -492,6 +541,11 @@ namespace Music_Player.ViewModels
                 _audioPlayer.Stop();
                 IsPlaying = false;
                 _timer.Stop();
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                // Tìm kiếm một thành phần UI bằng tên
+                var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                myControl.Stop();
             }
         }
         private bool CanStopPlayback(object p)
@@ -606,7 +660,7 @@ namespace Music_Player.ViewModels
         }
         private void DeleteSong(object obj)
         {
-            if (/*CurSongs.SequenceEqual(AllSong)*/ isHome)
+            if (/*CurSongs.SequenceEqual(AllSong)*/ IsHome)
             {
                 SongEntities.Songs.Remove(SelectedSong);
                 SongEntities.SaveChanges();
@@ -621,6 +675,7 @@ namespace Music_Player.ViewModels
                 if (PlaylistToRemove != null && SongToRemove != null)
                 {
                     PlaylistToRemove.Songs.Remove(SelectedSong);
+                   // SongEntities.Songs.Remove(SelectedSong);
                     SongEntities.SaveChanges();
                     CurSongs.Remove(SelectedSong);
                 }
@@ -633,9 +688,17 @@ namespace Music_Player.ViewModels
         }
         private void ShowAddSongWindow(object obj)
         {
-            AddSongWindow addSongWindow = new AddSongWindow();
-            addSongWindow.ShowDialog();
+            if (IsHome)
+            {
 
+                AddSongWindow addSongWindow = new AddSongWindow();
+                addSongWindow.ShowDialog();
+            }
+            else
+            {
+                AddSongToPlaylistWindow addSongToPlaylistWindow = new AddSongToPlaylistWindow();
+                addSongToPlaylistWindow.ShowDialog();
+            }
         }
         #endregion
 
@@ -649,6 +712,8 @@ namespace Music_Player.ViewModels
             SongEntities.SaveChanges();
             ListPlaylist.Remove(Selected);
         }
+
+        //full screen
 
     }
 }

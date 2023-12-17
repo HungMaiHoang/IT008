@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Music_Player.Utilities
 {
@@ -92,15 +94,30 @@ namespace Music_Player.Utilities
                 if (_output.PlaybackState == PlaybackState.Playing)
                 {
                     Pause();
+                    var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                    // Tìm kiếm một thành phần UI bằng tên
+                    var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                    myControl.Pause();
                 }
                 else
                 {
                     Play(_output.PlaybackState, currentVolumeLevel);
+                    var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                    // Tìm kiếm một thành phần UI bằng tên
+                    var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                    myControl.Play();
                 }
             }
             else
             {
                 Play(PlaybackState.Stopped, currentVolumeLevel);
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+
+                // Tìm kiếm một thành phần UI bằng tên
+                var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+                myControl.Stop();
             }
         }
 

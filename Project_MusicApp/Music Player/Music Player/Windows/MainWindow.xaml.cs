@@ -24,6 +24,7 @@ namespace Music_Player
     {
         public MainWindow()
         {
+
             InitializeComponent();
             DataContext = new NavigationVM();
         }
@@ -57,11 +58,65 @@ namespace Music_Player
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            //  mediaElement.Position = TimeSpan.FromSeconds(TimeSlider.Value);
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
         }
+
+        private bool isFullScreen = false;
+        private double storedLeft, storedTop, storedWidth, storedHeight;
+
+        // phóng to nhỏ cửa sổ
+        private void ToggleFullScreen(object sender, RoutedEventArgs e)
+        {
+            if (isFullScreen)
+            {
+                // If already in full-screen mode, restore to normal size
+                RestoreWindowSize();
+            }
+            else
+            {
+                // If not in full-screen mode, switch to full-screen
+                GoFullScreen();
+            }
+
+            // Toggle the full-screen state
+            isFullScreen = !isFullScreen;
+        }
+
+        private void GoFullScreen()
+        {
+            // Save the current window state
+            storedLeft = Left;
+            storedTop = Top;
+            storedWidth = Width;
+            storedHeight = Height;
+
+            // Set the window to full-screen
+            WindowState = WindowState.Normal;
+            ResizeMode = ResizeMode.NoResize;
+
+            // Maximize the window to cover the entire screen
+            WindowState = WindowState.Maximized;
+            // Topmost = true;
+        }
+
+        private void RestoreWindowSize()
+        {
+            // Restore the original window size and state
+            WindowState = WindowState.Normal;
+            ResizeMode = ResizeMode.CanResize;
+
+            // Return to the original position and size
+            Left = storedLeft;
+            Top = storedTop;
+            Width = storedWidth;
+            Height = storedHeight;
+            // Topmost = false;
+        }
     }
 }
+
