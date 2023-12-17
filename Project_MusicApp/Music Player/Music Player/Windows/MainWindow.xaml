@@ -17,7 +17,8 @@
     WindowStartupLocation="CenterScreen" 
     WindowStyle="None" 
     ResizeMode="CanMinimize" 
-    Background="{x:Null}" >
+    Background="{x:Null}" 
+    >
     <Window.DataContext>
         <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
@@ -33,6 +34,7 @@
               Panel.ZIndex="1">
             <StackPanel Orientation="Vertical">
                 <Slider 
+                    ValueChanged="VolumeSlider_ValueChanged"
                     Value="{Binding CurrentTime, Mode=TwoWay}"
                     Maximum="{Binding TotalDuration, Mode=OneWay}"
                     
@@ -206,6 +208,7 @@
                         Orientation="Horizontal"
                         FlowDirection="RightToLeft"
                         Grid.Column="2">
+
                         <Button 
                             Command="{Binding VideoVisibilityCommand}"
                             VerticalAlignment="Center"
@@ -220,18 +223,7 @@
                                 Width="30" 
                                 Height="30"/>
                         </Button>
-                        <Button 
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Right"
-                            Style="{StaticResource MaterialDesignIconForegroundButton}" 
-                            Name="btnRepeat" 
-                            Margin="0 0 0 0">
-                            <materialDesign:PackIcon 
-                            Kind="Repeat" 
-                            Foreground="#FFD369" 
-                            Width="30" 
-                            Height="30"/>
-                        </Button>
+                        
                         <Button 
                             Style="{StaticResource MaterialDesignIconForegroundButton}" 
                             VerticalAlignment="Center"
@@ -239,10 +231,22 @@
                             Margin="0 0 0 0"
                             Name="btnShuffle">
                             <materialDesign:PackIcon 
-                                Kind="ShuffleVariant" 
+                                Kind="Fullscreen" 
                                 Foreground="#FFD369" 
                                 Width="30" 
                                 Height="30"/>
+                        </Button>
+                        <Button 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                Name="btnRepeat" 
+                                Margin="0 0 0 0">
+                                <materialDesign:PackIcon 
+                                    Kind="Repeat" 
+                                    Foreground="#FFD369" 
+                                    Width="30" 
+                                    Height="30"/>   
                         </Button>
                         <Slider Value="{Binding Volume}"
                                 Maximum="1"
@@ -641,7 +645,8 @@
         </Grid>
         <Grid x:Name="WindowTab" 
               DockPanel.Dock="Top" 
-              Height="25">
+              Height="25"
+             >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="15*"/>
@@ -672,7 +677,7 @@
                     Height="25"
                     Width="45"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Center" Click="Button_Click_1">
+                    VerticalAlignment="Center" Click="ToggleFullScreen">
                     <materialDesign:PackIcon 
                         Kind="WindowMaximize"                    
                         Width="35"
@@ -760,9 +765,9 @@
                         FontWeight="ExtraLight"
                         Text="songs "/>
                                     <BulletDecorator 
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Left"
-                        Margin="85,31,0,0">
+                        Margin="85,5,0,0">
                                         <BulletDecorator.Bullet>
                                             <Ellipse 
                                 Height="10" 
@@ -772,8 +777,9 @@
                                     </BulletDecorator>
                                     <TextBlock
                         Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
+                                        Margin=" 100 0 0 0"
                         FontSize="20"
                         FontWeight="ExtraLight"
                         Text="{Binding TotalTime}"/>
@@ -819,13 +825,13 @@
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center"/>
                                     </Button>
-                                    <Button Visibility="{Binding ButtonVisibility}"
+                                    <Button Visibility="Visible"
                                         Command="{Binding ShowAddSongWindowCommand}"
                                         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                                         Name="playlist_btnAdd"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
-                                        Margin="0 0 30 0" 
+                                        Margin="0 0 120 0" 
                                         ToolTip="Play Song">
                                         <materialDesign:PackIcon 
                                             Kind="AddCircle" 
@@ -840,7 +846,7 @@
                                          Name="playlist_btnSub"
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Center"
-                                         Margin="0 0 150 0" 
+                                         Margin="0 0 30 0" 
                                          ToolTip="Play Song">
                                         <materialDesign:PackIcon 
                                              Kind="Remove" 
@@ -853,40 +859,11 @@
                             </Grid>
                         </Grid>
                         <Grid Grid.Row="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="7*"/>
-                            </Grid.RowDefinitions>
-                            <Grid 
-                Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="16*"/>
-                                    <ColumnDefinition Width="4*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                    Margin="10 0 10 0"
-                    Foreground="White"
-                    Text="#"/>
-                                <TextBlock
-                    Grid.Column="1"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left"
-                    Margin="10 0 10 0"
-                    Foreground="White"
-                    Text="Title"/>
-                                <materialDesign:PackIcon
-                    Grid.Column="2"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Right"
-                    Margin="10 0 20 0"
-                    Foreground="White"
-                    Kind="Clock"/>
-                        </Grid>
-                            <ListView Grid.Row="1" ItemsSource="{Binding CurSongs}" SelectedItem="{Binding SelectedSong}">
+                            <ListView Grid.Row="1" ItemsSource="{Binding CurSongs}" 
+                                      SelectedItem="{Binding SelectedSong}" 
+                                      HorizontalContentAlignment="Center" 
+                                      VerticalContentAlignment="Center"
+                                      >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
                                         <i:InvokeCommandAction Command="{Binding StartPlayCommand}" />
@@ -894,8 +871,8 @@
                                 </i:Interaction.Triggers>
                                 <ListView.View>
                                     <GridView >
-                                        <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
-                                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
+                                        <!--<GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>-->
+                                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="600"/>
                                         <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}">
                                             <HeaderedContentControl>
                                                 <materialDesign:PackIcon Kind="Clock"/>
@@ -931,7 +908,7 @@
 
                 </StackPanel>
             </Grid>
-            <Grid Height="400" VerticalAlignment="Bottom" Visibility="{Binding VideoVisibility}">
+            <Grid Height="400" VerticalAlignment="Bottom" Visibility="Hidden">
                 <Grid.Resources>
                     <Storyboard x:Key="SlideInAnimation">
                         <DoubleAnimation Storyboard.TargetProperty="Top" From="400" To="0" Duration="0:0:0.5"/>
@@ -939,11 +916,11 @@
                 </Grid.Resources>
                 <MediaElement x:Name="mediaElement" 
                               Source="{Binding Path=SongPlaying.Path}"
-                              LoadedBehavior="Play" 
-                              UnloadedBehavior="Stop"
+                              LoadedBehavior="Manual" 
+                              UnloadedBehavior="Manual"
                               Stretch="Fill" 
                               Volume="0" 
-                              Position="{Binding VideoPosition}"
+                              ScrubbingEnabled="True"
                               />
             </Grid>
         </Grid>
