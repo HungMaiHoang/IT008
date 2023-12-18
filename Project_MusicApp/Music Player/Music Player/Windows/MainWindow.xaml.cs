@@ -68,6 +68,39 @@ namespace Music_Player
 
         private bool isFullScreen = false;
         private double storedLeft, storedTop, storedWidth, storedHeight;
+        private bool isPressed = false;
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left && isPressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void WindowTab_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            isPressed = true;
+        }
+
+        private void WindowTab_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            isPressed = false;
+        }
+
+        private void WindowTab_MouseMove(object sender, MouseEventArgs e)
+        {
+        
+        }
+
+        private void WindowTab_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
 
         // phóng to nhỏ cửa sổ
         private void ToggleFullScreen(object sender, RoutedEventArgs e)
@@ -108,7 +141,7 @@ namespace Music_Player
         {
             // Restore the original window size and state
             WindowState = WindowState.Normal;
-            ResizeMode = ResizeMode.CanResize;
+            ResizeMode = ResizeMode.CanMinimize;
 
             // Return to the original position and size
             Left = storedLeft;

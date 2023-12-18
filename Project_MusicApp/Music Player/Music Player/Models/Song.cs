@@ -20,6 +20,8 @@ namespace Music_Player.Models
         private string title;
         private string path;
         private TimeSpan duration;
+        private int? index;
+        private string format;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Song()
@@ -28,10 +30,12 @@ namespace Music_Player.Models
         }
 
         public int SongID { get => songID; set { songID = value;OnPropertyChanged(nameof(SongID)); } }
-        public string Artist { get => artist; set { artist = value;OnPropertyChanged(nameof(Artist)); } }
-        public string Title { get => title; set { title = value;OnPropertyChanged(nameof(Title)); } }
-        public string Path { get => path; set { path = value;OnPropertyChanged(nameof(Path)); } }
+        public string Artist { get => artist; set { artist = value; OnPropertyChanged(nameof(Artist)); } }
+        public string Title { get => title; set { title = value; OnPropertyChanged(nameof(Title)); } }
+        public string Path { get => path; set { path = value;OnPropertyChanged(nameof(Path)) ; } }
         public System.TimeSpan Duration { get => duration; set { duration = value;OnPropertyChanged(nameof(Duration)); } }
+        public Nullable<int> Index { get => index; set { index = value;OnPropertyChanged(nameof(Index)); } }
+        public string Format { get => format; set { format = value;OnPropertyChanged(nameof(Format)); } }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Playlist> Playlists { get; set; }

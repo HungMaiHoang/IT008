@@ -43,8 +43,13 @@ namespace Music_Player.ViewModels
                 return;
             }    
             Playlist.Songs.Add(SelectedSong);
+        //    NavigationVM.Instance.LoadedCommand.Execute(this);
             NavigationVM.SongEntities.SaveChanges();
+            //load ui
             NavigationVM.Instance.CurSongs.Add(SelectedSong);
+            NavigationVM.Instance.TotalSong = NavigationVM.Instance.CurSongs.Count;
+            var time = NavigationVM.Instance.CurPlaylist.Songs.ToList();
+            NavigationVM.Instance.TotalTime = (long)time.Sum(c => c.Duration.TotalMinutes);
         }
 
         private void ExcuteClose(object obj)
