@@ -18,6 +18,9 @@ Visic
 **Video demo**: [Demo](https://www.youtube.com/)
 
 **Description**: Visic is a versatile and user-friendly media player designed to enhance your multimedia experience. Whether you're listening to music, watching videos, or exploring podcasts, our app offers a seamless and enjoyable playback experience.
+**Get in Touch**:
+Have questions, feedback, or need assistance? Contact our support team or visit our Help Center.
+Thank you for choosing Vitic! We hope you enjoy the ultimate media experience with our app.
 
 **How to use**:
 
