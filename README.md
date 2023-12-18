@@ -23,6 +23,6 @@
 
 **Additional information**: 
 
-**Code of conducting**: Add your code of conducting
+**Code of conducting**: (Code of conducting)
 
 **License**: Add MIT/BSD-2 Clause/... license here
