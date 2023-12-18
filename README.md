@@ -23,6 +23,6 @@
 
 **Additional information**: 
 
-**Code of conducting**: (Code of conducting)
+**Code of conducting**: [Code of conducting](https://github.com/HungMaiHoang/IT008/blob/main/Code%20of%20conducting)
 
 **License**: Add MIT/BSD-2 Clause/... license here
