@@ -21,13 +21,14 @@ Visic
 
 **Get in Touch**:
 Have questions, feedback, or need assistance? Contact our support team or visit our Help Center.
-Thank you for choosing Vitic! We hope you enjoy the ultimate media experience with our app.
 
 **How to use**:
 
 **Additional information**: 
 
 **Code of conducting**: [Code of conducting](https://github.com/HungMaiHoang/IT008/blob/main/Code%20of%20conducting)
+
+Thank you for choosing Vitic! We hope you enjoy the ultimate media experience with our app.
 
 **License**:
 [MIT](LICENSE) © 2023,[appname]
