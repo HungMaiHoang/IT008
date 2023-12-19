@@ -34,12 +34,12 @@ Visic is an application used for making playlists, play music from existing mp3,
   
 ### Our feature:
 - Every media in one playlist (now is only mp3 and mp4!)
-- Play media from mp3, mp4 files
-- Create, rename playlist
+- Display video
 - Back to begin, skip to end, play/pause, stop, shuffle buttons
 - Volume control, seek bar
-- Save and load playlists
 - Automatically switch to the next song in the playlist after the prior song finishes.
+- Create, rename playlist
+- Save and load playlists
 
 
 ### How to use: 
