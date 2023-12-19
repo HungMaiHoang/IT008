@@ -33,13 +33,16 @@ This is video demo [Youtube](https://www.youtube.com/)
 <h3>Description:<h3> 
   
 Visic is a versatile and user-friendly media player designed to enhance your multimedia experience. Whether you're listening to music, watching videos, or exploring podcasts, our app offers a seamless and enjoyable playback experience.
+Visic is an application used for making playlists, play music from existing mp3, mp4 files from user's devices.
   
 <h4>Our feature:<h4>
 - Every media in one playlist:
   - But limit at mp3 and mp4!
 - Create, rename playlist
+- Play media from mp3, mp4 files
 - Loop playlist, repeat one media
 - Volume control
+- Shuffle media
   
 **Get in Touch**:
 Have questions, feedback, or need assistance? Contact our support team or visit our Help Center.
