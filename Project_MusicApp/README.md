@@ -2,7 +2,7 @@
 
 # <p align="center"> Visic </p>
 
-# <p align="center">Play video and music in one application</p>
+## <p align="center">Play video and music in one application</p>
 
 <p align="center">
   <img src="https://www.uit.edu.vn/sites/vi/files/banner_uit.png" alt="Alt text">
