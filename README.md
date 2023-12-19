@@ -53,4 +53,4 @@ Have questions, feedback, or need assistance? Contact our support team or visit 
 Thank you for choosing Visic! We hope you enjoy the ultimate media experience with our app.
 
 **License**:
-[MIT](LICENSE) © 2023,[appname]
+[MIT](LICENSE) © 2023,[Visic]
