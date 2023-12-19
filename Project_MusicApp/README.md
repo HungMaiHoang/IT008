@@ -29,7 +29,6 @@ This is video demo: [Youtube](https://youtu.be/CMG_nB1tKE8)
   
 ### Description:
   
-Visic is a versatile and user-friendly media player designed to enhance your multimedia experience. Whether you're listening to music, watching videos, or exploring podcasts, our app offers a seamless and enjoyable playback experience.
 Visic is an application used for making playlists, play music from existing mp3, mp4 files from user's devices.
   
 ### Our feature:
@@ -47,7 +46,7 @@ Visic is an application used for making playlists, play music from existing mp3,
 - Setup App:
     - [DemoApp.zip](https://github.com/HungMaiHoang/IT008/blob/main/Project_MusicApp/Demo/DemoApp.zip)
     - Download, extract and ready to use
-  
+    - Run app:  
     ![image](https://github.com/HungMaiHoang/IT008/assets/146855679/43544815-4114-4225-aa76-99df3a9d2f5a)
 
 - In app instruction:
@@ -60,7 +59,7 @@ Visic is an application used for making playlists, play music from existing mp3,
 
 **Code of conducting**: [Code of conducting](https://github.com/HungMaiHoang/IT008/blob/main/Code%20of%20conducting)
 
-Thank you for choosing Visic! We hope you enjoy the ultimate media experience with our app.
+Thank you for choosing Visic! We hope you enjoy the app.
 
 **License**:
 [MIT](https://github.com/HungMaiHoang/IT008/blob/main/LICENSE) © 2023,[Visic]
