@@ -18,9 +18,7 @@
     WindowStyle="None" 
     ResizeMode="NoResize" 
     Background="{x:Null}" 
-    MouseLeftButtonDown="Window_MouseLeftButtonDown"
-   
-    >
+    MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.DataContext>
         <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
@@ -294,6 +292,97 @@
             </StackPanel>
         </Grid>
 
+        <Grid x:Name="WindowTab" 
+              DockPanel.Dock="Top" 
+              Height="25" 
+              MouseUp="WindowTab_MouseUp"
+              MouseDown="WindowTab_MouseDown"
+             >
+            <Button Name="btn_menutab_expanded_Menu"        
+                Style="{StaticResource MaterialDesignFlatDarkButton}"
+                ToolTip="MaterialDesignFlatButton"                                    
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                Foreground="{StaticResource SecondaryHueLightBrush}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Width="60"
+                Margin="0 0 0 0"
+                Click="btn_menutab_expanded_Menu_Click"
+                Visibility="Visible">
+                    <materialDesign:PackIcon 
+                        Kind="MoreHoriz" 
+                        Width="35"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+            </Button>
+            <Button Name="btn_menutab_collapsed_Menu"
+                Style="{StaticResource MaterialDesignFlatDarkButton}"
+                ToolTip="MaterialDesignFlatButton"                                    
+                IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                Foreground="{StaticResource SecondaryHueLightBrush}"
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Left" 
+                Width="60"
+                Margin="0 0 0 0"
+                Click="btn_menutab_collapsed_Menu_Click"
+                Visibility="Collapsed">
+                <materialDesign:PackIcon 
+                    Kind="MoreVert" 
+                    Width="35"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"/>
+            </Button>
+            <StackPanel 
+                Grid.Column="3"
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right" Width="134">
+                
+                <Button Click="Button_Click_2"
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    ToolTip="MaterialDesignFlatButton"              
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Height="25"
+                    Width="45"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                    <materialDesign:PackIcon 
+                        Kind="WindowMinimize"                    
+                        Width="45"
+                        Height="25"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+                </Button>
+                <Button
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    ToolTip="MaterialDesignFlatButton"              
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Height="25"
+                    Width="45"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center" Click="ToggleFullScreen">
+                    <materialDesign:PackIcon 
+                        Kind="WindowMaximize"                    
+                        Width="35"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+                </Button>
+                <Button
+                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                    ToolTip="MaterialDesignFlatButton"              
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Height="25"
+                    Width="45"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center" Click="Button_Click">
+                    <materialDesign:PackIcon 
+                        Kind="WindowClose"
+                        Width="35"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        
         <Grid x:Name="MenuTabCollapsed"
               DockPanel.Dock="Left"
               Width="70"
@@ -303,23 +392,6 @@
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="20*"/>
             </Grid.RowDefinitions>
-            <Button Name="btn_menutab_collapsed_Menu"
-                    Style="{StaticResource MaterialDesignFlatDarkButton}"
-                    ToolTip="MaterialDesignFlatButton"                                    
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Foreground="{StaticResource SecondaryHueLightBrush}"
-                    Grid.Column="0"
-                    VerticalAlignment="Center" 
-                    HorizontalAlignment="Left" 
-                    Width="60"
-                    Margin="5 0 5 0"
-                    Click="btn_menutab_collapsed_Menu_Click">
-                <materialDesign:PackIcon 
-                    Kind="MoreVert" 
-                    Width="35"
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center"/>
-            </Button>
             <materialDesign:Card
                 Grid.Row="1"
                 Background="{DynamicResource PrimaryHueMidBrush}"
@@ -408,51 +480,30 @@
         <Grid x:Name="MenuTab"
               ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
               DockPanel.Dock="Left" 
-              Width="240" 
+              Width="250" 
               Visibility="Visible">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="5*"/>
-                <RowDefinition Height="20*"/>
-            </Grid.RowDefinitions>
-            <Button Name="btn_menutab_expanded_Menu"
-                    Grid.Row="0"
-                    Style="{StaticResource MaterialDesignFlatDarkButton}"
-                    ToolTip="MaterialDesignFlatButton"                                    
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Foreground="{StaticResource SecondaryHueLightBrush}"
-                    Grid.Column="0"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Left"
-                    Margin="5 0 5 0"
-                    Click="btn_menutab_expanded_Menu_Click">
-                <materialDesign:PackIcon 
-                    Kind="MoreHoriz" 
-                    Width="35"
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center"/>
-            </Button>
-            <materialDesign:Card x:Name="card_Menu1"
+            <materialDesign:Card
                 Grid.Row="1"
                 Background="{DynamicResource PrimaryHueMidBrush}"
                 Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                Margin="5 0 5 5"
+                Margin="5 0 0 5"
                 Padding="0"
                 UniformCornerRadius="6">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="8*"/>
                     </Grid.RowDefinitions>
                     <Button x:Name="btn_menutab1_expanded_Home"
-                            Grid.Row="0"
-                            Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                            Margin="0 0 0 0"
-                            Padding="0 0 0 0"
-                            Height="60"
-                            VerticalAlignment="Center"
-                            Command="{Binding HomeCommand}"
-                            >
+                        Grid.Row="0"
+                        Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
+                        Margin="0 0 0 0"
+                        Padding="10 0 0 0"
+                        Height="60"
+                        VerticalAlignment="Center"
+                        Command="{Binding HomeCommand}"
+                        >
                         <StackPanel 
                             Orientation="Horizontal"
                             HorizontalAlignment="Center"
@@ -469,77 +520,40 @@
                                 Style="{StaticResource MaterialDesignBody1TextBlock}"
                                 Text="Home"                                
                                 Height="30"                                
-                                Margin="20 0 0 0"/>
+                                Margin="25 0 0 0"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="btn_menutab1_expanded_Seach"
-                            Grid.Row="1"
-                            Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                            Margin="0 0 0 0"
-                            Padding="0 0 0 0"
-                            Height="60"
-                            VerticalAlignment="Center">
-                        <StackPanel 
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Width="{Binding ActualWidth, ElementName=btn_menutab1_expanded_Seach}"
-                            Height="{Binding ActualHeight, ElementName=btn_menutab1_expanded_Seach}">
-                            <materialDesign:PackIcon 
-                                Kind="Search" 
-                                Width="30" 
-                                Height="30"                                 
-                                VerticalAlignment="Center"
-                                Margin="10 0 0 0"/>
-                            <TextBlock 
-                                Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                Text="Search"                                
-                                Height="30"                                
-                                Margin="20 0 0 0"/>
-                        </StackPanel>
-                    </Button>
-                </Grid>
-            </materialDesign:Card>
-            <materialDesign:Card
-                Grid.Row="2"
-                Background="{DynamicResource PrimaryHueMidBrush}"
-                Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-                Margin="5 0 5 5"
-                Padding="0"
-                UniformCornerRadius="6">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="9*"/>
-                    </Grid.RowDefinitions>
                     <StackPanel 
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
+                        Margin="0 0 0 0"
+                        Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Width="245">
                         <materialDesign:PackIcon 
                                 Kind="Menu" 
                                 Width="30" 
                                 Height="30"
                                 VerticalAlignment="Center"
-                                Margin="10 0 0 0"
+                                Margin="15 0 0 0"
                                 Foreground="{StaticResource SecondaryHueLightBrush}"/>
                         <TextBlock 
                                 Style="{StaticResource MaterialDesignBody1TextBlock}"
                                 Text="Your Library"
                                 Foreground="{StaticResource SecondaryHueLightBrush}"
                                 Height="30"                                
-                                Margin="20 0 0 0"/>
+                                Margin="25 0 0 0"/>
                         <Button Command="{Binding ShowCreatePlaylistWindowCommand}"
                             Style="{StaticResource MaterialDesignIconForegroundButton}"
                             HorizontalAlignment="Right"
-                            Margin="30 0 0 0">
+                            Margin="35 0 0 0">
                             <materialDesign:PackIcon
                                 Kind="Plus"
                                 Foreground="{StaticResource SecondaryHueLightBrush}"/>
                         </Button>
                     </StackPanel>
                     <ScrollViewer 
-                        Grid.Row="1"
+                        Grid.Row="2"
                         Style="{StaticResource MaterialDesignScrollViewer}"
                         HorizontalScrollBarVisibility="Auto"
                         VerticalScrollBarVisibility="Auto">
@@ -658,68 +672,12 @@
                 </Grid>
             </materialDesign:Card>
         </Grid>
-        <Grid x:Name="WindowTab" 
-              DockPanel.Dock="Top" 
-              Height="25" 
-              MouseUp="WindowTab_MouseUp"
-              MouseDown="WindowTab_MouseDown"
-             >
-            
-            <StackPanel 
-                Grid.Column="3"
-                Orientation="Horizontal" 
-                HorizontalAlignment="Right" Width="134">
-                <Button Click="Button_Click_2"
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    ToolTip="MaterialDesignFlatButton"              
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Height="25"
-                    Width="45"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center">
-                    <materialDesign:PackIcon 
-                        Kind="WindowMinimize"                    
-                        Width="45"
-                        Height="25"
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
-                </Button>
-                <Button
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    ToolTip="MaterialDesignFlatButton"              
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Height="25"
-                    Width="45"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center" Click="ToggleFullScreen">
-                    <materialDesign:PackIcon 
-                        Kind="WindowMaximize"                    
-                        Width="35"
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
-                </Button>
-                <Button
-                    Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    ToolTip="MaterialDesignFlatButton"              
-                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Height="25"
-                    Width="45"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center" Click="Button_Click">
-                    <materialDesign:PackIcon 
-                        Kind="WindowClose"
-                        Width="35"
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center"/>
-                </Button>
-            </StackPanel>
-        </Grid>
-
+        
         <Grid x:Name="MainTab">
             <Grid>
                 <materialDesign:Card
     UniformCornerRadius="6"
-    Margin="0 0 5 5"
+    Margin="5 0 5 5"
     Background="{StaticResource PrimaryHueMidBrush}">
                     <Grid>
                         <Grid.RowDefinitions>

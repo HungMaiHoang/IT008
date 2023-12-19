@@ -37,7 +37,8 @@ namespace Music_Player
         private void btn_menutab_expanded_Menu_Click(object sender, RoutedEventArgs e)
         {
             MenuTab.Visibility = Visibility.Collapsed;
-            MenuTabCollapsed.Visibility = Visibility.Visible;
+            (sender as Button).Visibility = Visibility.Collapsed;
+            btn_menutab_collapsed_Menu.Visibility = Visibility.Visible;
         }
 
         /// <summary>
@@ -47,8 +48,9 @@ namespace Music_Player
         /// <param name="e"></param>
         private void btn_menutab_collapsed_Menu_Click(object sender, RoutedEventArgs e)
         {
-            MenuTabCollapsed.Visibility = Visibility.Collapsed;
             MenuTab.Visibility = Visibility.Visible;
+            (sender as Button).Visibility = Visibility.Collapsed;
+            btn_menutab_expanded_Menu.Visibility = Visibility.Visible;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
