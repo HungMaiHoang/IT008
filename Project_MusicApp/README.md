@@ -19,7 +19,7 @@
 
 <h3>Supervisors: <h3>
 
-Vũ Tuấn Hải
+KS.Vũ Tuấn Hải
 - Email: haivt@uit.edu.vn. SĐT: 0814822188
 
 - Facebook: [fb.com/vutuanhai237](fb.com/vutuanhai237)
