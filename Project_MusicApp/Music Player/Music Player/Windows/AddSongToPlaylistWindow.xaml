@@ -45,8 +45,8 @@
                 <ListView ItemsSource="{Binding CurSongs}" SelectedItem="{Binding SelectedSong}">
                     <ListView.View>
                         <GridView >
-                            <GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>
-                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
+                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="280"/>
+                            <GridViewColumn Header="Format" DisplayMemberBinding="{Binding Format }" Width="120"/>
                             <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}">
                                 <HeaderedContentControl>
                                     <materialDesign:PackIcon Kind="Clock"/>

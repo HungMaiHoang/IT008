@@ -16,17 +16,20 @@
     Width="1000" 
     WindowStartupLocation="CenterScreen" 
     WindowStyle="None" 
-    ResizeMode="CanMinimize" 
+    ResizeMode="NoResize" 
     Background="{x:Null}" 
+    MouseLeftButtonDown="Window_MouseLeftButtonDown"
+   
     >
     <Window.DataContext>
         <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
     <Window.Resources>
         <ul:DoubleToTimeConverter x:Key="DoubleToTimeConverter"></ul:DoubleToTimeConverter>
+        <ul:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource PrimaryHueDarkBrush}">
-      
+
         <Grid DockPanel.Dock="Bottom" 
               Height="70" 
               Margin="0 0 0 0"
@@ -203,11 +206,12 @@
                         </Grid>
 
                     </Grid>
-
+             
                     <StackPanel 
                         Orientation="Horizontal"
                         FlowDirection="RightToLeft"
-                        Grid.Column="2">
+                        Grid.Column="2"
+                        Margin=" 0 0 20 0">
 
                         <Button 
                             Command="{Binding VideoVisibilityCommand}"
@@ -223,7 +227,7 @@
                                 Width="30" 
                                 Height="30"/>
                         </Button>
-                        
+
                         <Button 
                             Style="{StaticResource MaterialDesignIconForegroundButton}" 
                             VerticalAlignment="Center"
@@ -236,18 +240,22 @@
                                 Width="30" 
                                 Height="30"/>
                         </Button>
-                        <Button 
+                        <ToggleButton 
+                                Height="45"
+                                Width="45"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
-                                Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                                Style="{StaticResource MaterialDesignActionToggleButton}"
+                                Background="{DynamicResource SecondaryHueDarkForegroundBrush}"
+                                Foreground="{DynamicResource SecondaryHueDarkBrush}"
+                                BorderBrush="{DynamicResource SecondaryHueDarkBrush }"
                                 Name="btnRepeat" 
-                                Margin="0 0 0 0">
-                                <materialDesign:PackIcon 
-                                    Kind="Repeat" 
-                                    Foreground="#FFD369" 
-                                    Width="30" 
-                                    Height="30"/>   
-                        </Button>
+                                Margin="0 0 0 0"
+                            materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=RepeatOff, Size=30}"
+                            Content="{materialDesign:PackIcon Kind=Repeat, Size=30}"
+                            IsChecked="{Binding IsRepeat}">
+                           
+                        </ToggleButton>
                         <Slider Value="{Binding Volume}"
                                 Maximum="1"
                             VerticalAlignment="Center"
@@ -265,18 +273,22 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Slider>
-                        <Button 
+                        <ToggleButton Command="{Binding MuteCommand}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
-                            Style="{StaticResource MaterialDesignIconForegroundButton}" 
+                            IsChecked="{Binding IsMute}"
+                            materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=VolumeOff, Size=25}"
+                            Content="{materialDesign:PackIcon Kind=VolumeSource, Size=25}"
+                              Style="{StaticResource MaterialDesignActionToggleButton}"
+                            Background="Transparent"
+                            Foreground="{DynamicResource SecondaryHueDarkBrush}"
+                            BorderBrush="{DynamicResource SecondaryHueDarkBrush }"
                             Name="btnVolume" 
-                            Margin="0 0 0 0">
-                            <materialDesign:PackIcon 
-                                Kind="VolumeSource" 
-                                Foreground="#FFD369" 
-                                Width="20" 
-                                Height="20"/>
-                        </Button>
+                            Margin="0 0 0 0"
+                            Height="45"
+                            Width="45">
+
+                        </ToggleButton>
                     </StackPanel>
                 </Grid>
             </StackPanel>
@@ -538,11 +550,11 @@
                                     <StackPanel>
                                         <materialDesign:Card 
                                             Background="{DynamicResource PrimaryHueLightBrush}"
-                                            UniformCornerRadius="16">
+                                            UniformCornerRadius="10">
                                             <RadioButton
                                                  Style="{StaticResource MaterialDesignChoiceChipAccentRadioButton}"
                                                  GroupName="GroupPlaylist"
-                                                 Width="200"
+                                                 Width="215"
                                                  Height="60"
                                                  Margin="0"
                                                  Command="{Binding DataContext.PlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
@@ -570,7 +582,10 @@
                                                                    Margin="5 5 5 5"
                                                                    FontSize="10"
                                                                    FontWeight="Light"
-                                                                   Text="1"/>
+                                                                   Text="{Binding TotalSong }"
+                                                                >
+
+                                                            </TextBlock>
                                                             <TextBlock/>
                                                             <TextBlock
                                                                   Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
@@ -645,18 +660,16 @@
         </Grid>
         <Grid x:Name="WindowTab" 
               DockPanel.Dock="Top" 
-              Height="25"
+              Height="25" 
+              MouseUp="WindowTab_MouseUp"
+              MouseDown="WindowTab_MouseDown"
              >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="3*"/>
-            </Grid.ColumnDefinitions>
+            
             <StackPanel 
-                Grid.Column="2"
+                Grid.Column="3"
                 Orientation="Horizontal" 
-                HorizontalAlignment="Right">
-                <Button
+                HorizontalAlignment="Right" Width="134">
+                <Button Click="Button_Click_2"
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
                     ToolTip="MaterialDesignFlatButton"              
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
@@ -666,7 +679,8 @@
                     VerticalAlignment="Center">
                     <materialDesign:PackIcon 
                         Kind="WindowMinimize"                    
-                        Width="35"
+                        Width="45"
+                        Height="25"
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
                 </Button>
@@ -796,7 +810,8 @@
                     Grid.Row="2"
                     Margin="10 0 0 0">
                                     <Button 
-                        Command="{Binding DebugLog}"
+                        Command="{Binding StartPlayCommand}"
+                        
                         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
                         Name="playlist_btnPlay"
                         HorizontalAlignment="Left"
@@ -810,21 +825,24 @@
                             VerticalAlignment="Center" 
                             HorizontalAlignment="Center"/>
                                     </Button>
-                                    <Button 
-                        Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
+                                    <ToggleButton 
+                                        materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=ShuffleDisabled, Size=30}"
+                                        Content="{materialDesign:PackIcon Kind=ShuffleVariant, Size=30}"
+                                        Style="{StaticResource MaterialDesignActionToggleButton}" 
                                         Command="{Binding ShuffleCommand}"
-                        Name="playlist_btnMix"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Margin="90 0 0 0" 
-                        ToolTip="Play Song">
-                                        <materialDesign:PackIcon 
-                            Kind="ShuffleVariant" 
-                            Width="30" 
-                            Height="30" 
-                            VerticalAlignment="Center" 
-                            HorizontalAlignment="Center"/>
-                                    </Button>
+                                        Background="{DynamicResource SecondaryHueDarkBrush}"
+                                        Foreground="{DynamicResource SecondaryHueDarkForegroundBrush}"
+                                        BorderBrush="{DynamicResource SecondaryHueDarkBrush }"
+                                        Name="playlist_btnMix"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Margin="90 0 0 0" 
+                                        Width="60"
+                                        Height="60"
+                                        ToolTip="Play Song"
+                                        IsChecked="{Binding IsShuffle}">
+                                        
+                                    </ToggleButton>
                                     <Button Visibility="Visible"
                                         Command="{Binding ShowAddSongWindowCommand}"
                                         Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
@@ -868,11 +886,15 @@
                                     <i:EventTrigger EventName="MouseDoubleClick">
                                         <i:InvokeCommandAction Command="{Binding StartPlayCommand}" />
                                     </i:EventTrigger>
+                                    <i:EventTrigger EventName="Loaded">
+                                        <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+                                    </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <ListView.View>
                                     <GridView >
-                                        <!--<GridViewColumn Header="#"  DisplayMemberBinding="{Binding SongID}" Width="100"/>-->
-                                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="600"/>
+                                        <GridViewColumn Header="#"  DisplayMemberBinding="{Binding Index}" Width="75"/>
+                                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="500"/>
+                                        <GridViewColumn Header="Format"  DisplayMemberBinding="{Binding Format}" Width="75"/>
                                         <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}">
                                             <HeaderedContentControl>
                                                 <materialDesign:PackIcon Kind="Clock"/>
@@ -884,45 +906,26 @@
                         </Grid>
                     </Grid>
                 </materialDesign:Card>
+                <Grid Visibility="{Binding VideoVisibility}">
+                    <Grid.Resources>
+                        <Storyboard x:Key="SlideInAnimation">
+                            <DoubleAnimation Storyboard.TargetProperty="Top" From="400" To="0" Duration="0:0:0.5"/>
+                        </Storyboard>
+                    </Grid.Resources>
+                    <MediaElement
+                x:Name="mediaElement" 
+                  Source="{Binding Path=SongPlaying.Path}"
+                  LoadedBehavior="Manual" 
+                  UnloadedBehavior="Manual"
+                  Stretch="Fill" 
+                  Volume="0" 
+                  ScrubbingEnabled="True"
+                   
+                  />
+                </Grid>
             </Grid>
-            <Grid Name="AllMusic"
-                  Visibility="Hidden">
-                <Grid.Background>
-                    <SolidColorBrush Color="#EEEEEE"/>
-                </Grid.Background>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="9*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock 
-                    Grid.Row="0" 
-                    Text="ALL MUSIC" 
-                    Foreground="Black" 
-                    FontWeight="Bold" 
-                    FontSize="25" 
-                    VerticalAlignment="Center" 
-                    Margin="30 0 0 0"/>
-                <StackPanel Grid.Row="1">
 
-                </StackPanel>
-            </Grid>
-            <Grid Height="400" VerticalAlignment="Bottom" Visibility="Hidden">
-                <Grid.Resources>
-                    <Storyboard x:Key="SlideInAnimation">
-                        <DoubleAnimation Storyboard.TargetProperty="Top" From="400" To="0" Duration="0:0:0.5"/>
-                    </Storyboard>
-                </Grid.Resources>
-                <MediaElement x:Name="mediaElement" 
-                              Source="{Binding Path=SongPlaying.Path}"
-                              LoadedBehavior="Manual" 
-                              UnloadedBehavior="Manual"
-                              Stretch="Fill" 
-                              Volume="0" 
-                              ScrubbingEnabled="True"
-                              />
-            </Grid>
+
         </Grid>
     </DockPanel>
 </Window>

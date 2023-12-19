@@ -4,13 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MyDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MyDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Playlists">
           <Key>
             <PropertyRef Name="PlaylistID" />
           </Key>
           <Property Name="PlaylistID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="225" Nullable="false" />
+          <Property Name="TotalSong" Type="int" />
         </EntityType>
         <EntityType Name="PlaylistSongs">
           <Key>
@@ -29,6 +30,8 @@
           <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Path" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Duration" Type="time" Precision="7" Nullable="false" />
+          <Property Name="Index" Type="int" />
+          <Property Name="Format" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK__PlaylistS__Playl__4BAC3F29">
           <End Role="Playlists" Type="Self.Playlists" Multiplicity="1">
@@ -71,8 +74,7 @@
             <End Role="PlaylistSongs" EntitySet="PlaylistSongs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MyDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -83,6 +85,7 @@
           <Property Name="PlaylistID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Songs" Relationship="Self.PlaylistSongs" FromRole="Playlists" ToRole="Songs" />
+          <Property Name="TotalSong" Type="Int32" />
         </EntityType>
         <EntityType Name="Song">
           <Key>
@@ -93,6 +96,8 @@
           <Property Name="Title" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Path" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Duration" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="Index" Type="Int32" />
+          <Property Name="Format" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Playlists" Relationship="Self.PlaylistSongs" FromRole="Songs" ToRole="Playlists" />
         </EntityType>
         <Association Name="PlaylistSongs">
@@ -116,6 +121,7 @@
           <EntitySetMapping Name="Playlists">
             <EntityTypeMapping TypeName="MyDatabaseModel.Playlist">
               <MappingFragment StoreEntitySet="Playlists">
+                <ScalarProperty Name="TotalSong" ColumnName="TotalSong" />
                 <ScalarProperty Name="PlaylistID" ColumnName="PlaylistID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
@@ -129,6 +135,8 @@
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Path" ColumnName="Path" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Index" ColumnName="Index" />
+                <ScalarProperty Name="Format" ColumnName="Format" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

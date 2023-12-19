@@ -33,6 +33,7 @@ namespace Music_Player.ViewModels
             AddSongCommand = new RelayCommand(AddSong);
             Playlist = new Playlist();
             Playlist = NavigationVM.Instance.Selected;
+            Playlist.TotalSong = NavigationVM.Instance.CurSongs.Count;
         }
 
         private void AddSong(object obj)
@@ -43,8 +44,14 @@ namespace Music_Player.ViewModels
                 return;
             }    
             Playlist.Songs.Add(SelectedSong);
+            Playlist.TotalSong++;
             NavigationVM.SongEntities.SaveChanges();
+            //load ui
             NavigationVM.Instance.CurSongs.Add(SelectedSong);
+            NavigationVM.Instance.TotalSong = NavigationVM.Instance.CurSongs.Count;
+            var time = NavigationVM.Instance.CurPlaylist.Songs.ToList();
+            NavigationVM.Instance.TotalTime = (long)time.Sum(c => c.Duration.TotalMinutes);
+            NavigationVM.Instance.LoadedIndex(null);
         }
 
         private void ExcuteClose(object obj)

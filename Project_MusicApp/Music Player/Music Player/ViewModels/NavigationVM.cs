@@ -39,6 +39,8 @@ namespace Music_Player.ViewModels
             }
         }
 
+        private bool _isMute;
+        public bool IsMute { get { return _isMute; } set { _isMute = value;OnPropertyChanged(nameof(IsMute)); } }
         private Visibility _buttonVisibility;
         public Visibility ButtonVisibility
         {
@@ -113,6 +115,7 @@ namespace Music_Player.ViewModels
             set
             {
                 _curSongs = value;
+                LoadedCommand?.Execute(this);
                 OnPropertyChanged(nameof(CurSongs));
             }
         }
@@ -261,6 +264,8 @@ namespace Music_Player.ViewModels
         public ICommand ShuffleCommand { get; set; }
         public ICommand StopPlayCommand { get; set; }
         public ICommand VideoVisibilityCommand { get; set; }
+        public ICommand LoadedCommand { get; set; }
+        public ICommand MuteCommand { get; set; }
         // Constructor
         public NavigationVM()
         {
@@ -286,6 +291,8 @@ namespace Music_Player.ViewModels
             ShuffleCommand = new RelayCommand(Shuffle, CanShuffle);
             StopPlayCommand = new RelayCommand(StopPlayback, CanStopPlayback);
             VideoVisibilityCommand = new RelayCommand(OnVideoVisibility, CanOnVideoVisibility);
+            LoadedCommand = new RelayCommand(LoadedIndex);
+            MuteCommand = new RelayCommand(Mute);
             // Set up database
             SongEntities = new MyDatabaseEntities();
             //timer
@@ -294,18 +301,46 @@ namespace Music_Player.ViewModels
             LoadAllPlaylist();
             //LoadAllSong();
             Home();
+            Volume = 1;
             CurrentTime = 0;
             VideoPosition = 0;
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(5);
             _timer.Tick += Timer_Tick;
         }
+       
+        private double _storeVolume;
+        public double StoreVolume {  get { return _storeVolume; } set {  _storeVolume = value;OnPropertyChanged(nameof(StoreVolume)); } }
+        private void Mute(object obj)
+        {
+          
+            if (IsMute)
+            {
+                _audioPlayer?.SetVolume(0);
+                StoreVolume = Volume;
+                Volume = 0;
+            }
+            else
+            {
+                _audioPlayer?.SetVolume((float)StoreVolume);
+                Volume = StoreVolume;
+            }
+            
+        }
+        public void LoadedIndex(object obj)
+        {
+            int index = 1;
+            foreach(var item in CurSongs)
+            {
+                item.Index = index++;
+            }
+        }
         // function video
         private void OnVideoVisibility(object obj)
         {
             if (VideoVisibility == Visibility.Visible)
             {
-                VideoVisibility = Visibility.Hidden;
+                VideoVisibility = Visibility.Collapsed;
             }
             else VideoVisibility = Visibility.Visible;
         }
@@ -462,7 +497,6 @@ namespace Music_Player.ViewModels
             //        //}
             //    };
             //    timer.Start();
-            bool flag = false;
 
             // OpenVideoWindow(SelectedSong.Path);
             if (_audioPlayer != null && _playbackState == PlaybackState.Playing && SelectedSong != SongPlaying)
@@ -470,9 +504,8 @@ namespace Music_Player.ViewModels
                 if (StopPlayCommand.CanExecute(null))
                 { StopPlayCommand.Execute(obj); }
             }
-            if (_playbackState == PlaybackState.Stopped || flag)
+            if (_playbackState == PlaybackState.Stopped )
             {
-                flag = false;
                 _audioPlayer = new AudioPlayer(SelectedSong.Path, (float)Volume);
                 _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
                 _audioPlayer.PlaybackPaused += _audioPlayer_PlaybackPaused;
@@ -508,6 +541,9 @@ namespace Music_Player.ViewModels
             }
             else return false;
         }
+
+        private bool isRepeat=false;
+        public bool IsRepeat { get { return isRepeat; } set { isRepeat = value;OnPropertyChanged(); } }
         private void _audioPlayer_PlaybackStopped()
         {
             _playbackState = PlaybackState.Stopped;
@@ -517,7 +553,12 @@ namespace Music_Player.ViewModels
 
             if (_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile)
             {
-                SelectedSong = CurSongs.NextItem(SongPlaying);
+                if (IsRepeat)
+                {
+                    SelectedSong = SongPlaying;
+                    //IsRepeat = false;
+                }
+                else { SelectedSong = CurSongs.NextItem(SongPlaying); }
                 StartPlaySong(null);
             }
         }
@@ -572,9 +613,18 @@ namespace Music_Player.ViewModels
             }
             return false;
         }
+        private ObservableCollection<Song> storeSong;
+        public ObservableCollection<Song> StoreSong { get { return storeSong; } set { storeSong = value;OnPropertyChanged(nameof(StoreSong)); } }
+        private bool isShuffle;
+        public bool IsShuffle {  get { return isShuffle; } set { isShuffle = value;OnPropertyChanged(nameof(IsShuffle)); } }
         private void Shuffle(object p)
         {
-            CurSongs = CurSongs.Shuffle();
+            if (isShuffle)
+            {
+                StoreSong = new ObservableCollection<Song>(CurSongs.ToList());
+                CurSongs = CurSongs.Shuffle();
+            }
+            else CurSongs = StoreSong;
 
         }
         private bool CanShuffle(object p)
@@ -666,6 +716,10 @@ namespace Music_Player.ViewModels
                 SongEntities.SaveChanges();
                 NavigationVM.Instance.AllSong.Remove(SelectedSong);
                 CurSongs = new ObservableCollection<Song>(AllSong.ToList());
+                var time = SongEntities.Songs.ToList();
+                TotalTime = (long)time.Sum(c => c.Duration.TotalMinutes);
+                TotalSong = SongEntities.Songs.Count();
+                
                 // OnPropertyChanged(nameof(CurSongs));
             }
             else
@@ -678,6 +732,13 @@ namespace Music_Player.ViewModels
                    // SongEntities.Songs.Remove(SelectedSong);
                     SongEntities.SaveChanges();
                     CurSongs.Remove(SelectedSong);
+                    
+                    var time = CurPlaylist.Songs.ToList();
+
+                    TotalTime = (long)time.Sum(song => song.Duration.TotalMinutes);
+                    TotalSong = CurPlaylist.Songs.Count();
+                    CurPlaylist.TotalSong = CurPlaylist.Songs.Count();
+                    LoadedIndex(null);
                 }
             }
 
@@ -711,6 +772,7 @@ namespace Music_Player.ViewModels
             SongEntities.Playlists.Remove(Selected);
             SongEntities.SaveChanges();
             ListPlaylist.Remove(Selected);
+            Home();
         }
 
         //full screen

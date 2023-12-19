@@ -154,6 +154,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MyDatabaseDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\BoolToVisibilityConverter.cs" />
     <Compile Include="Utilities\DoubleToTimeConverter.cs" />
     <Compile Include="Utilities\AudioPlayer.cs" />
     <Compile Include="Utilities\ObservableCollectionExtensions.cs" />
