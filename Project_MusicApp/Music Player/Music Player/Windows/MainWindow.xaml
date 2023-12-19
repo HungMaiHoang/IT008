@@ -84,7 +84,7 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="0 0 10 0" 
-                            ToolTip="Previous Song">
+                            ToolTip="Previous">
                             <materialDesign:PackIcon 
                                 Kind="SkipPrevious" 
                                 Width="30" 
@@ -103,25 +103,11 @@
                                        Margin="0 0 10 0"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"
+                                       ToolTip="Play/Pause"
                                        materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=Pause, Size=30}"
                                        Content="{materialDesign:PackIcon Kind=Play, Size=30}"
-                                       ></ToggleButton>
-                        <!--<Button Command="{Binding StartPlayCommand}"
-                            Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
-                            Name="btnPlay" 
-                            Width="30"
-                            Height="30"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Left"
-                            Margin="0 0 10 0" 
-                            ToolTip="Play Song">
-                            <materialDesign:PackIcon 
-                            Kind="Play" 
-                            Width="30" 
-                            Height="30" 
-                            VerticalAlignment="Center" 
-                            HorizontalAlignment="Center"/>      
-                        </Button>-->
+                                       >
+                        </ToggleButton>
 
                         <Button Command="{Binding StopPlayCommand}"
                             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}" 
@@ -131,7 +117,7 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             Margin="0 0 10 0" 
-                            ToolTip="Pause Song">
+                            ToolTip="Stop">
                             <materialDesign:PackIcon 
                             Kind="Stop" 
                             Width="30" 
@@ -148,7 +134,7 @@
                             HorizontalAlignment="Left"
                             Name="btnSkipNext" 
                             Margin="0 0 0 0" 
-                            ToolTip="Next Song">
+                            ToolTip="Next">
                             <materialDesign:PackIcon 
                                 Kind="SkipNext" 
                                 Width="30" 
@@ -312,7 +298,7 @@
             <Button Name="btn_menutab_expanded_Menu"  
                 DockPanel.Dock="Left"
                 Style="{StaticResource MaterialDesignFlatDarkButton}"
-                ToolTip="MaterialDesignFlatButton"                                    
+                ToolTip="Collapse"                                    
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 Foreground="{StaticResource SecondaryHueLightBrush}"
                 VerticalAlignment="Center"
@@ -330,7 +316,7 @@
             
             <Button Name="btn_menutab_collapsed_Menu"
                 Style="{StaticResource MaterialDesignFlatDarkButton}"
-                ToolTip="MaterialDesignFlatButton"                                    
+                ToolTip="Expand"                                    
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                 Foreground="{StaticResource SecondaryHueLightBrush}"
                 VerticalAlignment="Center" 
@@ -353,7 +339,7 @@
                 
                 <Button Click="Button_Click_2"
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    ToolTip="MaterialDesignFlatButton"              
+                    ToolTip="Minimize"              
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Height="25"
                     Width="45"
@@ -368,7 +354,7 @@
                 </Button>
                 <Button
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    ToolTip="MaterialDesignFlatButton"              
+                    ToolTip="Maximize"              
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Height="25"
                     Width="45"
@@ -382,7 +368,7 @@
                 </Button>
                 <Button
                     Style="{StaticResource MaterialDesignFlatSecondaryLightButton}"
-                    ToolTip="MaterialDesignFlatButton"              
+                    ToolTip="Close"              
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Height="25"
                     Width="45"
@@ -805,7 +791,7 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Margin="10 0 0 0" 
-                        ToolTip="Play Song">
+                        ToolTip="Play">
                                         <materialDesign:PackIcon 
                             Kind="Play" 
                             Width="30" 
@@ -827,7 +813,7 @@
                                         Margin="90 0 0 0" 
                                         Width="60"
                                         Height="60"
-                                        ToolTip="Play Song"
+                                        ToolTip="Shuffle"
                                         IsChecked="{Binding IsShuffle}">
                                         
                                     </ToggleButton>
@@ -838,7 +824,7 @@
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Center"
                                         Margin="0 0 120 0" 
-                                        ToolTip="Play Song">
+                                        ToolTip="Add">
                                         <materialDesign:PackIcon 
                                             Kind="AddCircle" 
                                             Width="30" 
@@ -853,7 +839,7 @@
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Center"
                                          Margin="0 0 30 0" 
-                                         ToolTip="Play Song">
+                                         ToolTip="Delete">
                                         <materialDesign:PackIcon 
                                              Kind="Remove" 
                                              Width="30" 
