@@ -51,7 +51,12 @@ Visic is an application used for making playlists, play music from existing mp3,
     ![image](https://github.com/HungMaiHoang/IT008/assets/146855679/43544815-4114-4225-aa76-99df3a9d2f5a)
 
 - In app instruction:
-    - 
+    - Create playlits:
+      
+      ![image](https://github.com/HungMaiHoang/IT008/assets/146855679/6a297b9c-b6ee-43b1-91e9-899c45471ccd)
+      ![image](https://github.com/HungMaiHoang/IT008/assets/146855679/ac982fc7-930d-40dc-b0a6-251f9034bdb4)
+      The name title cannot be null
+
 
 **Code of conducting**: [Code of conducting](https://github.com/HungMaiHoang/IT008/blob/main/Code%20of%20conducting)
 
