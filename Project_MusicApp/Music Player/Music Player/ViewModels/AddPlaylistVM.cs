@@ -34,10 +34,14 @@ namespace Music_Player.ViewModels
                 MessageBox.Show("Đã tồn tại playlist");
                 Playlist = new Playlist();
                 return;
-            }    
-           try
-            {
+            }
 
+            if (Playlist.Name == ""||Playlist.Name is null)
+            {
+                MessageBox.Show("Vui lòng nhập tên playlist");
+                return;
+            }
+            try { 
             // Change Database
             NavigationVM.SongEntities.Playlists.Add(Playlist);
             NavigationVM.SongEntities.SaveChanges();
@@ -45,7 +49,7 @@ namespace Music_Player.ViewModels
             // Change UI
             NavigationVM.Instance.ListPlaylist.Add(Playlist);
             Playlist = new Playlist();
-            } catch (Exception ex) { MessageBox.Show("Vui lòng nhập tên playlist");}
+            } catch (Exception ex ) { MessageBox.Show("Vui lòng nhập tên playlist"); }
         }
     }
 }
