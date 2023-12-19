@@ -444,22 +444,11 @@ namespace Music_Player.ViewModels
             //// Tìm kiếm một thành phần UI bằng tên
             //var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
             //myControl.Position = TimeSpan.FromSeconds(0);
-
-            _playbackState = PlaybackState.Stopped;
-            CommandManager.InvalidateRequerySuggested();
-            CurrentTime = 0;
-            IsPlaying = false;
-
-            if (_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile)
-            {
-                if (IsRepeat)
-                {
-                    SelectedSong = SongPlaying;
-                    //IsRepeat = false; 
-                }
-                else { SelectedSong = CurSongs.PreviousItem(SongPlaying); }
-                StartPlaySong(null);
-            }
+            if (StopPlayCommand.CanExecute(null))
+            { StopPlayCommand.Execute(null); }
+            _audioPlayer.PlaybackStopType = AudioPlayer.PlaybackStopTypes.PlaybackStoppedByUser;
+            _audioPlayer.SetPosition(0);
+            checkprevious = true;
         }
         private bool CanRewindToStart(object p)
         {
@@ -592,8 +581,12 @@ namespace Music_Player.ViewModels
                     //IsRepeat = false;
                 }
                 else { SelectedSong = CurSongs.NextItem(SongPlaying); }
-                StartPlaySong(null);
+            } else if(_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedByUser&& checkprevious)
+            {
+                SelectedSong = CurSongs.PreviousItem(SongPlaying);
+                checkprevious = false;
             }
+                StartPlaySong(null);
         }
         private void _audioPlayer_PlaybackResumed()
         {
@@ -630,6 +623,7 @@ namespace Music_Player.ViewModels
             }
             return false;
         }
+        private bool checkprevious = false;
         private void ForwardToEnd(object p)
         {
             if (_audioPlayer != null)
