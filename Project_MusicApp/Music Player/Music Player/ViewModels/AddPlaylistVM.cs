@@ -49,7 +49,7 @@ namespace Music_Player.ViewModels
             // Change UI
             NavigationVM.Instance.ListPlaylist.Add(Playlist);
             Playlist = new Playlist();
-            } catch (Exception ex ) { MessageBox.Show("Vui lòng nhập tên playlist"); }
+            } catch (Exception ) { MessageBox.Show("Vui lòng nhập tên playlist"); }
         }
     }
 }

@@ -741,9 +741,10 @@ namespace Music_Player.ViewModels
 
         private bool CanDeleteSong(object arg)
         {
-            if (SelectedSong != null)
+            if (SelectedSong != null && _playbackState == PlaybackState.Stopped)
             {
                 return true;
+
             }
             else return false;
         }
