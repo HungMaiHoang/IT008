@@ -587,9 +587,17 @@ namespace Music_Player.ViewModels
                 }
             } else if(_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedByUser&& checkprevious)
             {
-                SelectedSong = CurSongs.PreviousItem(SongPlaying);
-                checkprevious = false;
+                if (IsRepeat)
+                {
+                    SelectedSong = SongPlaying;
+                    //IsRepeat = false;
                     StartPlaySong(null);
+                }
+                else { 
+                    SelectedSong = CurSongs.PreviousItem(SongPlaying);
+                    checkprevious = false;
+                    StartPlaySong(null);
+                }
             }
         }
         private void _audioPlayer_PlaybackResumed()
