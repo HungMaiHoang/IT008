@@ -13,10 +13,11 @@ namespace Music_Player.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Playlist : ViewModelBase
+    public partial class Playlist :ViewModelBase
     {
         private int playlistID;
         private string name;
+        private int? totalSong;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Playlist()
@@ -26,6 +27,7 @@ namespace Music_Player.Models
 
         public int PlaylistID { get => playlistID; set { playlistID = value;OnPropertyChanged(nameof(PlaylistID)); } }
         public string Name { get => name; set { name = value;OnPropertyChanged(nameof(Name)); } }
+        public Nullable<int> TotalSong { get => totalSong; set { totalSong = value;OnPropertyChanged(nameof(TotalSong)); } }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Song> Songs { get; set; }

@@ -550,11 +550,11 @@
                                     <StackPanel>
                                         <materialDesign:Card 
                                             Background="{DynamicResource PrimaryHueLightBrush}"
-                                            UniformCornerRadius="16">
+                                            UniformCornerRadius="10">
                                             <RadioButton
                                                  Style="{StaticResource MaterialDesignChoiceChipAccentRadioButton}"
                                                  GroupName="GroupPlaylist"
-                                                 Width="200"
+                                                 Width="215"
                                                  Height="60"
                                                  Margin="0"
                                                  Command="{Binding DataContext.PlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
@@ -582,7 +582,7 @@
                                                                    Margin="5 5 5 5"
                                                                    FontSize="10"
                                                                    FontWeight="Light"
-                                                                   Text="{Binding DataContext.TotalSong, RelativeSource={RelativeSource AncestorType={x:Type ListBox}} }"
+                                                                   Text="{Binding TotalSong }"
                                                                 >
 
                                                             </TextBlock>
@@ -906,7 +906,7 @@
                         </Grid>
                     </Grid>
                 </materialDesign:Card>
-                <Grid Visibility="Hidden">
+                <Grid Visibility="{Binding VideoVisibility}">
                     <Grid.Resources>
                         <Storyboard x:Key="SlideInAnimation">
                             <DoubleAnimation Storyboard.TargetProperty="Top" From="400" To="0" Duration="0:0:0.5"/>

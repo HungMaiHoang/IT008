@@ -105,10 +105,8 @@ namespace Music_Player.ViewModels
                 NavigationVM.Instance.TotalSong = NavigationVM.Instance.CurSongs.Count;
                 var time = NavigationVM.SongEntities.Songs.ToList();
                 NavigationVM.Instance.TotalTime = (long)time.Sum(c => c.Duration.TotalMinutes);
-
-
-
                 Song = new Song();
+                NavigationVM.Instance.LoadedIndex(null);
             } catch (Exception ) { MessageBox.Show("Vui lòng nhập các thông tin cần thiết"); }
             
         }

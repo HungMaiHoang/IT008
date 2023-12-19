@@ -24,6 +24,7 @@ namespace Music_Player.ViewModels
         public AddPlaylistVM()
         {
             AddPlaylistCommand = new RelayCommand(AddPlaylist);
+            Playlist.TotalSong = 0;
         }
 
         private void AddPlaylist(object obj)

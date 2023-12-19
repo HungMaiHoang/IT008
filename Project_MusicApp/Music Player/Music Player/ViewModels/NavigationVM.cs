@@ -115,8 +115,8 @@ namespace Music_Player.ViewModels
             set
             {
                 _curSongs = value;
-                OnPropertyChanged(nameof(CurSongs));
                 LoadedCommand?.Execute(this);
+                OnPropertyChanged(nameof(CurSongs));
             }
         }
         private Song selectedSong;
@@ -327,7 +327,7 @@ namespace Music_Player.ViewModels
             }
             
         }
-        private void LoadedIndex(object obj)
+        public void LoadedIndex(object obj)
         {
             int index = 1;
             foreach(var item in CurSongs)
@@ -719,6 +719,7 @@ namespace Music_Player.ViewModels
                 var time = SongEntities.Songs.ToList();
                 TotalTime = (long)time.Sum(c => c.Duration.TotalMinutes);
                 TotalSong = SongEntities.Songs.Count();
+                
                 // OnPropertyChanged(nameof(CurSongs));
             }
             else
@@ -731,10 +732,13 @@ namespace Music_Player.ViewModels
                    // SongEntities.Songs.Remove(SelectedSong);
                     SongEntities.SaveChanges();
                     CurSongs.Remove(SelectedSong);
+                    
                     var time = CurPlaylist.Songs.ToList();
 
                     TotalTime = (long)time.Sum(song => song.Duration.TotalMinutes);
                     TotalSong = CurPlaylist.Songs.Count();
+                    CurPlaylist.TotalSong = CurPlaylist.Songs.Count();
+                    LoadedIndex(null);
                 }
             }
 
@@ -768,6 +772,7 @@ namespace Music_Player.ViewModels
             SongEntities.Playlists.Remove(Selected);
             SongEntities.SaveChanges();
             ListPlaylist.Remove(Selected);
+            Home();
         }
 
         //full screen
