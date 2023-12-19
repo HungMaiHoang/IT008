@@ -10,6 +10,7 @@
     xmlns:local="clr-namespace:Music_Player"
     xmlns:ul="clr-namespace:Music_Player.Utilities"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     mc:Ignorable="d"
     Title="MainWindow" 
     Height="700" 
@@ -552,25 +553,40 @@
                                 Foreground="{StaticResource SecondaryHueLightBrush}"/>
                         </Button>
                     </StackPanel>
-                    <ScrollViewer 
-                        Grid.Row="2"
-                        Style="{StaticResource MaterialDesignScrollViewer}"
-                        HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Auto">
+                   
 
-                        <ListBox ItemsSource="{Binding ListPlaylist}" SelectedItem="{Binding Selected}">
+                        <ListBox 
+                            Grid.Row="2"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                            ItemsSource="{Binding ListPlaylist}" 
+                            SelectedItem="{Binding Selected}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Style.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="16"/>
+                                            <Setter Property="Margin" Value="10 10 10 0"/>
+                                            <Setter Property="Padding" Value="0 0 0 0"/>
+                                        </Style>
+                                    </Style.Resources>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel>
                                         <materialDesign:Card 
+                                            Margin="-2.5 0 -2.5 0"
+                                            Padding="0 0 0 0"
                                             Background="{DynamicResource PrimaryHueLightBrush}"
-                                            UniformCornerRadius="10">
+                                            UniformCornerRadius="16">
                                             <RadioButton
                                                  Style="{StaticResource MaterialDesignChoiceChipAccentRadioButton}"
                                                  GroupName="GroupPlaylist"
-                                                 Width="215"
-                                                 Height="60"
-                                                 Margin="0"
+                                                 Width="220"
+                                                 Height="65"
+                                                 Margin="0 0 0 0"
+                                                 Padding="0 0 0 0"
                                                  Command="{Binding DataContext.PlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                                                  CommandParameter="{Binding}">
                                                 <StackPanel
@@ -668,7 +684,7 @@
                             </ListBox.ContextMenu>
                         </ListBox>
 
-                    </ScrollViewer>
+                    
                 </Grid>
             </materialDesign:Card>
         </Grid>

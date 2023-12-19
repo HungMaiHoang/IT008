@@ -9,58 +9,115 @@
              xmlns:vm="clr-namespace:Music_Player.ViewModels"
              mc:Ignorable="d" 
              Name="playlistitem"
-             d:DesignHeight="60" d:DesignWidth="200"
+             d:DesignHeight="60" d:DesignWidth="215"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf">
+    <UserControl.Resources>
+        <Style x:Key="MaterialDesignChoiceChipRadioButton" TargetType="{x:Type RadioButton}">
+            <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="Background" Value="{DynamicResource MaterialDesignBody}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="MinWidth" Value="46"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid ClipToBounds="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="{DynamicResource MaterialDesignChipBackground}" CornerRadius="16" Grid.ColumnSpan="2"/>
+                            <Border x:Name="MouseOverBorder" Background="{TemplateBinding Foreground, Converter={StaticResource BrushRoundConverter}}" CornerRadius="16" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0"/>
+                            <Border x:Name="SelectedBackgroundBorder" Background="{TemplateBinding Background}" CornerRadius="16" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0"/>
+                            <ContentControl x:Name="Content" ContentStringFormat="{TemplateBinding ContentTemplateSelector}" ContentTemplate="{TemplateBinding ContentTemplate}" Grid.Column="1" Content="{TemplateBinding Content}" ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}" HorizontalAlignment="Center" IsTabStop="False" Margin="10 0 10 0" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value=".56"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource MaterialDesignDivider}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RadioButtonStyle1" BasedOn="{StaticResource MaterialDesignChoiceChipRadioButton}" TargetType="{x:Type RadioButton}">
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryHueDarkBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryHueLightBrush}"/>
+            <Setter Property="wpf:ThemeAssist.Theme" Value="{DynamicResource MaterialDesign.Brush.Background}" />
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding (wpf:ThemeAssist.Theme), Converter={StaticResource IsDarkConverter}, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
+                        <Condition Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{DynamicResource SecondaryHueLightBrush}"/>
+                    <Setter Property="Background" Value="{DynamicResource SecondaryHueDarkBrush}"/>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <!--<UserControl.DataContext>
         <vm:NavigationVM/>
     </UserControl.DataContext> -->
     <materialDesign:Card 
-        Background="{DynamicResource PrimaryHueLightBrush}"
-        UniformCornerRadius="16">
+    Background="{DynamicResource PrimaryHueLightBrush}"
+    UniformCornerRadius="10">
         <RadioButton
-            Style="{StaticResource MaterialDesignChoiceChipAccentRadioButton}"
-            GroupName="GroupPlaylist"
-            Width="200"
-            Height="60"
-            Margin="0"
-            >
+         Style="{StaticResource RadioButtonStyle1}"
+         GroupName="GroupPlaylist"
+         Width="215"
+         Height="60"
+         Margin="0"
+         Command="{Binding DataContext.PlaylistCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+         CommandParameter="{Binding}">
             <StackPanel
-                Orientation="Horizontal"
-                Width="180">
+            Orientation="Horizontal"
+            Width="180">
                 <Image 
-                    Source="/Images/BaseAlbumCover.png"
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Left"
-                    Margin="10 0 20 0"/>
+                 Source="/Images/BaseAlbumCover.png"
+                 Width="40"
+                 Height="40"
+                 HorizontalAlignment="Left"
+                 Margin="10 0 20 0"/>
                 <StackPanel>
                     <TextBlock 
-                        Text="{Binding playlistTi}"
-                        FontWeight="Bold"
-                        Margin="0 0 0 0"/>
+                     Text="{Binding Name}"
+                     FontWeight="Bold"
+                     Margin="0 0 0 0"/>
                     <Grid 
-                        Margin="0 0 0 0">
+                    Margin="0 0 0 0">
                         <TextBlock
-                            Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Margin="5 5 5 5"
-                            FontSize="10"
-                            FontWeight="Light"
-                            Text="1"/>
+                           Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="5 5 5 5"
+                           FontSize="10"
+                           FontWeight="Light"
+                           Text="{Binding TotalSong }"
+                        >
+
+                        </TextBlock>
                         <TextBlock/>
                         <TextBlock
-                            Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Margin="15 5 5 5"
-                            FontSize="10"
-                            FontWeight="Light"
-                            Text="songs "/>
+                          Foreground="{StaticResource PrimaryHueMidForegroundBrush}"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Margin="15 5 5 5"
+                          FontSize="10"
+                          FontWeight="Light"
+                          Text="songs "/>
                     </Grid>
                 </StackPanel>
             </StackPanel>
-            
         </RadioButton>
     </materialDesign:Card>
 </UserControl>
