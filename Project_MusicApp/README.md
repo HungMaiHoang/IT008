@@ -25,7 +25,7 @@ KS.Vũ Tuấn Hải
 
 ### Video demo:
   
-This is video demo [Youtube](https://youtu.be/CMG_nB1tKE8)
+This is video demo: [Youtube](https://youtu.be/CMG_nB1tKE8)
   
 ### Description:
   
@@ -43,8 +43,8 @@ Visic is an application used for making playlists, play music from existing mp3,
 
 ### How to use: 
 
-[DemoApp.zip](https://github.com/HungMaiHoang/IT008/Project_MusicApp/Demo/DemoApp.zip)
-
+[DemoApp.zip](https://github.com/HungMaiHoang/IT008/Project_MusicApp/Demo)
+Please 
 
 **Additional information**: 
 
