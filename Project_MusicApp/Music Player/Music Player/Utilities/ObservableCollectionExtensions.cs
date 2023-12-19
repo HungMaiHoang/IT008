@@ -19,6 +19,15 @@ namespace Music_Player.Utilities
             }
             return collection.FirstOrDefault();
         }
+        public static T PreviousItem<T>(this ObservableCollection<T> collection, T currentItem)
+        {
+            var currentIndex = collection.IndexOf(currentItem);
+            if (currentIndex > 0)
+            {
+                return collection[currentIndex- 1];
+            }
+            return collection.Last();
+        }
         public static ObservableCollection<T> Shuffle<T>(this ObservableCollection<T> input)
         {
             var provider = new RNGCryptoServiceProvider();

@@ -20,13 +20,15 @@
     WindowStyle="None" 
     ResizeMode="NoResize" 
     Background="{x:Null}" 
-    MouseLeftButtonDown="Window_MouseLeftButtonDown">
+    >
     <Window.DataContext>
         <vm:NavigationVM></vm:NavigationVM>
     </Window.DataContext>
     <Window.Resources>
         <ul:DoubleToTimeConverter x:Key="DoubleToTimeConverter"></ul:DoubleToTimeConverter>
         <ul:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        
+       
     </Window.Resources>
     <DockPanel LastChildFill="True" Background="{StaticResource PrimaryHueDarkBrush}">
 
@@ -186,23 +188,40 @@
                             Width="50"
                             Height="50"/>
                         <Grid Margin="50 0 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid>
+                                <TextBlock 
+                                    Grid.Column="0"
+                                    TextTrimming="CharacterEllipsis"
+                                    Text="{Binding NameSong}" 
+                                    TextWrapping="NoWrap"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Foreground="White" 
+                                    FontWeight="SemiBold" 
+                                    FontSize="15" 
+                                    Margin="10 0 0 0"                                
+                                    MaxWidth="240"/>
+                            </Grid>
+                            
                             <TextBlock 
-                                Text="{Binding NameSong}" 
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Foreground="White" 
-                                FontWeight="SemiBold" 
-                                FontSize="15" 
-                                Margin="10 0 0 0"/>
-                            <TextBlock 
-                                Text="" 
+                                Grid.Column="1"
+                                TextAlignment="Right"
+                                TextWrapping="NoWrap"
+                                TextTrimming="CharacterEllipsis"
+                                Text="{Binding Artist}" 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Foreground="White" 
                                 FontWeight="SemiBold" 
                                 Opacity="0.5"
-                                FontSize="10" 
-                                Margin="20 0 0 0"/>
+                                FontSize="13" 
+                                Margin="20 0 0 0"
+                                MaxWidth="80"
+                                />
                         </Grid>
 
                     </Grid>
@@ -228,31 +247,20 @@
                                 Height="30"/>
                         </Button>
 
-                        <Button 
-                            Style="{StaticResource MaterialDesignIconForegroundButton}" 
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Right"
-                            Margin="0 0 0 0"
-                            Name="btnShuffle">
-                            <materialDesign:PackIcon 
-                                Kind="Fullscreen" 
-                                Foreground="#FFD369" 
-                                Width="30" 
-                                Height="30"/>
-                        </Button>
+
                         <ToggleButton 
                                 Height="45"
                                 Width="45"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Right"
                                 Style="{StaticResource MaterialDesignActionToggleButton}"
-                                Background="{DynamicResource SecondaryHueDarkForegroundBrush}"
+                                Background="Transparent"
                                 Foreground="{DynamicResource SecondaryHueDarkBrush}"
                                 BorderBrush="{DynamicResource SecondaryHueDarkBrush }"
                                 Name="btnRepeat" 
                                 Margin="0 0 0 0"
-                            materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=RepeatOff, Size=30}"
-                            Content="{materialDesign:PackIcon Kind=Repeat, Size=30}"
+                            materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=RepeatOne, Size=25}"
+                            Content="{materialDesign:PackIcon Kind=Repeat, Size=25}"
                             IsChecked="{Binding IsRepeat}">
                            
                         </ToggleButton>
@@ -294,13 +302,12 @@
             </StackPanel>
         </Grid>
 
-        <Grid x:Name="WindowTab" 
+        <DockPanel x:Name="WindowTab" 
               DockPanel.Dock="Top" 
               Height="25" 
-              MouseUp="WindowTab_MouseUp"
-              MouseDown="WindowTab_MouseDown"
              >
-            <Button Name="btn_menutab_expanded_Menu"        
+            <Button Name="btn_menutab_expanded_Menu"  
+                DockPanel.Dock="Left"
                 Style="{StaticResource MaterialDesignFlatDarkButton}"
                 ToolTip="MaterialDesignFlatButton"                                    
                 IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
@@ -317,6 +324,7 @@
                         HorizontalAlignment="Center" 
                         VerticalAlignment="Center"/>
             </Button>
+            
             <Button Name="btn_menutab_collapsed_Menu"
                 Style="{StaticResource MaterialDesignFlatDarkButton}"
                 ToolTip="MaterialDesignFlatButton"                                    
@@ -334,8 +342,9 @@
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center"/>
             </Button>
+            
             <StackPanel 
-                Grid.Column="3"
+                DockPanel.Dock="Right"
                 Orientation="Horizontal" 
                 HorizontalAlignment="Right" Width="134">
                 
@@ -383,7 +392,8 @@
                         VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
-        </Grid>
+            <TextBlock MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
+        </DockPanel>
         
         <Grid x:Name="MenuTabCollapsed"
               DockPanel.Dock="Left"
@@ -638,7 +648,7 @@
                                 <ContextMenu x:Name="ContextMenuListPlaylist">
                                     <ContextMenu.Style>
                                         <Style TargetType="ContextMenu">
-                                            <Setter Property="Height" Value="130"/>
+                                            <Setter Property="Height" Value="90"/>
                                             <Setter Property="Width" Value="230"/>
                                             <Setter Property="Background" Value="Transparent"/>
                                             <Setter Property="Padding" Value="0"/>
@@ -648,7 +658,7 @@
                                                     <ControlTemplate TargetType="ContextMenu">
                                                         <Border Background="#575757" CornerRadius="4" >
                                                             <StackPanel>
-                                                                <MenuItem x:Name="AddSongToPlayList" Foreground="White" Margin="5 5 5 0" Height="40" Command= "{Binding DataContext.ShowAddSongToPlaylistWindowCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}" 
+                                                                <!--<MenuItem x:Name="AddSongToPlayList" Foreground="White" Margin="5 5 5 0" Height="40" Command= "{Binding DataContext.ShowAddSongToPlaylistWindowCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}" 
                                                                           CommandParameter="{Binding}">
                                                                     <MenuItem.Header>
                                                                         <StackPanel Orientation="Horizontal">
@@ -656,7 +666,7 @@
                                                                             <TextBlock Text="Add song" FontSize="14" FontWeight="SemiBold" Margin="10 0 0 0"/>
                                                                         </StackPanel>
                                                                     </MenuItem.Header>
-                                                                </MenuItem>
+                                                                </MenuItem>-->
                                                                 <MenuItem x:Name="DeletePlaylist" Foreground="White" Margin="5 0 5 0" Height="40"  Command= "{Binding DataContext.DeletePlaylistCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}" 
                                                                           CommandParameter="{Binding}">
                                                                     <MenuItem.Header>
@@ -666,7 +676,7 @@
                                                                         </StackPanel>
                                                                     </MenuItem.Header>
                                                                 </MenuItem>
-                                                                <MenuItem x:Name="btnEditPlaylistName" Foreground="White" Margin="5 0 5 0" Height="40" >
+                                                                <MenuItem x:Name="btnEditPlaylistName" Foreground="White" Margin="5 0 5 0" Height="40" Command="{Binding DataContext.EditNameCommand, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=ContextMenu}}" >
                                                                     <MenuItem.Header>
                                                                         <StackPanel Orientation="Horizontal">
                                                                             <materialDesign:PackIcon Kind="SquareEditOutline" Foreground="White"/>
@@ -851,11 +861,25 @@
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid Grid.Row="1">
+                        
+                        <Grid Grid.Row="1" Visibility="Hidden">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding ActualWidth, ElementName=stt}"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="1" Name="helper1"/>
+                            <Grid Grid.Column="2" Name="helper2"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="1" Visibility="Visible">
                             <ListView Grid.Row="1" ItemsSource="{Binding CurSongs}" 
                                       SelectedItem="{Binding SelectedSong}" 
                                       HorizontalContentAlignment="Center" 
                                       VerticalContentAlignment="Center"
+                                      Name="myListView"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       >
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
@@ -865,12 +889,24 @@
                                         <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
-                                <ListView.View>
-                                    <GridView >
-                                        <GridViewColumn Header="#"  DisplayMemberBinding="{Binding Index}" Width="75"/>
-                                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="500"/>
-                                        <GridViewColumn Header="Format"  DisplayMemberBinding="{Binding Format}" Width="75"/>
-                                        <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}">
+                                <ListView.View >
+                                    <GridView>
+                                        <GridView.ColumnHeaderContainerStyle>
+                                            <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
+                                                <Setter Property="IsHitTestVisible" Value="False"/>
+                                                <Setter Property="Margin" Value="-20 0 0 -5"/>
+                                            </Style>
+                                        </GridView.ColumnHeaderContainerStyle>
+                                        <GridViewColumn x:Name="stt" Header="#"  DisplayMemberBinding="{Binding Index}" Width="80"/>
+                                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="{Binding ActualWidth, ElementName=helper1}"/>
+                                        <GridViewColumn Header="Format" DisplayMemberBinding="{Binding Format}" Width="{Binding ActualWidth, ElementName=helper2}">
+                                            <!--<GridViewColumn.HeaderContainerStyle>
+                                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                                </Style>
+                                            </GridViewColumn.HeaderContainerStyle>-->
+                                        </GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}" Width="80">
                                             <HeaderedContentControl>
                                                 <materialDesign:PackIcon Kind="Clock"/>
                                             </HeaderedContentControl>

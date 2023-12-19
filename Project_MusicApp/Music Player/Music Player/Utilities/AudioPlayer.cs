@@ -30,6 +30,8 @@ namespace Music_Player.Utilities
 
         public AudioPlayer(string filepath, float volume)
         {
+            
+            
             PlaybackStopType = PlaybackStopTypes.PlaybackStoppedReachingEndOfFile;
 
             _audioFileReader = new AudioFileReader(filepath) { Volume = volume };
@@ -41,9 +43,11 @@ namespace Music_Player.Utilities
             wc.PadWithZeroes = false;
 
             _output.Init(wc);
+         
         }
         public void Play(PlaybackState playbackState, double currentVolumeLevel)
         {
+
             if (playbackState == PlaybackState.Stopped || playbackState == PlaybackState.Paused)
             {
                 _output.Play();

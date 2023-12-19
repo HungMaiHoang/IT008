@@ -17,7 +17,7 @@ namespace Music_Player.Models
     {
         private int playlistID;
         private string name;
-        private int? totalSong;
+        private int? totalSong =0;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Playlist()

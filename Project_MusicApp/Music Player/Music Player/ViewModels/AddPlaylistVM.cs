@@ -35,7 +35,7 @@ namespace Music_Player.ViewModels
                 Playlist = new Playlist();
                 return;
             }    
-            try
+           try
             {
 
             // Change Database
@@ -45,8 +45,7 @@ namespace Music_Player.ViewModels
             // Change UI
             NavigationVM.Instance.ListPlaylist.Add(Playlist);
             Playlist = new Playlist();
-            }
-            catch (Exception) { MessageBox.Show("Vui lòng nhập tên playlist"); }
+            } catch (Exception ex) { MessageBox.Show("Vui lòng nhập tên playlist");}
         }
     }
 }

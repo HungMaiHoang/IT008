@@ -45,6 +45,12 @@
                 <ListView ItemsSource="{Binding CurSongs}" SelectedItem="{Binding SelectedSong}">
                     <ListView.View>
                         <GridView >
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="IsHitTestVisible" Value="False"/>
+                                    <Setter Property="Margin" Value="-20 0 0 -5"/>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
                             <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="280"/>
                             <GridViewColumn Header="Format" DisplayMemberBinding="{Binding Format }" Width="120"/>
                             <GridViewColumn DisplayMemberBinding="{Binding Duration, StringFormat='{}{0:mm\\:ss}'}">

@@ -66,6 +66,7 @@ namespace Music_Player
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            
         }
 
         private bool isFullScreen = false;
@@ -76,32 +77,12 @@ namespace Music_Player
             WindowState = WindowState.Minimized;
         }
 
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left && isPressed)
+            if (e.ChangedButton == MouseButton.Left)
             {
                 DragMove();
             }
-        }
-
-        private void WindowTab_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            isPressed = true;
-        }
-
-        private void WindowTab_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            isPressed = false;
-        }
-
-        private void WindowTab_MouseMove(object sender, MouseEventArgs e)
-        {
-        
-        }
-
-        private void WindowTab_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
 
         // phóng to nhỏ cửa sổ

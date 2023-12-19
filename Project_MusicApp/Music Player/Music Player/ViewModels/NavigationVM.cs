@@ -160,6 +160,16 @@ namespace Music_Player.ViewModels
                 OnPropertyChanged(nameof(NameSong));
             }
         }
+        private string _artist;
+        public string Artist
+        {
+            get { return _artist; }
+            set
+            {
+                _artist = value;
+                OnPropertyChanged(nameof(Artist));
+            }
+        }
 
         // relate to naudio
 
@@ -266,6 +276,7 @@ namespace Music_Player.ViewModels
         public ICommand VideoVisibilityCommand { get; set; }
         public ICommand LoadedCommand { get; set; }
         public ICommand MuteCommand { get; set; }
+        public ICommand EditNameCommand { get; set; }
         // Constructor
         public NavigationVM()
         {
@@ -293,6 +304,7 @@ namespace Music_Player.ViewModels
             VideoVisibilityCommand = new RelayCommand(OnVideoVisibility, CanOnVideoVisibility);
             LoadedCommand = new RelayCommand(LoadedIndex);
             MuteCommand = new RelayCommand(Mute);
+            EditNameCommand = new RelayCommand(EditName);
             // Set up database
             SongEntities = new MyDatabaseEntities();
             //timer
@@ -426,12 +438,28 @@ namespace Music_Player.ViewModels
         }
         private void RewindToStart(object p)
         {
-            _audioPlayer.SetPosition(0); // set position to zero
-            var mainWindow = Application.Current.MainWindow as MainWindow;
+            //_audioPlayer.SetPosition(0); // set position to zero
+            //var mainWindow = Application.Current.MainWindow as MainWindow;
 
-            // Tìm kiếm một thành phần UI bằng tên
-            var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
-            myControl.Position = TimeSpan.FromSeconds(0);
+            //// Tìm kiếm một thành phần UI bằng tên
+            //var myControl = mainWindow?.FindName("mediaElement") as MediaElement;
+            //myControl.Position = TimeSpan.FromSeconds(0);
+
+            _playbackState = PlaybackState.Stopped;
+            CommandManager.InvalidateRequerySuggested();
+            CurrentTime = 0;
+            IsPlaying = false;
+
+            if (_audioPlayer.PlaybackStopType == AudioPlayer.PlaybackStopTypes.PlaybackStoppedReachingEndOfFile)
+            {
+                if (IsRepeat)
+                {
+                    SelectedSong = SongPlaying;
+                    //IsRepeat = false; 
+                }
+                else { SelectedSong = CurSongs.PreviousItem(SongPlaying); }
+                StartPlaySong(null);
+            }
         }
         private bool CanRewindToStart(object p)
         {
@@ -470,7 +498,11 @@ namespace Music_Player.ViewModels
             //    waveOut.Pause();
             //    return;
             //}
+            try
+            {
+
             NameSong = SelectedSong.Title;
+                Artist= SelectedSong.Artist;
             //  _Duration = SelectedSong.Duration;
             //    AudioUri = new Uri(SelectedSong.Path, UriKind.RelativeOrAbsolute);
             //    waveOut = new WaveOutEvent();
@@ -531,6 +563,7 @@ namespace Music_Player.ViewModels
             }
             _timer.Start();
 
+            } catch (Exception ex) { MessageBox.Show("Không tìm thấy đường dẫn"); }
 
         }
         private bool CanStartPlaySong(object obj)
@@ -719,7 +752,10 @@ namespace Music_Player.ViewModels
                 var time = SongEntities.Songs.ToList();
                 TotalTime = (long)time.Sum(c => c.Duration.TotalMinutes);
                 TotalSong = SongEntities.Songs.Count();
-                
+                foreach( var c in SongEntities.Playlists)
+                {
+                    c.TotalSong = c.Songs.Count();
+                }
                 // OnPropertyChanged(nameof(CurSongs));
             }
             else
@@ -762,16 +798,28 @@ namespace Music_Player.ViewModels
             }
         }
         #endregion
+        private void EditName(object obj)
+        {
+            if (Selected != null)
+            {
 
+            EditNamePlaylist editNamePlaylist = new EditNamePlaylist();
+            editNamePlaylist.ShowDialog();
+            }
+        }
         private void LoadAllSong() //Read songs
         {
             AllSong = new ObservableCollection<Song>(SongEntities.Songs);
         }
         private void DeletePlaylist(object obj)
         {
+            if (Selected != null)
+            {
+
             SongEntities.Playlists.Remove(Selected);
             SongEntities.SaveChanges();
             ListPlaylist.Remove(Selected);
+            }
             Home();
         }
 

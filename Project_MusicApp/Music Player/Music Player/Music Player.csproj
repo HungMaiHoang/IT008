@@ -163,6 +163,7 @@
     <Compile Include="ViewModels\AddPlaylistVM.cs" />
     <Compile Include="ViewModels\AddSongToPlaylistVM.cs" />
     <Compile Include="ViewModels\AddSongVM.cs" />
+    <Compile Include="ViewModels\EditNameVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
     <Compile Include="ViewModels\NavigationVM.cs" />
     <Compile Include="ViewModels\PlaylistVM.cs" />
@@ -192,6 +193,9 @@
     <Compile Include="Views\VideoPlay.xaml.cs">
       <DependentUpon>VideoPlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\EditNamePlaylist.xaml.cs">
+      <DependentUpon>EditNamePlaylist.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\VideoWindow.xaml.cs">
       <DependentUpon>VideoWindow.xaml</DependentUpon>
     </Compile>
@@ -204,6 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\AddSongWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EditNamePlaylist.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
