@@ -1,23 +1,20 @@
-
-
-
 ![UIT](https://img.shields.io/badge/from-UIT%20VNUHCM-blue?style=for-the-badge&link=https%3A%2F%2Fwww.uit.edu.vn%2F)
 
-<h1 align="center"> Visic </h1>
+# <p align="center"> Visic </p>
 
-<h2 align="center">Play video and music in one application</h2>
+# <p align="center">Play video and music in one application</p>
 
 <p align="center">
   <img src="https://www.uit.edu.vn/sites/vi/files/banner_uit.png" alt="Alt text">
 </p>
 
-<h3>Contributors:<h3>
+### Contributors:
 
 - Leader: Mai Hoàng Hưng - 22520510 - [Github](https://github.com/HungMaiHoang)
 - Member: Bùi Trọng Hoàng Huy - 22520533 - [Github](https://github.com/BuiTrongHoangHuy)
 - Member: Ngô Duy Hưng - 22520511 - [Github](https://github.com/NgoDuyHung2305)
 
-<h3>Supervisors: <h3>
+### Supervisors:
 
 KS.Vũ Tuấn Hải
 - Email: haivt@uit.edu.vn. SĐT: 0814822188
@@ -26,16 +23,16 @@ KS.Vũ Tuấn Hải
 
 - Github: [https://github.com/vutuanhai237/](https://github.com/vutuanhai237/)
 
-<h3>Video demo:<h3> 
+### Video demo:
   
-This is video demo [Youtube](https://www.youtube.com/)
+This is video demo [Youtube](https://youtu.be/n4fS5XKmmMk)
   
-<h3>Description:<h3> 
+### Description:
   
 Visic is a versatile and user-friendly media player designed to enhance your multimedia experience. Whether you're listening to music, watching videos, or exploring podcasts, our app offers a seamless and enjoyable playback experience.
 Visic is an application used for making playlists, play music from existing mp3, mp4 files from user's devices.
   
-<h4>Our feature:<h4>
+### Our feature:
 - Every media in one playlist:
   - But limit at mp3 and mp4!
 - Create, rename playlist
@@ -43,11 +40,8 @@ Visic is an application used for making playlists, play music from existing mp3,
 - Loop playlist, repeat one media
 - Volume control
 - Shuffle media
-  
-**Get in Touch**:
-Have questions, feedback, or need assistance? Contact our support team or visit our Help Center.
 
-**How to use**:
+### How to use:
 
 **Additional information**: 
 
