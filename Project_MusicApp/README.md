@@ -71,4 +71,4 @@ Visic is an application used for making playlists, play music from existing mp3,
 Thank you for choosing Visic! We hope you enjoy the app.
 
 **License**:
-[MIT](https://github.com/HungMaiHoang/IT008/blob/main/LICENSE) © 2023,[Visic]
+[MIT](https://github.com/HungMaiHoang/IT008/blob/main/Project_MusicApp/LICENSE) © 2023,[Visic]
