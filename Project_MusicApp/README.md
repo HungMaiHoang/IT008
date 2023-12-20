@@ -66,7 +66,7 @@ Visic is an application used for making playlists, play music from existing mp3,
     **Important:** To play a media, current media has to stop
 ---
 
-**Code of conducting**: [Code of conducting](https://github.com/HungMaiHoang/IT008/blob/main/Code%20of%20conducting)
+**Code of conducting**: [Code of conducting](https://github.com/HungMaiHoang/IT008/blob/main/Project_MusicApp/Code%20of%20conducting)
 
 Thank you for choosing Visic! We hope you enjoy the app.
 
